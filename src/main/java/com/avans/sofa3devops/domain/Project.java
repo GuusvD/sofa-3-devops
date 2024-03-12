@@ -1,7 +1,7 @@
 package com.avans.sofa3devops.Domain;
 
 public class Project {
-    private List<Sprint> sprints;
+    private List<ISprint> sprints;
     private List<BacklogItem> projectBacklog;
 
 
