@@ -1,5 +1,8 @@
 package com.avans.sofa3devops.domainServices.sprintStatePattern;
 
-public class ISprintState {
-
+public interface ISprintState {
+    void createdState();
+    void inProgressState();
+    void finishedState();
+    void closedState();
 }
