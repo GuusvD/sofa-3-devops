@@ -5,11 +5,14 @@ import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.CreatedState;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.ISprintState;
 
+
 import java.util.Date;
 import java.util.List;
 
 public class ReviewSprint implements ISprint {
+
     private ISprintState state;
+
     private int number;
     private Date start;
     private Date end;

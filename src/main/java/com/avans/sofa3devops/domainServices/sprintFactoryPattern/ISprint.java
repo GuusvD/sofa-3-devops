@@ -1,7 +1,7 @@
 package com.avans.sofa3devops.domainServices.sprintFactoryPattern;
 
+
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
-import com.avans.sofa3devops.domainServices.sprintStatePattern.CreatedState;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.ISprintState;
 
 public interface ISprint {
@@ -11,4 +11,5 @@ public interface ISprint {
     void inProgress() throws InvalidStateException;
     void finished() throws InvalidStateException;
     void closed() throws InvalidStateException;
+
 }
