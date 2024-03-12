@@ -1,4 +1,4 @@
-package com.avans.sofa3devops.Domain;
+package com.avans.sofa3devops.domain;
 
 public class Activity {
 

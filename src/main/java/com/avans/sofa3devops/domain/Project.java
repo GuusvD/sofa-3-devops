@@ -1,4 +1,8 @@
-package com.avans.sofa3devops.Domain;
+package com.avans.sofa3devops.domain;
+
+import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprint;
+
+import java.util.List;
 
 public class Project {
     private List<ISprint> sprints;

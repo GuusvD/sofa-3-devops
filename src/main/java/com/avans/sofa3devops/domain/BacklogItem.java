@@ -1,4 +1,6 @@
-package com.avans.sofa3devops.Domain;
+package com.avans.sofa3devops.domain;
+
+import java.util.List;
 
 public class BacklogItem {
     private List<Activity> activities;
