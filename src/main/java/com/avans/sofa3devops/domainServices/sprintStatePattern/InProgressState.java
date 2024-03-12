@@ -1,25 +1,18 @@
 package com.avans.sofa3devops.domainServices.sprintStatePattern;
 
+import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
 import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprint;
-
-import java.util.logging.Logger;
 
 public class InProgressState implements ISprintState {
     private ISprint sprint;
-    final Logger logger = Logger.getLogger(this.getClass().getName());
 
     public InProgressState(ISprint sprint) {
         this.sprint = sprint;
     }
 
     @Override
-    public void createdState() {
-        logger.info("Can't go to 'created' state!");
-    }
-
-    @Override
-    public void inProgressState() {
-        logger.info("Already in 'in progress' state!");
+    public void inProgressState() throws InvalidStateException {
+        throw new InvalidStateException("Already in 'in progress' state!");
     }
 
     @Override
@@ -28,7 +21,7 @@ public class InProgressState implements ISprintState {
     }
 
     @Override
-    public void closedState() {
-        logger.info("Can't go to 'closed' state!");
+    public void closedState() throws InvalidStateException {
+        throw new InvalidStateException("Cannot transition to 'closed' state!");
     }
 }

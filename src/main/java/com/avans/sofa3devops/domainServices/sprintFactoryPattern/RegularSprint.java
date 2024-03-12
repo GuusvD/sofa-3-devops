@@ -2,6 +2,8 @@ package com.avans.sofa3devops.domainServices.sprintFactoryPattern;
 
 import com.avans.sofa3devops.domain.*;
 
+import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
+import com.avans.sofa3devops.domainServices.sprintStatePattern.CreatedState;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.ISprintState;
 
 
@@ -19,8 +21,8 @@ public class RegularSprint implements ISprint {
     private Release release;
     private Pipeline pipeline;
 
-    public RegularSprint(ISprintState state, int number, Date start, Date end, List<BacklogItem> backlog, List<User> developers, Document document, Release release, Pipeline pipeline) {
-        this.state = state;
+    public RegularSprint(int number, Date start, Date end, List<BacklogItem> backlog, List<User> developers, Document document, Release release, Pipeline pipeline) {
+        this.state = new CreatedState(this);
         this.number = number;
         this.start = start;
         this.end = end;
@@ -39,5 +41,20 @@ public class RegularSprint implements ISprint {
     @Override
     public ISprintState getState() {
         return this.state;
+    }
+
+    @Override
+    public void inProgress() throws InvalidStateException {
+        this.state.inProgressState();
+    }
+
+    @Override
+    public void finished() throws InvalidStateException {
+        this.state.finishedState();
+    }
+
+    @Override
+    public void closed() throws InvalidStateException {
+        this.state.closedState();
     }
 }

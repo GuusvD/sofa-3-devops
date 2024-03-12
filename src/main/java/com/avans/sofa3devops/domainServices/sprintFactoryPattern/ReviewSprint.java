@@ -1,6 +1,8 @@
 package com.avans.sofa3devops.domainServices.sprintFactoryPattern;
 
 import com.avans.sofa3devops.domain.*;
+import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
+import com.avans.sofa3devops.domainServices.sprintStatePattern.CreatedState;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.ISprintState;
 
 
@@ -21,8 +23,8 @@ public class ReviewSprint implements ISprint {
     private Pipeline pipeline;
     private boolean reviewed;
 
-    public ReviewSprint(ISprintState state, int number, Date start, Date end, List<BacklogItem> backlog, List<User> developers, Document document, Release release, Pipeline pipeline, boolean reviewed) {
-        this.state = state;
+    public ReviewSprint(int number, Date start, Date end, List<BacklogItem> backlog, List<User> developers, Document document, Release release, Pipeline pipeline, boolean reviewed) {
+        this.state = new CreatedState(this);
         this.number = number;
         this.start = start;
         this.end = end;
@@ -42,5 +44,20 @@ public class ReviewSprint implements ISprint {
     @Override
     public ISprintState getState() {
         return this.state;
+    }
+
+    @Override
+    public void inProgress() throws InvalidStateException {
+        this.state.inProgressState();
+    }
+
+    @Override
+    public void finished() throws InvalidStateException {
+        this.state.finishedState();
+    }
+
+    @Override
+    public void closed() throws InvalidStateException {
+        this.state.closedState();
     }
 }
