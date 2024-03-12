@@ -1,10 +1,9 @@
 package com.avans.sofa3devops.domainServices.sprintFactoryPattern;
 
-import com.avans.sofa3devops.domain.*;
-
-import java.util.List;
+import com.avans.sofa3devops.domainServices.sprintStatePattern.ISprintState;
 
 public interface ISprint {
-
+    void setState(ISprintState state);
+    ISprintState getState();
 
 }
