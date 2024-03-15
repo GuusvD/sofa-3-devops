@@ -60,6 +60,7 @@ public class ReviewSprint implements ISprint {
         if (this.reviewed) {
             this.state.closedState();
         }
+
     }
 
     // General methods
