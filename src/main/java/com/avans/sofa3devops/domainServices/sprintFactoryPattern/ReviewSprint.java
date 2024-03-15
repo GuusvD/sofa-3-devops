@@ -57,11 +57,10 @@ public class ReviewSprint implements ISprint {
 
     @Override
     public void closed() throws InvalidStateException {
-        if (!this.reviewed) {
-            throw new InvalidStateException("Cannot transition to 'closed' state!");
+        if (this.reviewed) {
+            this.state.closedState();
         }
 
-        this.state.closedState();
     }
 
     // General methods

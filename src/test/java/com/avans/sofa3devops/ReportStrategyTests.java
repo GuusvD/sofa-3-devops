@@ -13,14 +13,15 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 public class ReportStrategyTests {
-    private String directoryPath = "./src/main/java/com/avans/sofa3devops/domainServices/reportStrategyPattern";
-    private String name = "TestFile";
-    private String startsWith = name + "_report";
+    private final String directoryPath = "./src/main/java/com/avans/sofa3devops/domainServices/reportStrategyPattern";
+    private final String name = "TestFile";
+    private final String startsWith = name + "_report";
     @AfterEach
     void tearDown() {
         // Iterate through each directory and remove files starting with "TestFile_Report"
@@ -48,9 +49,9 @@ public class ReportStrategyTests {
 
         // Assert
         // Check if any files matching the patterns exist
-        assertTrue(Arrays.stream(new File(directoryPath + "/reports/pdf/").listFiles())
+        assertTrue(Arrays.stream(Objects.requireNonNull(new File(directoryPath + "/reports/pdf/").listFiles()))
                 .anyMatch(file -> file.getName().startsWith(startsWith)));
-        assertTrue(Arrays.stream(new File(directoryPath + "/reports/png/").listFiles())
+        assertTrue(Arrays.stream(Objects.requireNonNull(new File(directoryPath + "/reports/png/").listFiles()))
                 .anyMatch(file -> file.getName().startsWith(startsWith)));
     }
 

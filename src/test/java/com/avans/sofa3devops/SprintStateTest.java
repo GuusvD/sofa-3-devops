@@ -15,8 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class SprintStateTest {
@@ -152,7 +151,7 @@ public class SprintStateTest {
     @Test
     void givenRegularSprintWithClosedStateWhenSwitchingStateToClosedThenThrowException() throws InvalidStateException {
         SprintFactory factory = new SprintFactory();
-        ISprint sprint = factory.createRegularSprint(1,new Date(), new Date(), user);
+        ISprint sprint =  factory.createRegularSprint(1,new Date(), new Date(), user);
         sprint.inProgress();
         sprint.finished();
         sprint.closed();
@@ -160,4 +159,33 @@ public class SprintStateTest {
         InvalidStateException exception = assertThrows(InvalidStateException.class, sprint::closed);
         assertEquals("Already in 'closed' state!", exception.getMessage());
     }
+
+    @Test
+    void givenReviewSprintWithFinishedStateWhenSwitchingToClosedStateWithoutDocument() throws InvalidStateException {
+        SprintFactory factory = new SprintFactory();
+        ReviewSprint sprint = (ReviewSprint) factory.createReviewSprint(1,new Date(), new Date(), user);
+        sprint.inProgress();
+        sprint.finished();
+        sprint.setReviewed();
+        sprint.closed();
+
+        assertInstanceOf(FinishedState.class, sprint.getState());
+
+    }
+
+    @Test
+    void givenReviewSprintWhithFinishedStateWhenSwitchingToClosedStateWithDocument() throws InvalidStateException {
+        SprintFactory factory = new SprintFactory();
+        ReviewSprint sprint = (ReviewSprint) factory.createReviewSprint(1,new Date(), new Date(), user);
+        Document document = new Document();
+        sprint.inProgress();
+        sprint.finished();
+        sprint.setDocument(document);
+        sprint.setReviewed();
+        sprint.closed();
+
+        assertInstanceOf(ClosedState.class,sprint.getState());
+
+    }
+
 }
