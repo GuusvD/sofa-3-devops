@@ -1,8 +1,10 @@
 package com.avans.sofa3devops;
 
+import com.avans.sofa3devops.domain.Document;
 import com.avans.sofa3devops.domain.User;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
 import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprint;
+import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ReviewSprint;
 import com.avans.sofa3devops.domainServices.sprintFactoryPattern.SprintFactory;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.ClosedState;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.FinishedState;
@@ -54,17 +56,19 @@ public class SprintStateTest {
         assertThat(sprint.getState()).isInstanceOf(ClosedState.class);
     }
 
-//    @Test
-//    void givenReviewSprintWithFinishedStateAndWithReviewWhenSwitchingStateToClosedThenSwitchToClosedState() throws InvalidStateException {
-//        SprintFactory factory = new SprintFactory();
-//        ISprint sprint = factory.createReviewSprint();
-//        sprint.inProgress();
-//        sprint.finished();
-//
-//        sprint.closed();
-//
-//        assertThat(sprint.getState()).isInstanceOf(ClosedState.class);
-//    }
+    @Test
+    void givenReviewSprintWithFinishedStateAndWithDocumentAndWithReviewWhenSwitchingStateToClosedThenSwitchToClosedState() throws InvalidStateException {
+        SprintFactory factory = new SprintFactory();
+        ReviewSprint sprint = (ReviewSprint) factory.createReviewSprint(1,new Date(), new Date(), user);
+        sprint.inProgress();
+        sprint.finished();
+        sprint.setDocument(new Document());
+        sprint.setReviewed();
+
+        sprint.closed();
+
+        assertThat(sprint.getState()).isInstanceOf(ClosedState.class);
+    }
 
     // Incorrect state switching
     @Test
@@ -115,7 +119,7 @@ public class SprintStateTest {
     @Test
     void givenReviewSprintWithFinishedStateAndWithoutReviewWhenSwitchingStateToClosedThenThrowException() throws InvalidStateException {
         SprintFactory factory = new SprintFactory();
-        ISprint sprint = factory.createReviewSprint();
+        ISprint sprint = factory.createReviewSprint(1,new Date(), new Date(), user);
         sprint.inProgress();
         sprint.finished();
 
