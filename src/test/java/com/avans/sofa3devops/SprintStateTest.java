@@ -1,5 +1,6 @@
 package com.avans.sofa3devops;
 
+import com.avans.sofa3devops.domain.User;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
 import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprint;
 import com.avans.sofa3devops.domainServices.sprintFactoryPattern.SprintFactory;
@@ -9,6 +10,8 @@ import com.avans.sofa3devops.domainServices.sprintStatePattern.InProgressState;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Date;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -16,10 +19,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @SpringBootTest
 public class SprintStateTest {
     // Correct state switching
+    User user = new User();
     @Test
     void givenRegularSprintWithCreatedStateWhenSwitchingStateThenSwitchToInProgressState() throws InvalidStateException {
         SprintFactory factory = new SprintFactory();
-        ISprint sprint = factory.createRegularSprint();
+
+        ISprint sprint = factory.createRegularSprint(1,new Date(), new Date(), user);
 
         sprint.inProgress();
 
@@ -29,7 +34,7 @@ public class SprintStateTest {
     @Test
     void givenRegularSprintWithInProgressStateWhenSwitchingStateThenSwitchToFinishedState() throws InvalidStateException {
         SprintFactory factory = new SprintFactory();
-        ISprint sprint = factory.createRegularSprint();
+        ISprint sprint = factory.createRegularSprint(1,new Date(), new Date(), user);
         sprint.inProgress();
 
         sprint.finished();
@@ -40,7 +45,7 @@ public class SprintStateTest {
     @Test
     void givenRegularSprintWithFinishedStateWhenSwitchingStateThenSwitchToClosedState() throws InvalidStateException {
         SprintFactory factory = new SprintFactory();
-        ISprint sprint = factory.createRegularSprint();
+        ISprint sprint = factory.createRegularSprint(1,new Date(), new Date(), user);
         sprint.inProgress();
         sprint.finished();
 
@@ -65,7 +70,7 @@ public class SprintStateTest {
     @Test
     void givenRegularSprintWithFinishedStateWhenSwitchingStateToInProgressThenThrowException() throws InvalidStateException {
         SprintFactory factory = new SprintFactory();
-        ISprint sprint = factory.createRegularSprint();
+        ISprint sprint = factory.createRegularSprint(1,new Date(), new Date(), user);
         sprint.inProgress();
         sprint.finished();
 
@@ -76,7 +81,7 @@ public class SprintStateTest {
     @Test
     void givenRegularSprintWithClosedStateWhenSwitchingStateToFinishedThenThrowException() throws InvalidStateException {
         SprintFactory factory = new SprintFactory();
-        ISprint sprint = factory.createRegularSprint();
+        ISprint sprint = factory.createRegularSprint(1,new Date(), new Date(), user);
         sprint.inProgress();
         sprint.finished();
         sprint.closed();
@@ -88,7 +93,7 @@ public class SprintStateTest {
     @Test
     void givenRegularSprintWithClosedStateWhenSwitchingStateToInProgressThenThrowException() throws InvalidStateException {
         SprintFactory factory = new SprintFactory();
-        ISprint sprint = factory.createRegularSprint();
+        ISprint sprint = factory.createRegularSprint(1,new Date(), new Date(), user);
         sprint.inProgress();
         sprint.finished();
         sprint.closed();
@@ -100,7 +105,7 @@ public class SprintStateTest {
     @Test
     void givenRegularSprintWithInProgressStateWhenSwitchingStateToClosedThenThrowException() throws InvalidStateException {
         SprintFactory factory = new SprintFactory();
-        ISprint sprint = factory.createRegularSprint();
+        ISprint sprint = factory.createRegularSprint(1,new Date(), new Date(), user);
         sprint.inProgress();
 
         InvalidStateException exception = assertThrows(InvalidStateException.class, sprint::closed);
@@ -122,7 +127,7 @@ public class SprintStateTest {
     @Test
     void givenRegularSprintWithInProgressStateWhenSwitchingStateToInProgressThenThrowException() throws InvalidStateException {
         SprintFactory factory = new SprintFactory();
-        ISprint sprint = factory.createRegularSprint();
+        ISprint sprint = factory.createRegularSprint(1,new Date(), new Date(), user);
         sprint.inProgress();
 
         InvalidStateException exception = assertThrows(InvalidStateException.class, sprint::inProgress);
@@ -132,7 +137,7 @@ public class SprintStateTest {
     @Test
     void givenRegularSprintWithFinishedStateWhenSwitchingStateToFinishedThenThrowException() throws InvalidStateException {
         SprintFactory factory = new SprintFactory();
-        ISprint sprint = factory.createRegularSprint();
+        ISprint sprint = factory.createRegularSprint(1,new Date(), new Date(), user);
         sprint.inProgress();
         sprint.finished();
 
@@ -143,7 +148,7 @@ public class SprintStateTest {
     @Test
     void givenRegularSprintWithClosedStateWhenSwitchingStateToClosedThenThrowException() throws InvalidStateException {
         SprintFactory factory = new SprintFactory();
-        ISprint sprint = factory.createRegularSprint();
+        ISprint sprint = factory.createRegularSprint(1,new Date(), new Date(), user);
         sprint.inProgress();
         sprint.finished();
         sprint.closed();
