@@ -9,7 +9,6 @@ import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
-
 @SpringBootTest
 public class FactoryPatternTests {
     @Test
@@ -17,7 +16,7 @@ public class FactoryPatternTests {
         // Arrange
         ISprintFactory factory = new SprintFactory();
         // Act
-        ISprint rSprint = factory.createRegularSprint(1,new Date(), new Date(), new User());
+        ISprint rSprint = factory.createRegularSprint(1, new Date(), new Date(), new User());
         // Assert
         assertInstanceOf(RegularSprint.class, rSprint);
     }
@@ -27,7 +26,7 @@ public class FactoryPatternTests {
         // Arrange
         ISprintFactory factory = new SprintFactory();
         // Act
-        ISprint rSprint = factory.createReviewSprint(1,new Date(), new Date(), new User());
+        ISprint rSprint = factory.createReviewSprint(1, new Date(), new Date(), new User());
         // Assert
         assertInstanceOf(ReviewSprint.class, rSprint);
     }
