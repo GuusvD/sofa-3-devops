@@ -22,7 +22,7 @@ public class TestedState implements IBacklogItemState {
 
     @Override
     public void readyForTestingState() throws InvalidStateException {
-        throw new InvalidStateException("Already in 'ready for testing' state!");
+        throw new InvalidStateException("Cannot transition to 'ready for testing' state!");
     }
 
     @Override
