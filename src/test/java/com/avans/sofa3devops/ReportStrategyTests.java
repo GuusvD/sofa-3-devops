@@ -11,7 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.File;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -23,6 +22,7 @@ public class ReportStrategyTests {
     private final String directoryPath = "./src/main/java/com/avans/sofa3devops/domainServices/reportStrategyPattern";
     private final String name = "TestFile";
     private final String startsWith = name + "_report";
+
     @AfterEach
     void tearDown() {
         // Iterate through each directory and remove files starting with "TestFile_Report"
