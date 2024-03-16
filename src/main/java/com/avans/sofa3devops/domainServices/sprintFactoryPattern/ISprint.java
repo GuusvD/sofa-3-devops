@@ -1,6 +1,5 @@
 package com.avans.sofa3devops.domainServices.sprintFactoryPattern;
 
-
 import com.avans.sofa3devops.domain.BacklogItem;
 import com.avans.sofa3devops.domain.User;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;

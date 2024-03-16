@@ -19,8 +19,7 @@ public class RegularSprint implements ISprint {
     private List<BacklogItem> backlog;
     private List<User> developers;
     private Document document;
-    private Release release;
-    private Pipeline pipeline;
+    private List<Release> releases;
 
     public RegularSprint(int number, Date start, Date end, User user) {
         this.state = new CreatedState(this);
@@ -113,18 +112,11 @@ public class RegularSprint implements ISprint {
         this.document = document;
     }
 
-    public Release getRelease() {
-        return release;
-    }
-    public void setRelease(Release release) {
-        this.release = release;
+    public List<Release> getReleases() {
+        return releases;
     }
 
-    public Pipeline getPipeline() {
-        return pipeline;
+    public void setReleases(List<Release> releases) {
+        this.releases = releases;
     }
-    public void setPipeline(Pipeline pipeline) {
-        this.pipeline = pipeline;
-    }
-
 }
