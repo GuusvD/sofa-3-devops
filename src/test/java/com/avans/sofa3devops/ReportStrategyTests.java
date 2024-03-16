@@ -1,5 +1,6 @@
 package com.avans.sofa3devops;
 
+import com.avans.sofa3devops.domain.Pipeline;
 import com.avans.sofa3devops.domain.Project;
 import com.avans.sofa3devops.domainServices.reportStrategyPattern.IReport;
 import com.avans.sofa3devops.domainServices.reportStrategyPattern.Pdf;
@@ -42,7 +43,8 @@ public class ReportStrategyTests {
     void checkIfReportsAreCreatedFromProjectInPdfAndPng() {
         // Arrange
         List<IReport> reportStrategies = Arrays.asList(new Pdf(), new Png());
-        Project project = new Project(name, reportStrategies);
+        Pipeline pipeline = new Pipeline();
+        Project project = new Project(name, reportStrategies, pipeline);
 
         // Act
         project.printReports();
@@ -54,5 +56,4 @@ public class ReportStrategyTests {
         assertTrue(Arrays.stream(Objects.requireNonNull(new File(directoryPath + "/reports/png/").listFiles()))
                 .anyMatch(file -> file.getName().startsWith(startsWith)));
     }
-
 }
