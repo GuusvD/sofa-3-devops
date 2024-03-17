@@ -5,23 +5,19 @@ import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.CreatedState;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.ISprintState;
 
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class ReviewSprint implements ISprint {
-
     private ISprintState state;
-
     private int number;
     private Date start;
     private Date end;
     private List<BacklogItem> backlog;
     private List<User> developers;
     private Document document;
-    private Release release;
-    private Pipeline pipeline;
+    private List<Release> releases;
     private boolean reviewed;
 
     public ReviewSprint(int number, Date start, Date end, User user) {
@@ -60,6 +56,7 @@ public class ReviewSprint implements ISprint {
         if (this.reviewed) {
             this.state.closedState();
         }
+
     }
 
     // General methods
@@ -84,6 +81,7 @@ public class ReviewSprint implements ISprint {
     public int getNumber() {
         return number;
     }
+
     public void setNumber(int number) {
         this.number = number;
     }
@@ -91,6 +89,7 @@ public class ReviewSprint implements ISprint {
     public Date getStart() {
         return start;
     }
+
     public void setStart(Date start) {
         this.start = start;
     }
@@ -98,6 +97,7 @@ public class ReviewSprint implements ISprint {
     public Date getEnd() {
         return end;
     }
+
     public void setEnd(Date end) {
         this.end = end;
     }
@@ -113,22 +113,17 @@ public class ReviewSprint implements ISprint {
     public Document getDocument() {
         return document;
     }
+
     public void setDocument(Document document) {
         this.document = document;
     }
 
-    public Release getRelease() {
-        return release;
-    }
-    public void setRelease(Release release) {
-        this.release = release;
+    public List<Release> getReleases() {
+        return releases;
     }
 
-    public Pipeline getPipeline() {
-        return pipeline;
-    }
-    public void setPipeline(Pipeline pipeline) {
-        this.pipeline = pipeline;
+    public void setReleases(List<Release> releases) {
+        this.releases = releases;
     }
 
     public boolean isReviewed() {

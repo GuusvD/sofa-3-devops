@@ -1,5 +1,6 @@
 package com.avans.sofa3devops;
 
+import com.avans.sofa3devops.domain.Pipeline;
 import com.avans.sofa3devops.domain.Project;
 import com.avans.sofa3devops.domainServices.reportStrategyPattern.IReport;
 import com.avans.sofa3devops.domainServices.reportStrategyPattern.Pdf;
@@ -22,8 +23,9 @@ public class Sofa3DevopsApplication {
 		reportStrategies.add(new Pdf());
 		reportStrategies.add(new Png());
 
+		Pipeline pipeline = new Pipeline();
 
-		Project project = new Project("LANGUAGESCHOOL", reportStrategies);
+		Project project = new Project("LANGUAGESCHOOL", reportStrategies, pipeline);
 		project.printReports();
 	}
 

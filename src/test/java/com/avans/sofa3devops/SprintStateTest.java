@@ -55,6 +55,20 @@ public class SprintStateTest {
         assertThat(sprint.getState()).isInstanceOf(ClosedState.class);
     }
 
+    @Test
+    void givenReviewSprintWithFinishedStateAndWithDocumentAndWithReviewWhenSwitchingStateToClosedThenSwitchToClosedState() throws InvalidStateException {
+        SprintFactory factory = new SprintFactory();
+        ReviewSprint sprint = (ReviewSprint) factory.createReviewSprint(1,new Date(), new Date(), user);
+        sprint.inProgress();
+        sprint.finished();
+        sprint.setDocument(new Document());
+        sprint.setReviewed();
+
+        sprint.closed();
+
+        assertThat(sprint.getState()).isInstanceOf(ClosedState.class);
+    }
+
     // Incorrect state switching
     @Test
     void givenRegularSprintWithFinishedStateWhenSwitchingStateToInProgressThenThrowException() throws InvalidStateException {
@@ -96,6 +110,17 @@ public class SprintStateTest {
         SprintFactory factory = new SprintFactory();
         ISprint sprint = factory.createRegularSprint(1,new Date(), new Date(), user);
         sprint.inProgress();
+
+        InvalidStateException exception = assertThrows(InvalidStateException.class, sprint::closed);
+        assertEquals("Cannot transition to 'closed' state!", exception.getMessage());
+    }
+
+    @Test
+    void givenReviewSprintWithFinishedStateAndWithoutReviewWhenSwitchingStateToClosedThenThrowException() throws InvalidStateException {
+        SprintFactory factory = new SprintFactory();
+        ISprint sprint = factory.createReviewSprint(1,new Date(), new Date(), user);
+        sprint.inProgress();
+        sprint.finished();
 
         InvalidStateException exception = assertThrows(InvalidStateException.class, sprint::closed);
         assertEquals("Cannot transition to 'closed' state!", exception.getMessage());

@@ -1,5 +1,6 @@
 package com.avans.sofa3devops;
 
+import com.avans.sofa3devops.domain.Pipeline;
 import com.avans.sofa3devops.domain.Project;
 import com.avans.sofa3devops.domainServices.reportStrategyPattern.IReport;
 import com.avans.sofa3devops.domainServices.reportStrategyPattern.Pdf;
@@ -10,7 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.File;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -22,6 +22,7 @@ public class ReportStrategyTests {
     private final String directoryPath = "./src/main/java/com/avans/sofa3devops/domainServices/reportStrategyPattern";
     private final String name = "TestFile";
     private final String startsWith = name + "_report";
+
     @AfterEach
     void tearDown() {
         // Iterate through each directory and remove files starting with "TestFile_Report"
@@ -42,7 +43,8 @@ public class ReportStrategyTests {
     void checkIfReportsAreCreatedFromProjectInPdfAndPng() {
         // Arrange
         List<IReport> reportStrategies = Arrays.asList(new Pdf(), new Png());
-        Project project = new Project(name, reportStrategies);
+        Pipeline pipeline = new Pipeline();
+        Project project = new Project(name, reportStrategies, pipeline);
 
         // Act
         project.printReports();
@@ -54,5 +56,4 @@ public class ReportStrategyTests {
         assertTrue(Arrays.stream(Objects.requireNonNull(new File(directoryPath + "/reports/png/").listFiles()))
                 .anyMatch(file -> file.getName().startsWith(startsWith)));
     }
-
 }
