@@ -17,6 +17,7 @@ public class Project {
     private Pipeline pipeline;
 
     public Project (String name, List<IReport> reportStrategies, Pipeline pipeline) {
+        this.id = UUID.randomUUID();
         this.name = name;
         _reportStrategies = reportStrategies;
         this.pipeline = pipeline;
@@ -43,4 +44,10 @@ public class Project {
     // methods
     // add/remove sprint
     // add/remove backLogItem
+
+    void getBacklog() {
+        for(var backlog : projectBacklog) {
+            backlog.getAllStories();
+        }
+    }
 }

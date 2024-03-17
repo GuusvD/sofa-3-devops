@@ -21,7 +21,7 @@ public class BacklogItemStateTest {
 
     @Test
     void givenBacklogItemWithToDoStateWhenSwitchingStateThenSwitchToDoingState() throws InvalidStateException {
-        BacklogItem item = new BacklogItem(UUID.randomUUID(), new ArrayList<>(), user, user, new ArrayList<>());
+        BacklogItem item = new BacklogItem("Backlog",user, user);
 
         item.doingState();
 
@@ -30,7 +30,7 @@ public class BacklogItemStateTest {
 
     @Test
     void givenBacklogItemWithDoingStateWhenSwitchingStateThenSwitchToReadyForTestingState() throws InvalidStateException {
-        BacklogItem item = new BacklogItem(UUID.randomUUID(), new ArrayList<>(), user, user, new ArrayList<>());
+        BacklogItem item = new BacklogItem( "Backlog",user, user);
         item.doingState();
 
         item.readyForTestingState();
@@ -40,7 +40,7 @@ public class BacklogItemStateTest {
 
     @Test
     void givenBacklogItemWithDoingStateWhenSwitchingStateThenSwitchToToDoState() throws InvalidStateException {
-        BacklogItem item = new BacklogItem(UUID.randomUUID(), new ArrayList<>(), user, user, new ArrayList<>());
+        BacklogItem item = new BacklogItem( "Backlog",user, user);
         item.doingState();
 
         item.toDoState();
@@ -50,7 +50,7 @@ public class BacklogItemStateTest {
 
     @Test
     void givenBacklogItemWithReadyForTestingStateWhenSwitchingStateThenSwitchToDoingState() throws InvalidStateException {
-        BacklogItem item = new BacklogItem(UUID.randomUUID(), new ArrayList<>(), user, user, new ArrayList<>());
+        BacklogItem item = new BacklogItem("Backlog",user, user);
         item.doingState();
         item.readyForTestingState();
 
@@ -61,7 +61,7 @@ public class BacklogItemStateTest {
 
     @Test
     void givenBacklogItemWithReadyForTestingStateWhenSwitchingStateThenSwitchToTestingState() throws InvalidStateException {
-        BacklogItem item = new BacklogItem(UUID.randomUUID(), new ArrayList<>(), user, user, new ArrayList<>());
+        BacklogItem item = new BacklogItem("Backlog",user, user);
         item.doingState();
         item.readyForTestingState();
 
@@ -72,7 +72,7 @@ public class BacklogItemStateTest {
 
     @Test
     void givenBacklogItemWithTestingStateWhenSwitchingStateThenSwitchToDoingState() throws InvalidStateException {
-        BacklogItem item = new BacklogItem(UUID.randomUUID(), new ArrayList<>(), user, user, new ArrayList<>());
+        BacklogItem item = new BacklogItem("Backlog",user, user);
         item.doingState();
         item.readyForTestingState();
         item.testingState();
@@ -84,7 +84,7 @@ public class BacklogItemStateTest {
 
     @Test
     void givenBacklogItemWithTestingStateWhenSwitchingStateThenSwitchToTestedState() throws InvalidStateException {
-        BacklogItem item = new BacklogItem(UUID.randomUUID(), new ArrayList<>(), user, user, new ArrayList<>());
+        BacklogItem item = new BacklogItem("Backlog",user, user);
         item.doingState();
         item.readyForTestingState();
         item.testingState();
@@ -96,7 +96,7 @@ public class BacklogItemStateTest {
 
     @Test
     void givenBacklogItemWithTestedStateWhenSwitchingStateThenSwitchToTestingState() throws InvalidStateException {
-        BacklogItem item = new BacklogItem(UUID.randomUUID(), new ArrayList<>(), user, user, new ArrayList<>());
+        BacklogItem item = new BacklogItem("Backlog",user, user);
         item.doingState();
         item.readyForTestingState();
         item.testingState();
@@ -109,7 +109,7 @@ public class BacklogItemStateTest {
 
     @Test
     void givenBacklogItemWithTestedStateWhenSwitchingStateThenSwitchToDoneState() throws InvalidStateException {
-        BacklogItem item = new BacklogItem(UUID.randomUUID(), new ArrayList<>(), user, user, new ArrayList<>());
+        BacklogItem item = new BacklogItem("Backlog",user, user);
         item.doingState();
         item.readyForTestingState();
         item.testingState();
@@ -123,7 +123,7 @@ public class BacklogItemStateTest {
     // Incorrect state switching
     @Test
     void givenBacklogItemWithToDoStateWhenSwitchingStateToReadyForTestingThenThrowException() throws InvalidStateException {
-        BacklogItem item = new BacklogItem(UUID.randomUUID(), new ArrayList<>(), user, user, new ArrayList<>());
+        BacklogItem item = new BacklogItem("Backlog",user, user);
 
         InvalidStateException exception = assertThrows(InvalidStateException.class, item::readyForTestingState);
         assertEquals("Cannot transition to 'ready for testing' state!", exception.getMessage());
@@ -131,7 +131,7 @@ public class BacklogItemStateTest {
 
     @Test
     void givenBacklogItemWithToDoStateWhenSwitchingStateToTestingThenThrowException() throws InvalidStateException {
-        BacklogItem item = new BacklogItem(UUID.randomUUID(), new ArrayList<>(), user, user, new ArrayList<>());
+        BacklogItem item = new BacklogItem("Backlog",user, user);
 
         InvalidStateException exception = assertThrows(InvalidStateException.class, item::testingState);
         assertEquals("Cannot transition to 'testing' state!", exception.getMessage());
@@ -139,7 +139,7 @@ public class BacklogItemStateTest {
 
     @Test
     void givenBacklogItemWithToDoStateWhenSwitchingStateToTestedThenThrowException() throws InvalidStateException {
-        BacklogItem item = new BacklogItem(UUID.randomUUID(), new ArrayList<>(), user, user, new ArrayList<>());
+        BacklogItem item = new BacklogItem("Backlog",user, user);
 
         InvalidStateException exception = assertThrows(InvalidStateException.class, item::testedState);
         assertEquals("Cannot transition to 'tested' state!", exception.getMessage());
@@ -147,7 +147,7 @@ public class BacklogItemStateTest {
 
     @Test
     void givenBacklogItemWithToDoStateWhenSwitchingStateToDoneThenThrowException() throws InvalidStateException {
-        BacklogItem item = new BacklogItem(UUID.randomUUID(), new ArrayList<>(), user, user, new ArrayList<>());
+        BacklogItem item = new BacklogItem("Backlog",user, user);
 
         InvalidStateException exception = assertThrows(InvalidStateException.class, item::doneState);
         assertEquals("Cannot transition to 'done' state!", exception.getMessage());
@@ -155,7 +155,7 @@ public class BacklogItemStateTest {
 
     @Test
     void givenBacklogItemWithDoingStateWhenSwitchingStateToTestingThenThrowException() throws InvalidStateException {
-        BacklogItem item = new BacklogItem(UUID.randomUUID(), new ArrayList<>(), user, user, new ArrayList<>());
+        BacklogItem item = new BacklogItem("Backlog",user, user);
         item.doingState();
 
         InvalidStateException exception = assertThrows(InvalidStateException.class, item::testingState);
@@ -164,7 +164,7 @@ public class BacklogItemStateTest {
 
     @Test
     void givenBacklogItemWithDoingStateWhenSwitchingStateToTestedThenThrowException() throws InvalidStateException {
-        BacklogItem item = new BacklogItem(UUID.randomUUID(), new ArrayList<>(), user, user, new ArrayList<>());
+        BacklogItem item = new BacklogItem("Backlog",user, user);
         item.doingState();
 
         InvalidStateException exception = assertThrows(InvalidStateException.class, item::testedState);
@@ -173,7 +173,7 @@ public class BacklogItemStateTest {
 
     @Test
     void givenBacklogItemWithDoingStateWhenSwitchingStateToDoneThenThrowException() throws InvalidStateException {
-        BacklogItem item = new BacklogItem(UUID.randomUUID(), new ArrayList<>(), user, user, new ArrayList<>());
+        BacklogItem item = new BacklogItem("Backlog",user, user);
         item.doingState();
 
         InvalidStateException exception = assertThrows(InvalidStateException.class, item::doneState);
@@ -182,7 +182,7 @@ public class BacklogItemStateTest {
 
     @Test
     void givenBacklogItemWithReadyForTestingStateWhenSwitchingStateToToDoThenThrowException() throws InvalidStateException {
-        BacklogItem item = new BacklogItem(UUID.randomUUID(), new ArrayList<>(), user, user, new ArrayList<>());
+        BacklogItem item = new BacklogItem("Backlog",user, user);
         item.doingState();
         item.readyForTestingState();
 
@@ -192,7 +192,7 @@ public class BacklogItemStateTest {
 
     @Test
     void givenBacklogItemWithReadyForTestingStateWhenSwitchingStateToTestedThenThrowException() throws InvalidStateException {
-        BacklogItem item = new BacklogItem(UUID.randomUUID(), new ArrayList<>(), user, user, new ArrayList<>());
+        BacklogItem item = new BacklogItem("Backlog",user, user);
         item.doingState();
         item.readyForTestingState();
 
@@ -202,7 +202,7 @@ public class BacklogItemStateTest {
 
     @Test
     void givenBacklogItemWithReadyForTestingStateWhenSwitchingStateToDoneThenThrowException() throws InvalidStateException {
-        BacklogItem item = new BacklogItem(UUID.randomUUID(), new ArrayList<>(), user, user, new ArrayList<>());
+        BacklogItem item = new BacklogItem("Backlog",user, user);
         item.doingState();
         item.readyForTestingState();
 
@@ -212,7 +212,7 @@ public class BacklogItemStateTest {
 
     @Test
     void givenBacklogItemWithTestingStateWhenSwitchingStateToToDoThenThrowException() throws InvalidStateException {
-        BacklogItem item = new BacklogItem(UUID.randomUUID(), new ArrayList<>(), user, user, new ArrayList<>());
+        BacklogItem item = new BacklogItem("Backlog",user, user);
         item.doingState();
         item.readyForTestingState();
         item.testingState();
@@ -223,7 +223,7 @@ public class BacklogItemStateTest {
 
     @Test
     void givenBacklogItemWithTestingStateWhenSwitchingStateToReadyForTestingThenThrowException() throws InvalidStateException {
-        BacklogItem item = new BacklogItem(UUID.randomUUID(), new ArrayList<>(), user, user, new ArrayList<>());
+        BacklogItem item = new BacklogItem("Backlog",user, user);
         item.doingState();
         item.readyForTestingState();
         item.testingState();
@@ -234,7 +234,7 @@ public class BacklogItemStateTest {
 
     @Test
     void givenBacklogItemWithTestingStateWhenSwitchingStateToDoneThenThrowException() throws InvalidStateException {
-        BacklogItem item = new BacklogItem(UUID.randomUUID(), new ArrayList<>(), user, user, new ArrayList<>());
+        BacklogItem item = new BacklogItem("Backlog",user, user);
         item.doingState();
         item.readyForTestingState();
         item.testingState();
@@ -245,7 +245,7 @@ public class BacklogItemStateTest {
 
     @Test
     void givenBacklogItemWithTestedStateWhenSwitchingStateToToDoThenThrowException() throws InvalidStateException {
-        BacklogItem item = new BacklogItem(UUID.randomUUID(), new ArrayList<>(), user, user, new ArrayList<>());
+        BacklogItem item = new BacklogItem("Backlog",user, user);
         item.doingState();
         item.readyForTestingState();
         item.testingState();
@@ -257,7 +257,7 @@ public class BacklogItemStateTest {
 
     @Test
     void givenBacklogItemWithTestedStateWhenSwitchingStateToDoingThenThrowException() throws InvalidStateException {
-        BacklogItem item = new BacklogItem(UUID.randomUUID(), new ArrayList<>(), user, user, new ArrayList<>());
+        BacklogItem item = new BacklogItem("Backlog",user, user);
         item.doingState();
         item.readyForTestingState();
         item.testingState();
@@ -269,7 +269,7 @@ public class BacklogItemStateTest {
 
     @Test
     void givenBacklogItemWithTestedStateWhenSwitchingStateToReadyForTestingThenThrowException() throws InvalidStateException {
-        BacklogItem item = new BacklogItem(UUID.randomUUID(), new ArrayList<>(), user, user, new ArrayList<>());
+        BacklogItem item = new BacklogItem("Backlog",user, user);
         item.doingState();
         item.readyForTestingState();
         item.testingState();
@@ -281,7 +281,7 @@ public class BacklogItemStateTest {
 
     @Test
     void givenBacklogItemWithDoneStateWhenSwitchingStateToToDoThenThrowException() throws InvalidStateException {
-        BacklogItem item = new BacklogItem(UUID.randomUUID(), new ArrayList<>(), user, user, new ArrayList<>());
+        BacklogItem item = new BacklogItem("Backlog",user, user);
         item.doingState();
         item.readyForTestingState();
         item.testingState();
@@ -294,7 +294,7 @@ public class BacklogItemStateTest {
 
     @Test
     void givenBacklogItemWithDoneStateWhenSwitchingStateToDoingThenThrowException() throws InvalidStateException {
-        BacklogItem item = new BacklogItem(UUID.randomUUID(), new ArrayList<>(), user, user, new ArrayList<>());
+        BacklogItem item = new BacklogItem("Backlog",user, user);
         item.doingState();
         item.readyForTestingState();
         item.testingState();
@@ -307,7 +307,7 @@ public class BacklogItemStateTest {
 
     @Test
     void givenBacklogItemWithDoneStateWhenSwitchingStateToReadyForTestingThenThrowException() throws InvalidStateException {
-        BacklogItem item = new BacklogItem(UUID.randomUUID(), new ArrayList<>(), user, user, new ArrayList<>());
+        BacklogItem item = new BacklogItem("Backlog",user, user);
         item.doingState();
         item.readyForTestingState();
         item.testingState();
@@ -320,7 +320,7 @@ public class BacklogItemStateTest {
 
     @Test
     void givenBacklogItemWithDoneStateWhenSwitchingStateToTestingThenThrowException() throws InvalidStateException {
-        BacklogItem item = new BacklogItem(UUID.randomUUID(), new ArrayList<>(), user, user, new ArrayList<>());
+        BacklogItem item = new BacklogItem("Backlog",user, user);
         item.doingState();
         item.readyForTestingState();
         item.testingState();
@@ -333,7 +333,7 @@ public class BacklogItemStateTest {
 
     @Test
     void givenBacklogItemWithDoneStateWhenSwitchingStateToTestedThenThrowException() throws InvalidStateException {
-        BacklogItem item = new BacklogItem(UUID.randomUUID(), new ArrayList<>(), user, user, new ArrayList<>());
+        BacklogItem item = new BacklogItem("Backlog",user, user);
         item.doingState();
         item.readyForTestingState();
         item.testingState();
@@ -347,7 +347,7 @@ public class BacklogItemStateTest {
     // Same state switching
     @Test
     void givenBacklogItemWithToDoStateWhenSwitchingStateToToDoThenThrowException() throws InvalidStateException {
-        BacklogItem item = new BacklogItem(UUID.randomUUID(), new ArrayList<>(), user, user, new ArrayList<>());
+        BacklogItem item = new BacklogItem("Backlog",user, user);
 
         InvalidStateException exception = assertThrows(InvalidStateException.class, item::toDoState);
         assertEquals("Already in 'to do' state!", exception.getMessage());
@@ -355,7 +355,7 @@ public class BacklogItemStateTest {
 
     @Test
     void givenBacklogItemWithDoingStateWhenSwitchingStateToDoingThenThrowException() throws InvalidStateException {
-        BacklogItem item = new BacklogItem(UUID.randomUUID(), new ArrayList<>(), user, user, new ArrayList<>());
+        BacklogItem item = new BacklogItem("Backlog",user, user);
         item.doingState();
 
         InvalidStateException exception = assertThrows(InvalidStateException.class, item::doingState);
@@ -364,7 +364,7 @@ public class BacklogItemStateTest {
 
     @Test
     void givenBacklogItemWithReadyForTestingStateWhenSwitchingStateToReadyForTestingThenThrowException() throws InvalidStateException {
-        BacklogItem item = new BacklogItem(UUID.randomUUID(), new ArrayList<>(), user, user, new ArrayList<>());
+        BacklogItem item = new BacklogItem("Backlog",user, user);
         item.doingState();
         item.readyForTestingState();
 
@@ -374,7 +374,7 @@ public class BacklogItemStateTest {
 
     @Test
     void givenBacklogItemWithTestingStateWhenSwitchingStateToTestingThenThrowException() throws InvalidStateException {
-        BacklogItem item = new BacklogItem(UUID.randomUUID(), new ArrayList<>(), user, user, new ArrayList<>());
+        BacklogItem item = new BacklogItem("Backlog",user, user);
         item.doingState();
         item.readyForTestingState();
         item.testingState();
@@ -385,7 +385,7 @@ public class BacklogItemStateTest {
 
     @Test
     void givenBacklogItemWithTestedStateWhenSwitchingStateToTestedThenThrowException() throws InvalidStateException {
-        BacklogItem item = new BacklogItem(UUID.randomUUID(), new ArrayList<>(), user, user, new ArrayList<>());
+        BacklogItem item = new BacklogItem("Backlog",user, user);
         item.doingState();
         item.readyForTestingState();
         item.testingState();
@@ -397,7 +397,7 @@ public class BacklogItemStateTest {
 
     @Test
     void givenBacklogItemWithDoneStateWhenSwitchingStateToDoneThenThrowException() throws InvalidStateException {
-        BacklogItem item = new BacklogItem(UUID.randomUUID(), new ArrayList<>(), user, user, new ArrayList<>());
+        BacklogItem item = new BacklogItem("Backlog",user, user);
         item.doingState();
         item.readyForTestingState();
         item.testingState();

@@ -1,12 +1,13 @@
 package com.avans.sofa3devops.domainServices.backlogStatePattern;
 
 import com.avans.sofa3devops.domain.BacklogItem;
+import com.avans.sofa3devops.domainServices.compositeInterfaces.IItemComponent;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
 
 public class TestedState implements IBacklogItemState {
-    private BacklogItem item;
+    private IItemComponent item;
 
-    public TestedState(BacklogItem item) {
+    public TestedState(IItemComponent item) {
         this.item = item;
     }
 
