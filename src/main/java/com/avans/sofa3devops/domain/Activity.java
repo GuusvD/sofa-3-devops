@@ -1,5 +1,6 @@
 package com.avans.sofa3devops.domain;
 
+import com.avans.sofa3devops.domainServices.backlogStatePattern.DoneState;
 import com.avans.sofa3devops.domainServices.backlogStatePattern.IBacklogItemState;
 import com.avans.sofa3devops.domainServices.backlogStatePattern.ToDoState;
 import com.avans.sofa3devops.domainServices.compositeInterfaces.IItemComponent;
@@ -52,8 +53,10 @@ public class Activity implements IItemComponent {
     }
     @Override
     public void setFinished() {
-        this.finished = true;
-        // to-do: close threads
+        if (state instanceof DoneState) {
+            this.finished = true;
+            // to-do: close threads
+        }
     }
 
     @Override
