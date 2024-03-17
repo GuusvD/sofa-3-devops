@@ -1,100 +1,115 @@
 package com.avans.sofa3devops.domain;
 
+import com.avans.sofa3devops.domainServices.backlogStatePattern.DoneState;
 import com.avans.sofa3devops.domainServices.backlogStatePattern.IBacklogItemState;
 import com.avans.sofa3devops.domainServices.backlogStatePattern.ToDoState;
+import com.avans.sofa3devops.domainServices.compositeInterfaces.IItemComponent;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
 
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Logger;
 
-public class BacklogItem {
+public class BacklogItem implements IItemComponent {
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
     private UUID id;
+    private String name;
     private List<Activity> activities;
     private User createdBy;
     private User assignedTo;
     private List<Thread> threads;
     private IBacklogItemState state;
 
-    public BacklogItem(UUID id, List<Activity> activities, User createdBy, User assignedTo, List<Thread> threads) {
-        this.id = id;
-        this.activities = activities;
+    private Boolean finished;
+
+    public BacklogItem(String name, User createdBy, User assignedTo) {
+        this.id = UUID.randomUUID();
+        this.name = name;
+        this.activities = new ArrayList<>();
         this.createdBy = createdBy;
         this.assignedTo = assignedTo;
-        this.threads = threads;
+        this.threads = new ArrayList<>();
         this.state = new ToDoState(this);
+        this.finished = false;
     }
 
-    public IBacklogItemState getState() {
-        return state;
+    // Composite
+    public void getAllStories() {
+        logger.info(this.getStory());
+        for(var activity : this.activities) {
+            logger.info(activity.getStory());
+        }
+    }
+    public void addActivity(Activity activity) {this.activities.add(activity);}
+
+    // Composite Methods Start
+    @Override
+    public String getStory() {return getId() + ": " + getName();}
+    public IBacklogItemState getState() {return state;}
+    @Override
+    public User getAssignedTo() {return assignedTo;}
+    @Override
+    public void setAssignedTo(User assignedTo) {this.assignedTo = assignedTo;}
+    @Override
+    public boolean getFinished() {return this.finished;}
+
+    @Override
+    public void setFinished() {
+        if(this.getState() instanceof DoneState) {
+            boolean checkAll = true;
+            if (!activities.isEmpty()) {
+                for (var activity : activities) {
+                    if (!activity.getFinished()) {
+                        checkAll = false;
+                        break;
+                    }
+                }
+            }
+
+            if (checkAll) {
+                this.setFinished();
+                // To-do: Close thread
+            }
+        }
     }
 
-    public void setState(IBacklogItemState state) {
-        this.state = state;
-    }
+    @Override
+    public void addThread(Thread thread) {this.threads.add(thread);}
+    // Composite Methods End
 
-    public void toDoState() throws InvalidStateException {
-        this.state.toDoState();
-    }
+    // State Methods Start
+    public void setState(IBacklogItemState state) {this.state = state;}
 
-    public void doingState() throws InvalidStateException {
-        this.state.doingState();
-    }
+    public void toDoState() throws InvalidStateException {this.state.toDoState();}
 
-    public void readyForTestingState() throws InvalidStateException {
-        this.state.readyForTestingState();
-    }
+    public void doingState() throws InvalidStateException {this.state.doingState();}
 
-    public void testingState() throws InvalidStateException {
-        this.state.testingState();
-    }
+    public void readyForTestingState() throws InvalidStateException {this.state.readyForTestingState();}
 
-    public void testedState() throws InvalidStateException {
-        this.state.testedState();
-    }
+    public void testingState() throws InvalidStateException {this.state.testingState();}
 
-    public void doneState() throws InvalidStateException {
-        this.state.doneState();
-    }
+    public void testedState() throws InvalidStateException {this.state.testedState();}
+
+    public void doneState() throws InvalidStateException {this.state.doneState();}
+    // State Methods End
 
     // General methods
-
     public UUID getId() {
         return id;
     }
-
-    public void setId(UUID id) {
-        this.id = id;
+    public String getName() {
+        return name;
     }
-
-    public List<Activity> getActivities() {
-        return activities;
+    public void setName(String name) {
+        this.name = name;
     }
-
-    public void setActivities(List<Activity> activities) {
-        this.activities = activities;
-    }
-
     public User getCreatedBy() {
         return createdBy;
     }
-
-    public void setCreatedBy(User createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public User getAssignedTo() {
-        return assignedTo;
-    }
-
-    public void setAssignedTo(User assignedTo) {
-        this.assignedTo = assignedTo;
-    }
-
     public List<Thread> getThreads() {
-        return threads;
+        return this.threads;
     }
 
-    public void setThreads(List<Thread> threads) {
-        this.threads = threads;
-    }
 }
