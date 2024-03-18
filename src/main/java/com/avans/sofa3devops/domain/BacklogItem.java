@@ -5,6 +5,7 @@ import com.avans.sofa3devops.domainServices.backlogStatePattern.IBacklogItemStat
 import com.avans.sofa3devops.domainServices.backlogStatePattern.ToDoState;
 import com.avans.sofa3devops.domainServices.compositeInterfaces.IItemComponent;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
+import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprint;
 
 
 import java.util.ArrayList;
@@ -24,12 +25,11 @@ public class BacklogItem implements IItemComponent {
 
     private Boolean finished;
 
-    public BacklogItem(String name, User createdBy, User assignedTo) {
+    public BacklogItem(String name, User createdBy) {
         this.id = UUID.randomUUID();
         this.name = name;
         this.activities = new ArrayList<>();
         this.createdBy = createdBy;
-        this.assignedTo = assignedTo;
         this.threads = new ArrayList<>();
         this.state = new ToDoState(this);
         this.finished = false;
@@ -43,6 +43,9 @@ public class BacklogItem implements IItemComponent {
         }
     }
     public void addActivity(Activity activity) {this.activities.add(activity);}
+    public void removeActivity(Activity activity) {this.activities.remove(activity);}
+    public boolean containsActivity(Activity activity) { return this.activities.contains(activity);}
+    public List<Activity> getActivities() {return this.activities;}
 
     // Composite Methods Start
     @Override
@@ -76,8 +79,15 @@ public class BacklogItem implements IItemComponent {
     }
 
     @Override
+    public void removeFromSprints(List<ISprint> sprints) {
+        for (var sprint: sprints) {sprint.removeBacklogItem(this);}
+    }
+
+    @Override
     public void addThread(Thread thread) {this.threads.add(thread);}
     // Composite Methods End
+
+
 
     // State Methods Start
     public void setState(IBacklogItemState state) {this.state = state;}
@@ -96,20 +106,11 @@ public class BacklogItem implements IItemComponent {
     // State Methods End
 
     // General methods
-    public UUID getId() {
-        return id;
-    }
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
-    public User getCreatedBy() {
-        return createdBy;
-    }
-    public List<Thread> getThreads() {
-        return this.threads;
-    }
+    public UUID getId() {return id;}
+    public String getName() {return name;}
+    public void setName(String name) {this.name = name;}
+    public User getCreatedBy() {return createdBy;}
+    public List<Thread> getThreads() {return this.threads;}
+
 
 }

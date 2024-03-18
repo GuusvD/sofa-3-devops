@@ -4,6 +4,9 @@ import com.avans.sofa3devops.domain.User;
 import com.avans.sofa3devops.domain.Thread;
 
 import com.avans.sofa3devops.domainServices.backlogStatePattern.IBacklogItemState;
+import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprint;
+
+import java.util.List;
 
 
 public interface IItemComponent {
@@ -16,6 +19,7 @@ public interface IItemComponent {
     boolean getFinished();
     void setFinished();
 
+    void removeFromSprints(List<ISprint> sprints);
 
     void addThread(Thread thread);
 

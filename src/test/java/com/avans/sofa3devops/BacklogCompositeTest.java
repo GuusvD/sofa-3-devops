@@ -6,21 +6,23 @@ import com.avans.sofa3devops.domain.User;
 import com.avans.sofa3devops.domainServices.backlogStatePattern.DoneState;
 import com.avans.sofa3devops.domainServices.compositeInterfaces.IItemComponent;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 public class BacklogCompositeTest {
-    User createdByUser = new User();
-    User assignedToUser = new User();
+    private User createdByUser;
 
-    @Test
-    void lala() {}
+    @BeforeEach
+    void setup() {
+        createdByUser = new User();
+    }
 
     @Test
     void FinishedEqualsFalseWhenWhenNotInDoneState() {
-        BacklogItem item = new BacklogItem("BacklogItem", createdByUser,assignedToUser);
+        BacklogItem item = new BacklogItem("BacklogItem", createdByUser);
 
         item.setFinished();
 
@@ -29,14 +31,8 @@ public class BacklogCompositeTest {
     }
 
     @Test
-    void FinishedEqualsTrueAfterSetFinishedIsCalledWithNoActivities() throws InvalidStateException {
-        BacklogItem item = new BacklogItem("BacklogItem", createdByUser,assignedToUser);
-//        item.doingState();
-//        item.readyForTestingState();
-//        item.testingState();
-//        item.testedState();
-//        item.doneState();
-        // shortcut state for Arrange
+    void FinishedEqualsTrueAfterSetFinishedIsCalledWithNoActivities() {
+        BacklogItem item = new BacklogItem("BacklogItem", createdByUser);
         item.setState(new DoneState(item));
 
         item.setFinished();
@@ -45,12 +41,11 @@ public class BacklogCompositeTest {
     }
 
     @Test
-    void FinishedEqualsTrueWithOneActivityThatIsFinished() throws InvalidStateException {
-        BacklogItem item = new BacklogItem("BacklogItem", createdByUser,assignedToUser);
-        Activity activity = new Activity("ActivityItem", createdByUser,assignedToUser);
+    void FinishedEqualsTrueWithOneActivityThatIsFinished()  {
+        BacklogItem item = new BacklogItem("BacklogItem", createdByUser);
+        Activity activity = new Activity("ActivityItem", createdByUser);
         item.addActivity(activity);
         activity.setFinished();
-        // shortcut state for Arrange
         item.setState(new DoneState(item));
 
         item.setFinished();
@@ -59,11 +54,10 @@ public class BacklogCompositeTest {
     }
 
     @Test
-    void FinishedEqualsFalseWithOneActivityThatIsNotFinished() throws InvalidStateException {
-        BacklogItem item = new BacklogItem("BacklogItem", createdByUser,assignedToUser);
-        Activity activity = new Activity("ActivityItem", createdByUser,assignedToUser);
+    void FinishedEqualsFalseWithOneActivityThatIsNotFinished() {
+        BacklogItem item = new BacklogItem("BacklogItem", createdByUser);
+        Activity activity = new Activity("ActivityItem", createdByUser);
         item.addActivity(activity);
-        // shortcut state for Arrange
         item.setState(new DoneState(item));
 
         item.setFinished();
@@ -72,15 +66,14 @@ public class BacklogCompositeTest {
     }
 
     @Test
-    void FinishedEqualsTrueWithTwoActivitiesAndBothAreFinished() throws InvalidStateException {
-        BacklogItem item = new BacklogItem("BacklogItem", createdByUser,assignedToUser);
-        Activity activityOne = new Activity("ActivityItemOne", createdByUser,assignedToUser);
-        Activity activityTwo = new Activity("ActivityItemTwo", createdByUser,assignedToUser);
+    void FinishedEqualsTrueWithTwoActivitiesAndBothAreFinished() {
+        BacklogItem item = new BacklogItem("BacklogItem", createdByUser);
+        Activity activityOne = new Activity("ActivityItemOne", createdByUser);
+        Activity activityTwo = new Activity("ActivityItemTwo", createdByUser);
         item.addActivity(activityOne);
         item.addActivity(activityTwo);
         activityOne.setFinished();
         activityTwo.setFinished();
-        // shortcut state for Arrange
         item.setState(new DoneState(item));
 
         item.setFinished();
@@ -89,14 +82,13 @@ public class BacklogCompositeTest {
     }
 
     @Test
-    void FinishedEqualsFalseWithTwoActivitiesAndOnlyFirstIsFinished() throws InvalidStateException {
-        BacklogItem item = new BacklogItem("BacklogItem", createdByUser,assignedToUser);
-        Activity activityOne = new Activity("ActivityItemOne", createdByUser,assignedToUser);
-        Activity activityTwo = new Activity("ActivityItemTwo", createdByUser,assignedToUser);
+    void FinishedEqualsFalseWithTwoActivitiesAndOnlyFirstIsFinished() {
+        BacklogItem item = new BacklogItem("BacklogItem", createdByUser);
+        Activity activityOne = new Activity("ActivityItemOne", createdByUser);
+        Activity activityTwo = new Activity("ActivityItemTwo", createdByUser);
         item.addActivity(activityOne);
         item.addActivity(activityTwo);
         activityOne.setFinished();
-        // shortcut state for Arrange
         item.setState(new DoneState(item));
 
         item.setFinished();
@@ -105,14 +97,13 @@ public class BacklogCompositeTest {
     }
 
     @Test
-    void FinishedEqualsFalseWithTwoActivitiesAndOnlySecondIsFinished() throws InvalidStateException {
-        BacklogItem item = new BacklogItem("BacklogItem", createdByUser,assignedToUser);
-        Activity activityOne = new Activity("ActivityItemOne", createdByUser,assignedToUser);
-        Activity activityTwo = new Activity("ActivityItemTwo", createdByUser,assignedToUser);
+    void FinishedEqualsFalseWithTwoActivitiesAndOnlySecondIsFinished() {
+        BacklogItem item = new BacklogItem("BacklogItem", createdByUser);
+        Activity activityOne = new Activity("ActivityItemOne", createdByUser);
+        Activity activityTwo = new Activity("ActivityItemTwo", createdByUser);
         item.addActivity(activityOne);
         item.addActivity(activityTwo);
         activityTwo.setFinished();
-        // shortcut state for Arrange
         item.setState(new DoneState(item));
 
         item.setFinished();
