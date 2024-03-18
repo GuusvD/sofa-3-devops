@@ -20,6 +20,10 @@ public class Message extends Observable {
         this.sent = sent;
     }
 
+    public List<Message> getResponses() {
+        return responses;
+    }
+
     public void addMessage(Message newMessage) {
         responses.add(newMessage);
 

@@ -10,16 +10,22 @@ public class Thread extends Observable {
     private String title;
     private String body;
     private List<Message> messages;
+    private BacklogItem backlogItem;
     private User createdBy;
     private Date created;
 
-    public Thread(UUID id, String title, String body, List<Message> messages, User createdBy, Date created) {
+    public Thread(UUID id, String title, String body, List<Message> messages, BacklogItem backlogItem, User createdBy, Date created) {
         this.id = id;
         this.title = title;
         this.body = body;
         this.messages = messages;
+        this.backlogItem = backlogItem;
         this.createdBy = createdBy;
         this.created = created;
+    }
+
+    public List<Message> getMessages() {
+        return messages;
     }
 
     public void addMessage(Message newMessage) {

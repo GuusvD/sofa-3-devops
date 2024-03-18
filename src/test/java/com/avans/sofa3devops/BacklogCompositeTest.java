@@ -4,19 +4,17 @@ import com.avans.sofa3devops.domain.Activity;
 import com.avans.sofa3devops.domain.BacklogItem;
 import com.avans.sofa3devops.domain.User;
 import com.avans.sofa3devops.domainServices.backlogStatePattern.DoneState;
-import com.avans.sofa3devops.domainServices.compositeInterfaces.IItemComponent;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.UUID;
+
 import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 public class BacklogCompositeTest {
-    User createdByUser = new User();
-    User assignedToUser = new User();
-
-    @Test
-    void lala() {}
+    User createdByUser = new User(UUID.randomUUID(), "John Doe", "j.doe@gmail.com", "1234");
+    User assignedToUser = new User(UUID.randomUUID(), "John Doe", "j.doe@gmail.com", "1234");
 
     @Test
     void FinishedEqualsFalseWhenWhenNotInDoneState() {
