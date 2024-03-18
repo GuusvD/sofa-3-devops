@@ -58,14 +58,39 @@ public class ReviewSprint implements ISprint {
         }
 
     }
+    @Override
+    public boolean containBacklogItem(BacklogItem item) {
+        return this.backlog.contains((item));
+    }
+
+    @Override
+    public boolean backlogContainsActivity(Activity activity) {
+        for (var item : backlog) {
+            if (item.containsActivity(activity)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void sprintEdit(int number, Date start, Date end) {
+        if (this.state instanceof CreatedState) {
+            this.number = number;
+            this.start = start;
+            this.end = end;
+        }
+    }
 
     // General methods
 
     public void addBacklogItem(BacklogItem backlog) {
+        if(state instanceof CreatedState) {}
         this.backlog.add(backlog);
     }
 
     public void removeBacklogItem(BacklogItem backlog) {
+        if(state instanceof CreatedState) {}
         this.backlog.remove(backlog);
     }
 
@@ -78,58 +103,16 @@ public class ReviewSprint implements ISprint {
     }
 
     // Getters & Setters
-    public int getNumber() {
-        return number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
-    }
-
-    public Date getStart() {
-        return start;
-    }
-
-    public void setStart(Date start) {
-        this.start = start;
-    }
-
-    public Date getEnd() {
-        return end;
-    }
-
-    public void setEnd(Date end) {
-        this.end = end;
-    }
-
-    public List<BacklogItem> getBacklog() {
-        return backlog;
-    }
-
-    public List<User> getDevelopers() {
-        return developers;
-    }
-
-    public Document getDocument() {
-        return document;
-    }
-
-    public void setDocument(Document document) {
-        this.document = document;
-    }
-
-    public List<Release> getReleases() {
-        return releases;
-    }
-
-    public void setReleases(List<Release> releases) {
-        this.releases = releases;
-    }
-
-    public boolean isReviewed() {
-        return reviewed;
-    }
-
+    public int getNumber() {return number;}
+    public Date getStart() {return start;}
+    public Date getEnd() {return end;}
+    public List<BacklogItem> getBacklog() {return backlog;}
+    public List<User> getDevelopers() {return developers;}
+    public Document getDocument() {return document;}
+    public void setDocument(Document document) {this.document = document;}
+    public List<Release> getReleases() {return releases;}
+    public void setReleases(List<Release> releases) {this.releases = releases;}
+    public boolean isReviewed() {return reviewed;}
     public void setReviewed() {
         if (this.document != null) {
             this.reviewed = true;

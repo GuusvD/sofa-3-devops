@@ -25,15 +25,16 @@ public class Sofa3DevopsApplication {
 
 		Pipeline pipeline = new Pipeline();
 
+
 		Project project = new Project("LANGUAGESCHOOL", reportStrategies, pipeline);
 		project.printReports();
 
 		User creator= new User();
 		User developer = new User();
 
-		BacklogItem item = new BacklogItem("US-1",creator ,developer);
-		Activity activityOne = new Activity("AC-1-One",creator,developer);
-		Activity activityTwo = new Activity("AC-1-Two",creator,developer);
+		BacklogItem item = new BacklogItem("US-1",creator );
+		Activity activityOne = new Activity("AC-1-One",creator);
+		Activity activityTwo = new Activity("AC-1-Two",creator);
 
 		item.addActivity(activityOne);
 		item.addActivity(activityTwo);

@@ -12,9 +12,7 @@ public class ReadyForTestingState implements IBacklogItemState {
     }
 
     @Override
-    public void toDoState() throws InvalidStateException {
-        throw new InvalidStateException("Cannot transition to 'to do' state!");
-    }
+    public void toDoState() throws InvalidStateException {item.setState(new ToDoState(item));}
 
     @Override
     public void doingState() {

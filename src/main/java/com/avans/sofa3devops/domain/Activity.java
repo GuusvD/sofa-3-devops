@@ -5,6 +5,7 @@ import com.avans.sofa3devops.domainServices.backlogStatePattern.IBacklogItemStat
 import com.avans.sofa3devops.domainServices.backlogStatePattern.ToDoState;
 import com.avans.sofa3devops.domainServices.compositeInterfaces.IItemComponent;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
+import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprint;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,11 +21,10 @@ public class Activity implements IItemComponent {
 
     private IBacklogItemState state;
 
-    public Activity(String name, User createdBy, User assignedTo) {
+    public Activity(String name, User createdBy) {
         this.id = UUID.randomUUID();
         this.name = name;
         this.createdBy = createdBy;
-        this.assignedTo = assignedTo;
         this.threads = new ArrayList<>();
         this.state = new ToDoState(this);
         this.finished = false;
@@ -57,6 +57,11 @@ public class Activity implements IItemComponent {
             this.finished = true;
             // to-do: close threads
         }
+    }
+
+    @Override
+    public void removeFromSprints(List<ISprint> sprints) {
+
     }
 
     @Override
