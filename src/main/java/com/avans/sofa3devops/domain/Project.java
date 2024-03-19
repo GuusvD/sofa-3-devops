@@ -31,6 +31,30 @@ public class Project {
         this.pipeline = pipeline;
     }
 
+    public void pull() {
+        _gitStrategy.pull();
+    }
+
+    public void push() {
+        _gitStrategy.push();
+    }
+
+    public void commit() {
+        _gitStrategy.commit();
+    }
+
+    public void status() {
+        _gitStrategy.status();
+    }
+
+    public void checkout() {
+        _gitStrategy.checkout();
+    }
+
+    public void stash() {
+        _gitStrategy.stash();
+    }
+
     public void printReports() {
         for (IReport strategy : _reportStrategies) {
             strategy.printReport(this);

@@ -19,6 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 @SpringBootTest
 public class ProjectTests {
@@ -33,7 +34,7 @@ public class ProjectTests {
         reportStrategies = new ArrayList<>();
         reportStrategies.add(new Pdf());
         reportStrategies.add(new Png());
-        gitStrategy = new GitHub();
+        gitStrategy = new GitHub(Logger.getLogger(GitHub.class.getName()));
         pipeline = new Pipeline();
         project = new Project("Project", reportStrategies, gitStrategy, pipeline);
         createdBy = new User("John Doe", "j.doe@gmail.com", "Password1234");

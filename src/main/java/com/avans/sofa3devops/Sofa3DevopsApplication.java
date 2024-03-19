@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 @SpringBootApplication
 public class Sofa3DevopsApplication {
@@ -21,7 +22,7 @@ public class Sofa3DevopsApplication {
         reportStrategies.add(new Pdf());
         reportStrategies.add(new Png());
 
-        IGitCommands gitStrategy = new GitHub();
+        IGitCommands gitStrategy = new GitHub(Logger.getLogger(GitHub.class.getName()));
 
         Pipeline pipeline = new Pipeline();
 

@@ -3,7 +3,11 @@ package com.avans.sofa3devops.domainServices.gitStrategyPattern;
 import java.util.logging.Logger;
 
 public class GitLab implements IGitCommands {
-    private final Logger logger = Logger.getLogger(this.getClass().getName());
+    private final Logger logger;
+
+    public GitLab(Logger logger) {
+        this.logger = logger;
+    }
 
     @Override
     public void pull() {

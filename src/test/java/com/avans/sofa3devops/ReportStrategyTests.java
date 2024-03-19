@@ -16,6 +16,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -45,7 +46,7 @@ public class ReportStrategyTests {
     void checkIfReportsAreCreatedFromProjectInPdfAndPng() {
         // Arrange
         List<IReport> reportStrategies = Arrays.asList(new Pdf(), new Png());
-        IGitCommands gitStrategy = new GitLab();
+        IGitCommands gitStrategy = new GitLab(Logger.getLogger(GitLab.class.getName()));
         Pipeline pipeline = new Pipeline();
         Project project = new Project(name, reportStrategies, gitStrategy, pipeline);
 
