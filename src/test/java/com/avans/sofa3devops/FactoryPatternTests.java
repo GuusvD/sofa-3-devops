@@ -31,5 +31,4 @@ public class FactoryPatternTests {
         // Assert
         assertInstanceOf(ReviewSprint.class, rSprint);
     }
-
 }

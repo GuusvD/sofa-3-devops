@@ -1,6 +1,5 @@
 package com.avans.sofa3devops.domainServices.backlogStatePattern;
 
-import com.avans.sofa3devops.domain.BacklogItem;
 import com.avans.sofa3devops.domainServices.compositeInterfaces.IItemComponent;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
 

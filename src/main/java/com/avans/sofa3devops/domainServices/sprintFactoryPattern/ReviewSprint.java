@@ -60,6 +60,7 @@ public class ReviewSprint implements ISprint {
         }
 
     }
+
     @Override
     public boolean containBacklogItem(BacklogItem item) {
         return this.backlog.contains((item));
@@ -85,42 +86,71 @@ public class ReviewSprint implements ISprint {
     }
 
     // General methods
-
     public void addBacklogItem(BacklogItem backlog) {
-        if(state instanceof CreatedState && !this.backlog.contains(backlog)) {
+        if (state instanceof CreatedState && !this.backlog.contains(backlog)) {
             this.backlog.add(backlog);
         }
     }
 
     public void removeBacklogItem(BacklogItem backlog) {
-        if(state instanceof CreatedState) {
+        if (state instanceof CreatedState) {
             this.backlog.remove(backlog);
         }
     }
 
     public void addDeveloper(User user) {
-        if(state instanceof CreatedState && !developers.contains(user)) {
+        if (state instanceof CreatedState && !developers.contains(user)) {
             this.developers.add(user);
         }
     }
 
     public void removeDeveloper(User user) {
-        if(state instanceof CreatedState) {
+        if (state instanceof CreatedState) {
             this.developers.remove(user);
         }
     }
 
     // Getters & Setters
-    public int getNumber() {return number;}
-    public Date getStart() {return start;}
-    public Date getEnd() {return end;}
-    public List<BacklogItem> getBacklog() {return backlog;}
-    public List<User> getDevelopers() {return developers;}
-    public Document getDocument() {return document;}
-    public void setDocument(Document document) {this.document = document;}
-    public List<Release> getReleases() {return releases;}
-    public void setReleases(List<Release> releases) {this.releases = releases;}
-    public boolean isReviewed() {return reviewed;}
+    public int getNumber() {
+        return number;
+    }
+
+    public Date getStart() {
+        return start;
+    }
+
+    public Date getEnd() {
+        return end;
+    }
+
+    public List<BacklogItem> getBacklog() {
+        return backlog;
+    }
+
+    public List<User> getDevelopers() {
+        return developers;
+    }
+
+    public Document getDocument() {
+        return document;
+    }
+
+    public void setDocument(Document document) {
+        this.document = document;
+    }
+
+    public List<Release> getReleases() {
+        return releases;
+    }
+
+    public void setReleases(List<Release> releases) {
+        this.releases = releases;
+    }
+
+    public boolean isReviewed() {
+        return reviewed;
+    }
+
     public void setReviewed() {
         if (this.document != null) {
             this.reviewed = true;

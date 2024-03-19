@@ -10,21 +10,28 @@ import java.util.Date;
 
 public interface ISprint {
     void setState(ISprintState state);
+
     ISprintState getState();
 
     void inProgress() throws InvalidStateException;
+
     void finished() throws InvalidStateException;
+
     void closed() throws InvalidStateException;
 
     boolean containBacklogItem(BacklogItem item);
+
     boolean backlogContainsActivity(Activity activity);
 
     void sprintEdit(int number, Date start, Date end);
 
-
     void addDeveloper(User user);
+
     void removeDeveloper(User user);
+
     void addBacklogItem(BacklogItem item);
+
     void removeBacklogItem(BacklogItem item);
+
     Date getEnd();
 }

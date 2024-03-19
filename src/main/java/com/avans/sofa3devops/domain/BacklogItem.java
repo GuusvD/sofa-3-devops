@@ -7,7 +7,6 @@ import com.avans.sofa3devops.domainServices.compositeInterfaces.IItemComponent;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
 import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprint;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -37,29 +36,55 @@ public class BacklogItem implements IItemComponent {
     // Composite
     public void getAllStories() {
         logger.info(this.getStory());
-        for(var activity : this.activities) {
+        for (var activity : this.activities) {
             logger.info(activity.getStory());
         }
     }
-    public void addActivity(Activity activity) {this.activities.add(activity);}
-    public void removeActivity(Activity activity) {this.activities.remove(activity);}
-    public boolean containsActivity(Activity activity) { return this.activities.contains(activity);}
-    public List<Activity> getActivities() {return this.activities;}
+
+    public void addActivity(Activity activity) {
+        this.activities.add(activity);
+    }
+
+    public void removeActivity(Activity activity) {
+        this.activities.remove(activity);
+    }
+
+    public boolean containsActivity(Activity activity) {
+        return this.activities.contains(activity);
+    }
+
+    public List<Activity> getActivities() {
+        return this.activities;
+    }
 
     // Composite Methods Start
     @Override
-    public String getStory() {return getId() + ": " + getName();}
-    public IBacklogItemState getState() {return state;}
+    public String getStory() {
+        return getId() + ": " + getName();
+    }
+
+    public IBacklogItemState getState() {
+        return state;
+    }
+
     @Override
-    public User getAssignedTo() {return assignedTo;}
+    public User getAssignedTo() {
+        return assignedTo;
+    }
+
     @Override
-    public void setAssignedTo(User assignedTo) {this.assignedTo = assignedTo;}
+    public void setAssignedTo(User assignedTo) {
+        this.assignedTo = assignedTo;
+    }
+
     @Override
-    public boolean getFinished() {return this.finished;}
+    public boolean getFinished() {
+        return this.finished;
+    }
 
     @Override
     public void setFinished() {
-        if(this.getState() instanceof DoneState) {
+        if (this.getState() instanceof DoneState) {
             boolean checkAll = true;
             if (!activities.isEmpty()) {
                 for (var activity : activities) {
@@ -79,27 +104,44 @@ public class BacklogItem implements IItemComponent {
 
     @Override
     public void removeFromSprints(List<ISprint> sprints) {
-        for (var sprint: sprints) {sprint.removeBacklogItem(this);}
+        for (var sprint : sprints) {
+            sprint.removeBacklogItem(this);
+        }
     }
     // Composite Methods End
 
     // State Methods Start
-    public void setState(IBacklogItemState state) {this.state = state;}
+    public void setState(IBacklogItemState state) {
+        this.state = state;
+    }
 
-    public void toDoState() throws InvalidStateException {this.state.toDoState();}
+    public void toDoState() throws InvalidStateException {
+        this.state.toDoState();
+    }
 
-    public void doingState() throws InvalidStateException {this.state.doingState();}
+    public void doingState() throws InvalidStateException {
+        this.state.doingState();
+    }
 
-    public void readyForTestingState() throws InvalidStateException {this.state.readyForTestingState();}
+    public void readyForTestingState() throws InvalidStateException {
+        this.state.readyForTestingState();
+    }
 
-    public void testingState() throws InvalidStateException {this.state.testingState();}
+    public void testingState() throws InvalidStateException {
+        this.state.testingState();
+    }
 
-    public void testedState() throws InvalidStateException {this.state.testedState();}
+    public void testedState() throws InvalidStateException {
+        this.state.testedState();
+    }
 
-    public void doneState() throws InvalidStateException {this.state.doneState();}
+    public void doneState() throws InvalidStateException {
+        this.state.doneState();
+    }
     // State Methods End
 
     // General methods
+
     public UUID getId() {return id;}
     public String getName() {return name;}
     public void setName(String name) {this.name = name;}
@@ -110,4 +152,5 @@ public class BacklogItem implements IItemComponent {
             this.threads.add(thread);
         }
     }
+
 }

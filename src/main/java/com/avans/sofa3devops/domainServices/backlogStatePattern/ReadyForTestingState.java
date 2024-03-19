@@ -1,6 +1,5 @@
 package com.avans.sofa3devops.domainServices.backlogStatePattern;
 
-import com.avans.sofa3devops.domain.BacklogItem;
 import com.avans.sofa3devops.domainServices.compositeInterfaces.IItemComponent;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
 
@@ -12,7 +11,9 @@ public class ReadyForTestingState implements IBacklogItemState {
     }
 
     @Override
-    public void toDoState() throws InvalidStateException {item.setState(new ToDoState(item));}
+    public void toDoState() {
+        item.setState(new ToDoState(item));
+    }
 
     @Override
     public void doingState() {

@@ -6,5 +6,6 @@ import java.util.Date;
 
 public interface ISprintFactory {
     ISprint createRegularSprint(int number, Date start, Date end, User user);
+
     ISprint createReviewSprint(int number, Date start, Date end, User user);
 }

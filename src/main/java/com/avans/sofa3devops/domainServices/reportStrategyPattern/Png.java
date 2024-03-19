@@ -17,8 +17,7 @@ public class Png implements IReport {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
         String timestamp = sdf.format(new Date());
         String directoryPath = "./src/main/java/com/avans/sofa3devops/domainServices/reportStrategyPattern/reports/png/";
-        String filePath = directoryPath + project.getName() + "_report_"+ timestamp + ".png";
-
+        String filePath = directoryPath + project.getName() + "_report_" + timestamp + ".png";
 
         // Create directory if it doesn't exist
         File directory = new File(directoryPath);
