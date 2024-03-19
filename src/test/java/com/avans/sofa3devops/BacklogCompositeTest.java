@@ -7,8 +7,12 @@ import com.avans.sofa3devops.domainServices.backlogStatePattern.DoneState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import com.avans.sofa3devops.domain.Thread;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.*;
+
+
 
 @SpringBootTest
 public class BacklogCompositeTest {
@@ -109,6 +113,43 @@ public class BacklogCompositeTest {
 
         assertFalse(item.getFinished());
     }
+
+    @Test
+    void GivenBacklogItemWhenThreadIsAddedThenListHasValueOne() {
+        BacklogItem item = new BacklogItem("BacklogItem", createdByUser);
+        Thread thread = new Thread("Title","Body",item,createdByUser);
+
+        item.addThread(thread);
+
+        assertThat(item.getThreads()).hasSize(1);
+        assertThat(thread.getBacklogItem()).isEqualTo(item);
+    }
+
+    @Test
+    void GivenBacklogItemWhenThreadIsAddedTwiceThenListHasValueOne() {
+        BacklogItem item = new BacklogItem("BacklogItem", createdByUser);
+        Thread thread = new Thread("Title","Body",item,createdByUser);
+
+        item.addThread(thread);
+        item.addThread(thread);
+
+        assertThat(item.getThreads()).hasSize(1);
+        assertThat(thread.getBacklogItem()).isEqualTo(item);
+    }
+    
+    @Test
+    void givenFinishedBackLogItemWhenThreadIsAddedThenItemIsNotAdded() {
+        BacklogItem item = new BacklogItem("BacklogItem", createdByUser);
+        item.setState(new DoneState(item));
+        item.setFinished();
+        Thread thread = new Thread("Title","Body",item,createdByUser);
+
+        item.addThread(thread);
+
+        assertThat(item.getThreads()).hasSize(0);
+
+    }
+
 
 
 }

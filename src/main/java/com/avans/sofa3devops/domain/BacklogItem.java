@@ -81,12 +81,7 @@ public class BacklogItem implements IItemComponent {
     public void removeFromSprints(List<ISprint> sprints) {
         for (var sprint: sprints) {sprint.removeBacklogItem(this);}
     }
-
-    @Override
-    public void addThread(Thread thread) {this.threads.add(thread);}
     // Composite Methods End
-
-
 
     // State Methods Start
     public void setState(IBacklogItemState state) {this.state = state;}
@@ -110,6 +105,9 @@ public class BacklogItem implements IItemComponent {
     public void setName(String name) {this.name = name;}
     public User getCreatedBy() {return createdBy;}
     public List<Thread> getThreads() {return this.threads;}
-
-
+    public void addThread(Thread thread) {
+        if(!this.threads.contains(thread) && !(state instanceof DoneState && finished)) {
+            this.threads.add(thread);
+        }
+    }
 }

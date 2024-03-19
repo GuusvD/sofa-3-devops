@@ -21,7 +21,7 @@ public class MessageObserverTest {
     @Test
     void givenNewMessageWhenAddingItToOtherMessageThenCallUpdateObserverMethodAndAddMessageToOtherMessage() {
         BacklogItem item = new BacklogItem("BacklogItem", user);
-        Thread thread = new Thread(UUID.randomUUID(), "A question?", "Please help me!!", new ArrayList<>(), item, user, new Date());
+        Thread thread = new Thread("A question?", "Please help me!!", item, user);
         Message oldMessage = new Message(UUID.randomUUID(), "Old message", user, new ArrayList<>(), new Date());
         Message response = new Message(UUID.randomUUID(), "New message", user, new ArrayList<>(), new Date());
         Observer mock = mock(Observer.class);

@@ -15,7 +15,6 @@ public class Activity implements IItemComponent {
     private UUID id;
     private String name;
     private Boolean finished;
-    private List<Thread> threads;
     private User createdBy;
     private User assignedTo;
 
@@ -25,7 +24,6 @@ public class Activity implements IItemComponent {
         this.id = UUID.randomUUID();
         this.name = name;
         this.createdBy = createdBy;
-        this.threads = new ArrayList<>();
         this.state = new ToDoState(this);
         this.finished = false;
     }
@@ -63,12 +61,6 @@ public class Activity implements IItemComponent {
     public void removeFromSprints(List<ISprint> sprints) {
 
     }
-
-    @Override
-    public void addThread(Thread thread) {
-        this.threads.add(thread);
-    }
-    // Composite Methods End
 
     // State Methods Start
     public void setState(IBacklogItemState state) {
