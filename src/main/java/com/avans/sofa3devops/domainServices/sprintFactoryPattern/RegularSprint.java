@@ -83,8 +83,8 @@ public class RegularSprint implements ISprint {
 
     // General methods
     public void addBacklogItem(BacklogItem backlog) {
-        if(state instanceof CreatedState) {
-            this.backlog.add(backlog);
+        if(state instanceof CreatedState && !this.backlog.contains(backlog)) {
+                this.backlog.add(backlog);
         }
     }
 
@@ -95,7 +95,7 @@ public class RegularSprint implements ISprint {
     }
 
     public void addDeveloper(User user) {
-        if(state instanceof CreatedState) {
+        if(state instanceof CreatedState && !developers.contains(user)) {
             this.developers.add(user);
         }
     }
