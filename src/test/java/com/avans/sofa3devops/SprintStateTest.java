@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Date;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,10 +21,11 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 public class SprintStateTest {
     // Correct state switching
-    User user = new User();
-
     private final Date pastDate = new Date(System.currentTimeMillis() - 86400000);
     private final Date startDate = new Date(pastDate.getTime() - 7 * 24 * 60 * 60 * 1000);
+
+    User user = new User("John Doe", "j.doe@gmail.com", "Password1234");
+
     @Test
     void givenRegularSprintWithCreatedStateWhenSwitchingStateThenSwitchToInProgressState() throws InvalidStateException {
         SprintFactory factory = new SprintFactory();

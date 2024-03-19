@@ -32,12 +32,12 @@ public class ProjectTests {
         reportStrategies.add(new Png());
         pipeline = new Pipeline();
         project = new Project("Project", reportStrategies, pipeline);
-        createdBy = new User();
+        createdBy = new User("John Doe", "j.doe@gmail.com", "Password1234");
     }
 
     @Test
     void OneUserIsAddedToProject() {
-        User user = new User();
+        User user = new User("John Doe", "j.doe@gmail.com", "Password1234");
 
         project.addParticipant(user);
 
@@ -46,8 +46,8 @@ public class ProjectTests {
 
     @Test
     void TwoUsersAreAddedToProject() {
-        User userOne = new User();
-        User userTwo = new User();
+        User userOne = new User("John Doe", "j.doe@gmail.com", "Password1234");
+        User userTwo = new User("John Doe", "j.doe@gmail.com", "Password1234");
 
         project.addParticipant(userOne);
         project.addParticipant(userTwo);
@@ -57,7 +57,7 @@ public class ProjectTests {
 
     @Test
     void OneUserIsAddedWhenTheSamePersonIsAddedAgain() {
-        User userOne = new User();
+        User userOne = new User("John Doe", "j.doe@gmail.com", "Password1234");
 
         project.addParticipant(userOne);
         project.addParticipant(userOne);

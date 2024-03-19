@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Date;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
@@ -16,7 +17,7 @@ public class FactoryPatternTests {
         // Arrange
         ISprintFactory factory = new SprintFactory();
         // Act
-        ISprint rSprint = factory.createRegularSprint(1, new Date(), new Date(), new User());
+        ISprint rSprint = factory.createRegularSprint(1, new Date(), new Date(), new User("John Doe", "j.doe@gmail.com", "Password1234"));
         // Assert
         assertInstanceOf(RegularSprint.class, rSprint);
     }
@@ -26,7 +27,7 @@ public class FactoryPatternTests {
         // Arrange
         ISprintFactory factory = new SprintFactory();
         // Act
-        ISprint rSprint = factory.createReviewSprint(1, new Date(), new Date(), new User());
+        ISprint rSprint = factory.createReviewSprint(1, new Date(), new Date(), new User("John Doe", "j.doe@gmail.com", "Password1234"));
         // Assert
         assertInstanceOf(ReviewSprint.class, rSprint);
     }

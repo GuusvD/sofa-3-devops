@@ -21,11 +21,12 @@ public class SprintTests {
     private User user;
 
 
+
     @BeforeEach
     void setup() {
         start = new Date();
         end = new Date();
-        user = new User();
+        user = new User("John Doe", "j.doe@gmail.com", "Password1234");
         reviewSprint = new ReviewSprint(0,start,end,user);
         regularSprint = new RegularSprint(0,start,end,user);
     }
@@ -133,7 +134,7 @@ public class SprintTests {
 
     @Test
     void GivenSprintNotInCreatedStateWhenAddDeveloperIsCalledThenNoDeveloperIsNotAdded() {
-        User addedUser = new User();
+        User addedUser = new User("Addy Doe", "A.doe@gmail.com", "Password1234");
         reviewSprint.setState(new InProgressState(reviewSprint));
         regularSprint.setState(new InProgressState(regularSprint));
 
@@ -146,7 +147,7 @@ public class SprintTests {
 
     @Test
     void GivenSprintInCreatedStateWhenAddDeveloperIsCalledThenNoDeveloperIsAdded() {
-        User addedUser = new User();
+        User addedUser = new User("Addy Doe", "A.doe@gmail.com", "Password1234");
         
         reviewSprint.addDeveloper(addedUser);
         regularSprint.addDeveloper(addedUser);
@@ -157,7 +158,7 @@ public class SprintTests {
 
     @Test
     void GivenSprintInCreatedStateWhenAddDeveloperIsCalledTwiceThenUserIsNotAddedTwice() {
-        User addedUser = new User();
+        User addedUser = new User("Addy Doe", "A.doe@gmail.com", "Password1234");
 
         reviewSprint.addDeveloper(addedUser);
         regularSprint.addDeveloper(addedUser);
@@ -170,7 +171,7 @@ public class SprintTests {
 
     @Test
     void GivenSprintNotInCreatedStateWithUserWhenRemoveDeveloperThenUserIsNotRemoved() {
-        User addedUser = new User();
+        User addedUser = new User("Addy Doe", "A.doe@gmail.com", "Password1234");
         reviewSprint.setState(new InProgressState(reviewSprint));
         regularSprint.setState(new InProgressState(regularSprint));
         reviewSprint.addDeveloper(addedUser);
@@ -185,7 +186,7 @@ public class SprintTests {
 
     @Test
     void GivenSprintInCreatedStateWithUserWhenRemoveDeveloperThenUserIsRemoved() {
-        User addedUser = new User();
+        User addedUser = new User("Addy Doe", "A.doe@gmail.com", "Password1234");
         reviewSprint.addDeveloper(addedUser);
         regularSprint.addDeveloper(addedUser);
 

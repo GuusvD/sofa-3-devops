@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @SpringBootTest
 public class BacklogItemStateTest {
     // Correct state switching
-    User user = new User();
+    User user = new User("John Doe", "j.doe@gmail.com", "Password1234");
 
     @Test
     void givenBacklogItemWithToDoStateWhenSwitchingStateThenSwitchToDoingState() throws InvalidStateException {
