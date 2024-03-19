@@ -18,7 +18,7 @@ public class Project {
     private final List<IReport> _reportStrategies;
     private Pipeline pipeline;
 
-    public Project (String name, List<IReport> reportStrategies, Pipeline pipeline) {
+    public Project(String name, List<IReport> reportStrategies, Pipeline pipeline) {
         this.id = UUID.randomUUID();
         this.name = name;
         this.participants = new ArrayList<>();
@@ -29,7 +29,7 @@ public class Project {
     }
 
     public void printReports() {
-        for(IReport strategy : _reportStrategies ) {
+        for (IReport strategy : _reportStrategies) {
             strategy.printReport(this);
         }
     }
@@ -51,17 +51,23 @@ public class Project {
     // add/remove backLogItem
 
     public void addParticipant(User user) {
-        if(!this.participants.contains(user)) {
+        if (!this.participants.contains(user)) {
             this.participants.add(user);
         }
     }
 
-    public void addBacklogItem (BacklogItem item) {this.projectBacklog.add(item);}
-    public void addSprint(ISprint sprint) {this.sprints.add(sprint);}
-    public void removeBacklogItem (BacklogItem item) {
+    public void addBacklogItem(BacklogItem item) {
+        this.projectBacklog.add(item);
+    }
+
+    public void addSprint(ISprint sprint) {
+        this.sprints.add(sprint);
+    }
+
+    public void removeBacklogItem(BacklogItem item) {
         boolean delete = true;
         for (var sprint : sprints) {
-            if(sprint.containBacklogItem(item) && !(sprint.getState() instanceof CreatedState)) {
+            if (sprint.containBacklogItem(item) && !(sprint.getState() instanceof CreatedState)) {
                 delete = false;
                 break;
             }
@@ -90,14 +96,20 @@ public class Project {
         }
     }
 
-    public void setOwner(User owner) {this.owner = owner;}
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
 
-    public List<User> getParticipants() {return this.participants;}
+    public List<User> getParticipants() {
+        return this.participants;
+    }
 
-    public List<BacklogItem> getProjectBacklog() {return this.projectBacklog;}
+    public List<BacklogItem> getProjectBacklog() {
+        return this.projectBacklog;
+    }
 
     void getBacklog() {
-        for(var backlog : projectBacklog) {
+        for (var backlog : projectBacklog) {
             backlog.getAllStories();
         }
     }

@@ -109,7 +109,7 @@ public class ProjectTests {
         SprintFactory factory = new SprintFactory();
         ISprint sprint = factory.createReviewSprint(0,new Date(),new Date(),createdBy);
         project.addSprint(sprint);
-        sprint.setState(new ClosedState(sprint));
+        sprint.setState(new ClosedState());
 
         project.removeBacklogItem(item);
 
@@ -124,7 +124,7 @@ public class ProjectTests {
         ISprint sprint = factory.createReviewSprint(0,new Date(),new Date(),createdBy);
         project.addSprint(sprint);
         sprint.addBacklogItem(item);
-        sprint.setState(new ClosedState(sprint));
+        sprint.setState(new ClosedState());
 
         project.removeBacklogItem(item);
 

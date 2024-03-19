@@ -6,7 +6,7 @@ import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprint;
 import java.util.Date;
 
 public class InProgressState implements ISprintState {
-    private ISprint sprint;
+    private final ISprint sprint;
 
     public InProgressState(ISprint sprint) {
         this.sprint = sprint;
@@ -21,7 +21,8 @@ public class InProgressState implements ISprintState {
     public void finishedState() throws InvalidStateException {
         Date currentDate = new Date();
         Date sprintEndDate = sprint.getEnd();
-        if(currentDate.after(sprintEndDate)) {
+
+        if (currentDate.after(sprintEndDate)) {
             sprint.setState(new FinishedState(sprint));
         } else {
             throw new InvalidStateException("Cannot transition to 'finished' state! Sprint hasn't reached its end date!");
