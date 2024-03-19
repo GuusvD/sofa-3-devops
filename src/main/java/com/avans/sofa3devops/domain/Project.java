@@ -17,7 +17,6 @@ public class Project {
     private List<ISprint> sprints;
     private List<BacklogItem> projectBacklog;
     private final List<IReport> _reportStrategies;
-
     private final IGitCommands _gitStrategy;
 
     public Project(String name, List<IReport> reportStrategies, IGitCommands gitStrategy) {
