@@ -1,9 +1,6 @@
 package com.avans.sofa3devops.domain;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Observable;
-import java.util.UUID;
+import java.util.*;
 
 public class Thread extends Observable {
     private UUID id;
@@ -14,14 +11,14 @@ public class Thread extends Observable {
     private User createdBy;
     private Date created;
 
-    public Thread(UUID id, String title, String body, List<Message> messages, BacklogItem backlogItem, User createdBy, Date created) {
-        this.id = id;
+    public Thread(String title, String body, BacklogItem backlogItem, User createdBy) {
+        this.id = UUID.randomUUID();
         this.title = title;
         this.body = body;
-        this.messages = messages;
+        this.messages = new ArrayList<>();
         this.backlogItem = backlogItem;
         this.createdBy = createdBy;
-        this.created = created;
+        this.created = new Date();
     }
 
     public List<Message> getMessages() {
@@ -34,4 +31,8 @@ public class Thread extends Observable {
         setChanged();
         notifyObservers();
     }
+
+    public String getTitle() {return title;}
+    public String getBody() {return body;}
+    public BacklogItem getBacklogItem() {return backlogItem;}
 }

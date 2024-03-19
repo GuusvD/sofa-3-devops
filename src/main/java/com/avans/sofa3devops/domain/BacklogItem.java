@@ -108,13 +108,7 @@ public class BacklogItem implements IItemComponent {
             sprint.removeBacklogItem(this);
         }
     }
-
-    @Override
-    public void addThread(Thread thread) {
-        this.threads.add(thread);
-    }
     // Composite Methods End
-
 
     // State Methods Start
     public void setState(IBacklogItemState state) {
@@ -147,25 +141,16 @@ public class BacklogItem implements IItemComponent {
     // State Methods End
 
     // General methods
-    public UUID getId() {
-        return id;
-    }
 
-    public String getName() {
-        return name;
+    public UUID getId() {return id;}
+    public String getName() {return name;}
+    public void setName(String name) {this.name = name;}
+    public User getCreatedBy() {return createdBy;}
+    public List<Thread> getThreads() {return this.threads;}
+    public void addThread(Thread thread) {
+        if(!this.threads.contains(thread) && !(state instanceof DoneState && finished)) {
+            this.threads.add(thread);
+        }
     }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public User getCreatedBy() {
-        return createdBy;
-    }
-
-    public List<Thread> getThreads() {
-        return this.threads;
-    }
-
 
 }

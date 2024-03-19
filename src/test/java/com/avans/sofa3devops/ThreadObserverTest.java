@@ -23,7 +23,7 @@ public class ThreadObserverTest {
     @Test
     void givenNewMessageWhenAddingItToThreadThenCallUpdateObserverMethodAndAddMessageToThread() {
         BacklogItem item = new BacklogItem("BacklogItem", user);
-        Thread thread = new Thread(UUID.randomUUID(), "A question?", "Please help me!!", new ArrayList<>(), item, user, new Date());
+        Thread thread = new Thread("A question?", "Please help me!!", item, user);
         Message newMessage = new Message(UUID.randomUUID(), "Your answer!", user, new ArrayList<>(), new Date());
         Observer mock = mock(Observer.class);
         thread.addObserver(mock);

@@ -25,6 +25,5 @@ public interface IItemComponent {
 
     void removeFromSprints(List<ISprint> sprints);
 
-    void addThread(Thread thread);
 
 }

@@ -113,4 +113,19 @@ public class Project {
             backlog.getAllStories();
         }
     }
+
+    public void getAllProjectThreads() {
+        List<Thread> forum = new ArrayList<>();
+        for(var item: projectBacklog) {
+           forum.addAll(item.getThreads());
+        }
+
+        for (Thread thread : forum) {
+            System.out.println("Title: " + thread.getTitle());
+            System.out.println("Body: " + thread.getBody());
+            System.out.println();
+        }
+    }
+
+
 }
