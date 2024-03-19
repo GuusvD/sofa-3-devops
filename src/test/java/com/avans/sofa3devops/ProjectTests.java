@@ -1,6 +1,8 @@
 package com.avans.sofa3devops;
 
 import com.avans.sofa3devops.domain.*;
+import com.avans.sofa3devops.domainServices.gitStrategyPattern.GitHub;
+import com.avans.sofa3devops.domainServices.gitStrategyPattern.IGitCommands;
 import com.avans.sofa3devops.domainServices.reportStrategyPattern.IReport;
 import com.avans.sofa3devops.domainServices.reportStrategyPattern.Pdf;
 import com.avans.sofa3devops.domainServices.reportStrategyPattern.Png;
@@ -14,15 +16,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.nio.channels.Pipe;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @SpringBootTest
 public class ProjectTests {
-
     private List<IReport> reportStrategies;
+    private IGitCommands gitStrategy;
     private Pipeline pipeline;
     private Project project;
     private User createdBy;
@@ -32,8 +33,9 @@ public class ProjectTests {
         reportStrategies = new ArrayList<>();
         reportStrategies.add(new Pdf());
         reportStrategies.add(new Png());
+        gitStrategy = new GitHub();
         pipeline = new Pipeline();
-        project = new Project("Project", reportStrategies, pipeline);
+        project = new Project("Project", reportStrategies, gitStrategy, pipeline);
         createdBy = new User("John Doe", "j.doe@gmail.com", "Password1234");
     }
 

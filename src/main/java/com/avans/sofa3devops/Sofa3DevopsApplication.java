@@ -1,6 +1,8 @@
 package com.avans.sofa3devops;
 
 import com.avans.sofa3devops.domain.*;
+import com.avans.sofa3devops.domainServices.gitStrategyPattern.GitHub;
+import com.avans.sofa3devops.domainServices.gitStrategyPattern.IGitCommands;
 import com.avans.sofa3devops.domainServices.reportStrategyPattern.IReport;
 import com.avans.sofa3devops.domainServices.reportStrategyPattern.Pdf;
 import com.avans.sofa3devops.domainServices.reportStrategyPattern.Png;
@@ -19,10 +21,11 @@ public class Sofa3DevopsApplication {
         reportStrategies.add(new Pdf());
         reportStrategies.add(new Png());
 
+        IGitCommands gitStrategy = new GitHub();
+
         Pipeline pipeline = new Pipeline();
 
-
-        Project project = new Project("LANGUAGESCHOOL", reportStrategies, pipeline);
+        Project project = new Project("LANGUAGESCHOOL", reportStrategies, gitStrategy, pipeline);
         project.printReports();
 
         User creator = new User("John Doe", "j.doe@gmail.com", "Password1234");
