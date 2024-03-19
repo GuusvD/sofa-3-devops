@@ -7,28 +7,26 @@ import com.avans.sofa3devops.domainServices.sprintStatePattern.InProgressState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+
 import static org.assertj.core.api.Assertions.*;
 
 import java.util.Date;
 
 @SpringBootTest
 public class SprintTests {
-
     private ReviewSprint reviewSprint;
     private RegularSprint regularSprint;
     private Date start;
     private Date end;
     private User user;
 
-
-
     @BeforeEach
     void setup() {
         start = new Date();
         end = new Date();
         user = new User("John Doe", "j.doe@gmail.com", "Password1234");
-        reviewSprint = new ReviewSprint(0,start,end,user);
-        regularSprint = new RegularSprint(0,start,end,user);
+        reviewSprint = new ReviewSprint(0, start, end, user);
+        regularSprint = new RegularSprint(0, start, end, user);
     }
 
     @Test
@@ -38,8 +36,8 @@ public class SprintTests {
         Date newStart = new Date();
         Date newEnd = new Date();
 
-        reviewSprint.sprintEdit(10,newStart,newEnd);
-        regularSprint.sprintEdit(10,newStart,newEnd);
+        reviewSprint.sprintEdit(10, newStart, newEnd);
+        regularSprint.sprintEdit(10, newStart, newEnd);
 
         assertThat(reviewSprint.getStart()).isEqualTo(start);
         assertThat(reviewSprint.getEnd()).isEqualTo(end);
@@ -56,8 +54,8 @@ public class SprintTests {
         Date newStart = new Date();
         Date newEnd = new Date();
 
-        reviewSprint.sprintEdit(10,newStart,newEnd);
-        regularSprint.sprintEdit(10,newStart,newEnd);
+        reviewSprint.sprintEdit(10, newStart, newEnd);
+        regularSprint.sprintEdit(10, newStart, newEnd);
 
         assertThat(reviewSprint.getStart()).isEqualTo(newStart);
         assertThat(reviewSprint.getEnd()).isEqualTo(newEnd);
@@ -71,7 +69,7 @@ public class SprintTests {
     void GivenSprintNotInCreatedStateWhenAddBacklogItemIsCalledThenItemIsNotAdded() {
         regularSprint.setState(new InProgressState(regularSprint));
         reviewSprint.setState(new InProgressState(reviewSprint));
-        BacklogItem item = new BacklogItem("Item",user);
+        BacklogItem item = new BacklogItem("Item", user);
 
         regularSprint.addBacklogItem(item);
         reviewSprint.addBacklogItem(item);
@@ -79,10 +77,10 @@ public class SprintTests {
         assertThat(regularSprint.getBacklog()).hasSize(0);
         assertThat(reviewSprint.getBacklog()).hasSize(0);
     }
-    
+
     @Test
     void GivenSprintInCreatedStateWhenAddBacklogItemIsCalledThenItemIsAdded() {
-        BacklogItem item = new BacklogItem("Item",user);
+        BacklogItem item = new BacklogItem("Item", user);
 
         regularSprint.addBacklogItem(item);
         reviewSprint.addBacklogItem(item);
@@ -93,7 +91,7 @@ public class SprintTests {
 
     @Test
     void GivenSprintInCreatedStateWhenAddBacklogItemIsCalledTwiceThenItemIsNotAddedTwice() {
-        BacklogItem item = new BacklogItem("Item",user);
+        BacklogItem item = new BacklogItem("Item", user);
 
         regularSprint.addBacklogItem(item);
         reviewSprint.addBacklogItem(item);
@@ -106,7 +104,7 @@ public class SprintTests {
 
     @Test
     void GivenSprintNotInCreatedStateWithBacklogItemWhenRemoveBacklogItemIsCalledThenItemIsNotRemoved() {
-        BacklogItem item = new BacklogItem("Item",user);
+        BacklogItem item = new BacklogItem("Item", user);
         regularSprint.addBacklogItem(item);
         reviewSprint.addBacklogItem(item);
         reviewSprint.setState(new InProgressState(reviewSprint));
@@ -121,7 +119,7 @@ public class SprintTests {
 
     @Test
     void GivenSprintInCreatedStateWithBacklogItemWhenRemoveBacklogItemIsCalledThenItemIsRemoved() {
-        BacklogItem item = new BacklogItem("Item",user);
+        BacklogItem item = new BacklogItem("Item", user);
         regularSprint.addBacklogItem(item);
         reviewSprint.addBacklogItem(item);
 
@@ -148,7 +146,7 @@ public class SprintTests {
     @Test
     void GivenSprintInCreatedStateWhenAddDeveloperIsCalledThenNoDeveloperIsAdded() {
         User addedUser = new User("Addy Doe", "A.doe@gmail.com", "Password1234");
-        
+
         reviewSprint.addDeveloper(addedUser);
         regularSprint.addDeveloper(addedUser);
 
@@ -196,7 +194,6 @@ public class SprintTests {
         assertThat(reviewSprint.getDevelopers()).hasSize(1);
         assertThat(regularSprint.getDevelopers()).hasSize(1);
     }
-
 
 
 }

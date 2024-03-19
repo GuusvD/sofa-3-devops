@@ -11,7 +11,9 @@ import com.avans.sofa3devops.domainServices.sprintStatePattern.InProgressState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+
 import static org.assertj.core.api.Assertions.assertThat;
+
 import java.nio.channels.Pipe;
 import java.util.ArrayList;
 import java.util.Date;
@@ -67,7 +69,7 @@ public class ProjectTests {
 
     @Test
     void BacklogItemIsRemovedWhenNoSprintArrayIsEmpty() {
-        BacklogItem item = new BacklogItem("Item",createdBy);
+        BacklogItem item = new BacklogItem("Item", createdBy);
         project.addBacklogItem(item);
 
         project.removeBacklogItem(item);
@@ -77,10 +79,10 @@ public class ProjectTests {
 
     @Test
     void BackLogItemIsRemovedWhenNoSprintContainsTheBackLogItemAndSprintIsInCreatedState() {
-        BacklogItem item = new BacklogItem("Item",createdBy);
+        BacklogItem item = new BacklogItem("Item", createdBy);
         project.addBacklogItem(item);
         SprintFactory factory = new SprintFactory();
-        ISprint sprint = factory.createReviewSprint(0,new Date(),new Date(),createdBy);
+        ISprint sprint = factory.createReviewSprint(0, new Date(), new Date(), createdBy);
         project.addSprint(sprint);
 
         project.removeBacklogItem(item);
@@ -88,12 +90,13 @@ public class ProjectTests {
         assertThat(project.getProjectBacklog()).hasSize(0);
 
     }
+
     @Test
     void BackLogItemIsRemovedWhenSprintContainsTheBacklogItemAndSprintIsInCreatedState() {
-        BacklogItem item = new BacklogItem("Item",createdBy);
+        BacklogItem item = new BacklogItem("Item", createdBy);
         project.addBacklogItem(item);
         SprintFactory factory = new SprintFactory();
-        ISprint sprint = factory.createReviewSprint(0,new Date(),new Date(),createdBy);
+        ISprint sprint = factory.createReviewSprint(0, new Date(), new Date(), createdBy);
         project.addSprint(sprint);
         sprint.addBacklogItem(item);
 
@@ -104,10 +107,10 @@ public class ProjectTests {
 
     @Test
     void BackLogItemIsRemovedWhenNoSprintContainsTheBackLogItemAndSprintIsNotInCreatedState() {
-        BacklogItem item = new BacklogItem("Item",createdBy);
+        BacklogItem item = new BacklogItem("Item", createdBy);
         project.addBacklogItem(item);
         SprintFactory factory = new SprintFactory();
-        ISprint sprint = factory.createReviewSprint(0,new Date(),new Date(),createdBy);
+        ISprint sprint = factory.createReviewSprint(0, new Date(), new Date(), createdBy);
         project.addSprint(sprint);
         sprint.setState(new ClosedState());
 
@@ -118,10 +121,10 @@ public class ProjectTests {
 
     @Test
     void BackLogItemIsNotRemovedWhenSprintContainsBackLogItemAndIsNotInCreatedState() {
-        BacklogItem item = new BacklogItem("Item",createdBy);
+        BacklogItem item = new BacklogItem("Item", createdBy);
         project.addBacklogItem(item);
         SprintFactory factory = new SprintFactory();
-        ISprint sprint = factory.createReviewSprint(0,new Date(),new Date(),createdBy);
+        ISprint sprint = factory.createReviewSprint(0, new Date(), new Date(), createdBy);
         project.addSprint(sprint);
         sprint.addBacklogItem(item);
         sprint.setState(new ClosedState());
@@ -133,7 +136,7 @@ public class ProjectTests {
 
     @Test
     void ActivityIsRemovedWhenSprintListIsEmpty() {
-        BacklogItem item = new BacklogItem("Item",createdBy);
+        BacklogItem item = new BacklogItem("Item", createdBy);
         Activity activity = new Activity("Activity", createdBy);
         item.addActivity(activity);
         project.addBacklogItem(item);
@@ -141,18 +144,16 @@ public class ProjectTests {
         project.removeActivity(activity);
 
         assertThat(item.getActivities()).hasSize(0);
-
-
     }
 
     @Test
     void ActivityIsRemovedWithOneSprintAndBackLogListIsEmpty() {
-        BacklogItem item = new BacklogItem("Item",createdBy);
+        BacklogItem item = new BacklogItem("Item", createdBy);
         Activity activity = new Activity("Activity", createdBy);
         item.addActivity(activity);
         project.addBacklogItem(item);
         SprintFactory factory = new SprintFactory();
-        ISprint sprint = factory.createReviewSprint(1,new Date(),new Date(),createdBy);
+        ISprint sprint = factory.createReviewSprint(1, new Date(), new Date(), createdBy);
         project.addSprint(sprint);
 
         project.removeActivity(activity);
@@ -163,14 +164,14 @@ public class ProjectTests {
 
     @Test
     void ActivityIsRemovedWithTwoSprintsAndBackLogListsAreEmpty() {
-        BacklogItem item = new BacklogItem("Item",createdBy);
+        BacklogItem item = new BacklogItem("Item", createdBy);
         Activity activity = new Activity("Activity", createdBy);
         item.addActivity(activity);
         project.addBacklogItem(item);
         SprintFactory factory = new SprintFactory();
-        ISprint sprintOne = factory.createReviewSprint(1,new Date(),new Date(),createdBy);
+        ISprint sprintOne = factory.createReviewSprint(1, new Date(), new Date(), createdBy);
         project.addSprint(sprintOne);
-        ISprint sprintTwo = factory.createRegularSprint(2,new Date(),new Date(),createdBy);
+        ISprint sprintTwo = factory.createRegularSprint(2, new Date(), new Date(), createdBy);
         project.addSprint(sprintTwo);
 
         project.removeActivity(activity);
@@ -178,10 +179,11 @@ public class ProjectTests {
         assertThat(item.getActivities()).hasSize(0);
 
     }
+
     @Test
     void ActivityIsRemovedWithOneSprintAndBacklogDoesNotContainActivityAndSprintStateEqualsCreatedState() {
-        BacklogItem itemOne = new BacklogItem("ItemOne",createdBy);
-        BacklogItem itemTwo = new BacklogItem("ItemTwo",createdBy);
+        BacklogItem itemOne = new BacklogItem("ItemOne", createdBy);
+        BacklogItem itemTwo = new BacklogItem("ItemTwo", createdBy);
         Activity activityKeep = new Activity("ActivityOne", createdBy);
         Activity activityRemove = new Activity("ActivityTwo", createdBy);
         project.addBacklogItem(itemOne);
@@ -189,7 +191,7 @@ public class ProjectTests {
         itemOne.addActivity(activityKeep);
         itemTwo.addActivity(activityRemove);
         SprintFactory factory = new SprintFactory();
-        ISprint sprintOne = factory.createReviewSprint(1,new Date(),new Date(),createdBy);
+        ISprint sprintOne = factory.createReviewSprint(1, new Date(), new Date(), createdBy);
         project.addSprint(sprintOne);
         sprintOne.addBacklogItem(itemOne);
 
@@ -198,10 +200,11 @@ public class ProjectTests {
 
         assertThat(itemTwo.getActivities()).hasSize(0);
     }
+
     @Test
     void ActivityIsRemovedWithOneSprintAndBacklogDoesNotContainActivityAndSprintStateNotEqualsCreatedState() {
-        BacklogItem itemOne = new BacklogItem("ItemOne",createdBy);
-        BacklogItem itemTwo = new BacklogItem("ItemTwo",createdBy);
+        BacklogItem itemOne = new BacklogItem("ItemOne", createdBy);
+        BacklogItem itemTwo = new BacklogItem("ItemTwo", createdBy);
         Activity activityKeep = new Activity("ActivityOne", createdBy);
         Activity activityRemove = new Activity("ActivityTwo", createdBy);
         project.addBacklogItem(itemOne);
@@ -209,7 +212,7 @@ public class ProjectTests {
         itemOne.addActivity(activityKeep);
         itemTwo.addActivity(activityRemove);
         SprintFactory factory = new SprintFactory();
-        ISprint sprintOne = factory.createReviewSprint(1,new Date(),new Date(),createdBy);
+        ISprint sprintOne = factory.createReviewSprint(1, new Date(), new Date(), createdBy);
         sprintOne.setState(new InProgressState(sprintOne));
         project.addSprint(sprintOne);
         sprintOne.addBacklogItem(itemOne);
@@ -218,10 +221,11 @@ public class ProjectTests {
 
         assertThat(itemTwo.getActivities()).hasSize(0);
     }
+
     @Test
     void ActivityIsRemovedWithOneSprintAndBacklogDoesContainActivityAndSprintStateEqualsCreatedState() {
-        BacklogItem itemOne = new BacklogItem("ItemOne",createdBy);
-        BacklogItem itemTwo = new BacklogItem("ItemTwo",createdBy);
+        BacklogItem itemOne = new BacklogItem("ItemOne", createdBy);
+        BacklogItem itemTwo = new BacklogItem("ItemTwo", createdBy);
         Activity activityKeep = new Activity("ActivityOne", createdBy);
         Activity activityRemove = new Activity("ActivityTwo", createdBy);
         project.addBacklogItem(itemOne);
@@ -229,7 +233,7 @@ public class ProjectTests {
         itemOne.addActivity(activityKeep);
         itemTwo.addActivity(activityRemove);
         SprintFactory factory = new SprintFactory();
-        ISprint sprintOne = factory.createReviewSprint(1,new Date(),new Date(),createdBy);
+        ISprint sprintOne = factory.createReviewSprint(1, new Date(), new Date(), createdBy);
         project.addSprint(sprintOne);
         sprintOne.addBacklogItem(itemTwo);
 
@@ -237,10 +241,11 @@ public class ProjectTests {
 
         assertThat(itemTwo.getActivities()).hasSize(0);
     }
+
     @Test
     void ActivityIsNotRemovedWithOneSprintAndBacklogDoesContainActivityAndSprintStateNotEqualsCreatedState() {
-        BacklogItem itemOne = new BacklogItem("ItemOne",createdBy);
-        BacklogItem itemTwo = new BacklogItem("ItemTwo",createdBy);
+        BacklogItem itemOne = new BacklogItem("ItemOne", createdBy);
+        BacklogItem itemTwo = new BacklogItem("ItemTwo", createdBy);
         Activity activityKeep = new Activity("ActivityOne", createdBy);
         Activity activityRemove = new Activity("ActivityTwo", createdBy);
         project.addBacklogItem(itemOne);
@@ -248,7 +253,7 @@ public class ProjectTests {
         itemOne.addActivity(activityKeep);
         itemTwo.addActivity(activityRemove);
         SprintFactory factory = new SprintFactory();
-        ISprint sprintOne = factory.createReviewSprint(1,new Date(),new Date(),createdBy);
+        ISprint sprintOne = factory.createReviewSprint(1, new Date(), new Date(), createdBy);
         sprintOne.setState(new InProgressState(sprintOne));
         project.addSprint(sprintOne);
         sprintOne.addBacklogItem(itemTwo);
