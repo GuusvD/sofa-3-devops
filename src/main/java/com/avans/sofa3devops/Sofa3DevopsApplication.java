@@ -19,10 +19,10 @@ public class Sofa3DevopsApplication {
         reportStrategies.add(new Pdf());
         reportStrategies.add(new Png());
 
-        Pipeline pipeline = new Pipeline();
+        Pipeline pipeline = new Pipeline("Pipe");
 
 
-        Project project = new Project("LANGUAGESCHOOL", reportStrategies, pipeline);
+        Project project = new Project("LANGUAGESCHOOL", reportStrategies);
         project.printReports();
 
         User creator = new User("John Doe", "j.doe@gmail.com", "Password1234");

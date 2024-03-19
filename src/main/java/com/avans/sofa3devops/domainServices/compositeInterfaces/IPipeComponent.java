@@ -1,5 +1,12 @@
 package com.avans.sofa3devops.domainServices.compositeInterfaces;
 
-public class IPipeComponent {
+import com.avans.sofa3devops.domain.Release;
+
+public interface IPipeComponent {
+
+    void start(Release release);
+    void run();
+    void build();
+    void stop();
 
 }

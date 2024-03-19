@@ -44,8 +44,7 @@ public class ReportStrategyTests {
     void checkIfReportsAreCreatedFromProjectInPdfAndPng() {
         // Arrange
         List<IReport> reportStrategies = Arrays.asList(new Pdf(), new Png());
-        Pipeline pipeline = new Pipeline();
-        Project project = new Project(name, reportStrategies, pipeline);
+        Project project = new Project(name, reportStrategies);
 
         // Act
         project.printReports();
