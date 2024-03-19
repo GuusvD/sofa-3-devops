@@ -21,7 +21,7 @@ public class GitStrategyTest {
     void givenGitHubWhenPullThenPullGitHub() {
         Logger loggerMock = mock(Logger.class);
         GitHub gitHub = new GitHub(loggerMock);
-        Project project = new Project("Test", Arrays.asList(new Pdf()), gitHub, new Pipeline());
+        Project project = new Project("Test", Arrays.asList(new Pdf()), gitHub);
 
         project.pull();
 
@@ -32,7 +32,7 @@ public class GitStrategyTest {
     void givenGitHubWhenPushThenPushGitHub() {
         Logger loggerMock = mock(Logger.class);
         GitHub gitHub = new GitHub(loggerMock);
-        Project project = new Project("Test", Arrays.asList(new Pdf()), gitHub, new Pipeline());
+        Project project = new Project("Test", Arrays.asList(new Pdf()), gitHub);
 
         project.push();
 
@@ -43,7 +43,7 @@ public class GitStrategyTest {
     void givenGitHubWhenCommitThenCommitGitHub() {
         Logger loggerMock = mock(Logger.class);
         GitHub gitHub = new GitHub(loggerMock);
-        Project project = new Project("Test", Arrays.asList(new Pdf()), gitHub, new Pipeline());
+        Project project = new Project("Test", Arrays.asList(new Pdf()), gitHub);
 
         project.commit();
 
@@ -54,7 +54,7 @@ public class GitStrategyTest {
     void givenGitHubWhenStatusThenStatusGitHub() {
         Logger loggerMock = mock(Logger.class);
         GitHub gitHub = new GitHub(loggerMock);
-        Project project = new Project("Test", Arrays.asList(new Pdf()), gitHub, new Pipeline());
+        Project project = new Project("Test", Arrays.asList(new Pdf()), gitHub);
 
         project.status();
 
@@ -65,7 +65,7 @@ public class GitStrategyTest {
     void givenGitHubWhenCheckoutThenCheckoutGitHub() {
         Logger loggerMock = mock(Logger.class);
         GitHub gitHub = new GitHub(loggerMock);
-        Project project = new Project("Test", Arrays.asList(new Pdf()), gitHub, new Pipeline());
+        Project project = new Project("Test", Arrays.asList(new Pdf()), gitHub);
 
         project.checkout();
 
@@ -76,7 +76,7 @@ public class GitStrategyTest {
     void givenGitHubWhenStashThenStashGitHub() {
         Logger loggerMock = mock(Logger.class);
         GitHub gitHub = new GitHub(loggerMock);
-        Project project = new Project("Test", Arrays.asList(new Pdf()), gitHub, new Pipeline());
+        Project project = new Project("Test", Arrays.asList(new Pdf()), gitHub);
 
         project.stash();
 
@@ -88,7 +88,7 @@ public class GitStrategyTest {
     void givenGitLabWhenPullThenPullGitHub() {
         Logger loggerMock = mock(Logger.class);
         GitLab gitLab = new GitLab(loggerMock);
-        Project project = new Project("Test", Arrays.asList(new Pdf()), gitLab, new Pipeline());
+        Project project = new Project("Test", Arrays.asList(new Pdf()), gitLab);
 
         project.pull();
 
@@ -99,7 +99,7 @@ public class GitStrategyTest {
     void givenGitLabWhenPushThenPushGitHub() {
         Logger loggerMock = mock(Logger.class);
         GitLab gitLab = new GitLab(loggerMock);
-        Project project = new Project("Test", Arrays.asList(new Pdf()), gitLab, new Pipeline());
+        Project project = new Project("Test", Arrays.asList(new Pdf()), gitLab);
 
         project.push();
 
@@ -110,7 +110,7 @@ public class GitStrategyTest {
     void givenGitLabWhenCommitThenCommitGitHub() {
         Logger loggerMock = mock(Logger.class);
         GitLab gitLab = new GitLab(loggerMock);
-        Project project = new Project("Test", Arrays.asList(new Pdf()), gitLab, new Pipeline());
+        Project project = new Project("Test", Arrays.asList(new Pdf()), gitLab);
 
         project.commit();
 
@@ -121,7 +121,7 @@ public class GitStrategyTest {
     void givenGitLabWhenStatusThenStatusGitHub() {
         Logger loggerMock = mock(Logger.class);
         GitLab gitLab = new GitLab(loggerMock);
-        Project project = new Project("Test", Arrays.asList(new Pdf()), gitLab, new Pipeline());
+        Project project = new Project("Test", Arrays.asList(new Pdf()), gitLab);
 
         project.status();
 
@@ -132,7 +132,7 @@ public class GitStrategyTest {
     void givenGitLabWhenCheckoutThenCheckoutGitHub() {
         Logger loggerMock = mock(Logger.class);
         GitLab gitLab = new GitLab(loggerMock);
-        Project project = new Project("Test", Arrays.asList(new Pdf()), gitLab, new Pipeline());
+        Project project = new Project("Test", Arrays.asList(new Pdf()), gitLab);
 
         project.checkout();
 
@@ -143,7 +143,7 @@ public class GitStrategyTest {
     void givenGitLabWhenStashThenStashGitHub() {
         Logger loggerMock = mock(Logger.class);
         GitLab gitLab = new GitLab(loggerMock);
-        Project project = new Project("Test", Arrays.asList(new Pdf()), gitLab, new Pipeline());
+        Project project = new Project("Test", Arrays.asList(new Pdf()), gitLab);
 
         project.stash();
 

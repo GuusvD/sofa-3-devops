@@ -27,10 +27,7 @@ public class Sofa3DevopsApplication {
 
         IGitCommands gitStrategy = new GitHub(Logger.getLogger(GitHub.class.getName()));
 
-        Pipeline pipeline = new Pipeline();
-
-
-        Project project = new Project("LANGUAGESCHOOL", reportStrategies);
+        Project project = new Project("LANGUAGESCHOOL", reportStrategies, gitStrategy);
 
         project.printReports();
 
