@@ -45,8 +45,6 @@ public class SprintTests {
         assertThat(regularSprint.getStart()).isEqualTo(start);
         assertThat(regularSprint.getEnd()).isEqualTo(end);
         assertThat(regularSprint.getNumber()).isEqualTo(0);
-
-
     }
 
     @Test
@@ -194,6 +192,4 @@ public class SprintTests {
         assertThat(reviewSprint.getDevelopers()).hasSize(1);
         assertThat(regularSprint.getDevelopers()).hasSize(1);
     }
-
-
 }

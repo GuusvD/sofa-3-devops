@@ -262,5 +262,4 @@ public class ProjectTests {
 
         assertThat(itemTwo.getActivities()).hasSize(1);
     }
-
 }

@@ -26,7 +26,6 @@ public class BacklogCompositeTest {
         item.setFinished();
 
         assertFalse(item.getFinished());
-
     }
 
     @Test
@@ -109,6 +108,4 @@ public class BacklogCompositeTest {
 
         assertFalse(item.getFinished());
     }
-
-
 }
