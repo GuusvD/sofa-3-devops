@@ -1,6 +1,5 @@
 package com.avans.sofa3devops;
 
-import com.avans.sofa3devops.domain.BacklogItem;
 import com.avans.sofa3devops.domain.Pipeline;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
 import com.avans.sofa3devops.domainServices.pipelineStatePattern.CancelledState;
@@ -176,6 +175,44 @@ public class PipelineStateTest {
         assertEquals("Cannot transition to 'failed' state!", exception.getMessage());
     }
 
-    //
+    // Same state switching
+    @Test
+    void givenPipelineWithExecutedStateWhenSwitchingStateToExecutedStateThenThrowException() throws InvalidStateException {
+        Pipeline pipeline = new Pipeline("Test");
+        pipeline.executedState();
 
+        InvalidStateException exception = assertThrows(InvalidStateException.class, pipeline::executedState);
+        assertEquals("Already in 'executed' state!", exception.getMessage());
+    }
+
+    @Test
+    void givenPipelineWithFinishedStateWhenSwitchingStateToFinishedStateThenThrowException() throws InvalidStateException {
+        Pipeline pipeline = new Pipeline("Test");
+        pipeline.executedState();
+        pipeline.finishedState();
+
+        InvalidStateException exception = assertThrows(InvalidStateException.class, pipeline::finishedState);
+        assertEquals("Already in 'finished' state!", exception.getMessage());
+    }
+
+    @Test
+    void givenPipelineWithFailedStateWhenSwitchingStateToFailedStateThenThrowException() throws InvalidStateException {
+        Pipeline pipeline = new Pipeline("Test");
+        pipeline.executedState();
+        pipeline.failedState();
+
+        InvalidStateException exception = assertThrows(InvalidStateException.class, pipeline::failedState);
+        assertEquals("Already in 'failed' state!", exception.getMessage());
+    }
+
+    @Test
+    void givenPipelineWithCancelledStateWhenSwitchingStateToCancelledStateThenThrowException() throws InvalidStateException {
+        Pipeline pipeline = new Pipeline("Test");
+        pipeline.executedState();
+        pipeline.failedState();
+        pipeline.cancelledState();
+
+        InvalidStateException exception = assertThrows(InvalidStateException.class, pipeline::cancelledState);
+        assertEquals("Already in 'cancelled' state!", exception.getMessage());
+    }
 }
