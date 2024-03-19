@@ -2,6 +2,7 @@ package com.avans.sofa3devops;
 
 import com.avans.sofa3devops.domain.Pipeline;
 import com.avans.sofa3devops.domain.Project;
+import com.avans.sofa3devops.domain.User;
 import com.avans.sofa3devops.domainServices.reportStrategyPattern.IReport;
 import com.avans.sofa3devops.domainServices.reportStrategyPattern.Pdf;
 import com.avans.sofa3devops.domainServices.reportStrategyPattern.Png;
