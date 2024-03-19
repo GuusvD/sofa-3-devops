@@ -22,7 +22,6 @@ public class BacklogItem implements IItemComponent {
     private User assignedTo;
     private List<Thread> threads;
     private IBacklogItemState state;
-
     private Boolean finished;
 
     public BacklogItem(String name, User createdBy) {

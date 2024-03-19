@@ -55,6 +55,8 @@ public class ReviewSprint implements ISprint {
     public void closed() throws InvalidStateException {
         if (this.reviewed) {
             this.state.closedState();
+        } else {
+            throw new InvalidStateException("Cannot transition to 'closed' state! Sprint is not reviewed!");
         }
 
     }
@@ -85,21 +87,27 @@ public class ReviewSprint implements ISprint {
     // General methods
 
     public void addBacklogItem(BacklogItem backlog) {
-        if(state instanceof CreatedState) {}
-        this.backlog.add(backlog);
+        if(state instanceof CreatedState && !this.backlog.contains(backlog)) {
+            this.backlog.add(backlog);
+        }
     }
 
     public void removeBacklogItem(BacklogItem backlog) {
-        if(state instanceof CreatedState) {}
-        this.backlog.remove(backlog);
+        if(state instanceof CreatedState) {
+            this.backlog.remove(backlog);
+        }
     }
 
     public void addDeveloper(User user) {
-        this.developers.add(user);
+        if(state instanceof CreatedState && !developers.contains(user)) {
+            this.developers.add(user);
+        }
     }
 
     public void removeDeveloper(User user) {
-        this.developers.remove(user);
+        if(state instanceof CreatedState) {
+            this.developers.remove(user);
+        }
     }
 
     // Getters & Setters

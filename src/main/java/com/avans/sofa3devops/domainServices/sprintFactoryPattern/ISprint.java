@@ -26,4 +26,5 @@ public interface ISprint {
     void removeDeveloper(User user);
     void addBacklogItem(BacklogItem item);
     void removeBacklogItem(BacklogItem item);
+    Date getEnd();
 }

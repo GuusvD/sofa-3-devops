@@ -21,11 +21,14 @@ import static org.junit.jupiter.api.Assertions.*;
 public class SprintStateTest {
     // Correct state switching
     User user = new User();
+
+    private final Date pastDate = new Date(System.currentTimeMillis() - 86400000);
+    private final Date startDate = new Date(pastDate.getTime() - 7 * 24 * 60 * 60 * 1000);
     @Test
     void givenRegularSprintWithCreatedStateWhenSwitchingStateThenSwitchToInProgressState() throws InvalidStateException {
         SprintFactory factory = new SprintFactory();
 
-        ISprint sprint = factory.createRegularSprint(1,new Date(), new Date(), user);
+        ISprint sprint = factory.createRegularSprint(1,startDate, pastDate, user);
 
         sprint.inProgress();
 
@@ -35,7 +38,7 @@ public class SprintStateTest {
     @Test
     void givenRegularSprintWithInProgressStateWhenSwitchingStateThenSwitchToFinishedState() throws InvalidStateException {
         SprintFactory factory = new SprintFactory();
-        ISprint sprint = factory.createRegularSprint(1,new Date(), new Date(), user);
+        ISprint sprint = factory.createRegularSprint(1,startDate, pastDate, user);
         sprint.inProgress();
 
         sprint.finished();
@@ -46,7 +49,7 @@ public class SprintStateTest {
     @Test
     void givenRegularSprintWithFinishedStateWhenSwitchingStateThenSwitchToClosedState() throws InvalidStateException {
         SprintFactory factory = new SprintFactory();
-        ISprint sprint = factory.createRegularSprint(1,new Date(), new Date(), user);
+        ISprint sprint = factory.createRegularSprint(1,startDate, pastDate, user);
         sprint.inProgress();
         sprint.finished();
 
@@ -58,7 +61,7 @@ public class SprintStateTest {
     @Test
     void givenReviewSprintWithFinishedStateAndWithDocumentAndWithReviewWhenSwitchingStateToClosedThenSwitchToClosedState() throws InvalidStateException {
         SprintFactory factory = new SprintFactory();
-        ReviewSprint sprint = (ReviewSprint) factory.createReviewSprint(1,new Date(), new Date(), user);
+        ReviewSprint sprint = (ReviewSprint) factory.createReviewSprint(1,startDate, pastDate, user);
         sprint.inProgress();
         sprint.finished();
         sprint.setDocument(new Document());
@@ -73,7 +76,7 @@ public class SprintStateTest {
     @Test
     void givenRegularSprintWithFinishedStateWhenSwitchingStateToInProgressThenThrowException() throws InvalidStateException {
         SprintFactory factory = new SprintFactory();
-        ISprint sprint = factory.createRegularSprint(1,new Date(), new Date(), user);
+        ISprint sprint = factory.createRegularSprint(1,startDate, pastDate, user);
         sprint.inProgress();
         sprint.finished();
 
@@ -84,7 +87,7 @@ public class SprintStateTest {
     @Test
     void givenRegularSprintWithClosedStateWhenSwitchingStateToFinishedThenThrowException() throws InvalidStateException {
         SprintFactory factory = new SprintFactory();
-        ISprint sprint = factory.createRegularSprint(1,new Date(), new Date(), user);
+        ISprint sprint = factory.createRegularSprint(1,startDate, pastDate, user);
         sprint.inProgress();
         sprint.finished();
         sprint.closed();
@@ -96,7 +99,7 @@ public class SprintStateTest {
     @Test
     void givenRegularSprintWithClosedStateWhenSwitchingStateToInProgressThenThrowException() throws InvalidStateException {
         SprintFactory factory = new SprintFactory();
-        ISprint sprint = factory.createRegularSprint(1,new Date(), new Date(), user);
+        ISprint sprint = factory.createRegularSprint(1,startDate, pastDate, user);
         sprint.inProgress();
         sprint.finished();
         sprint.closed();
@@ -108,7 +111,7 @@ public class SprintStateTest {
     @Test
     void givenRegularSprintWithInProgressStateWhenSwitchingStateToClosedThenThrowException() throws InvalidStateException {
         SprintFactory factory = new SprintFactory();
-        ISprint sprint = factory.createRegularSprint(1,new Date(), new Date(), user);
+        ISprint sprint = factory.createRegularSprint(1,startDate, pastDate, user);
         sprint.inProgress();
 
         InvalidStateException exception = assertThrows(InvalidStateException.class, sprint::closed);
@@ -118,19 +121,19 @@ public class SprintStateTest {
     @Test
     void givenReviewSprintWithFinishedStateAndWithoutReviewWhenSwitchingStateToClosedThenThrowException() throws InvalidStateException {
         SprintFactory factory = new SprintFactory();
-        ISprint sprint = factory.createReviewSprint(1,new Date(), new Date(), user);
+        ISprint sprint = factory.createReviewSprint(1,startDate, pastDate, user);
         sprint.inProgress();
         sprint.finished();
 
         InvalidStateException exception = assertThrows(InvalidStateException.class, sprint::closed);
-        assertEquals("Cannot transition to 'closed' state!", exception.getMessage());
+        assertEquals("Cannot transition to 'closed' state! Sprint is not reviewed!", exception.getMessage());
     }
 
     // Same state switching
     @Test
     void givenRegularSprintWithInProgressStateWhenSwitchingStateToInProgressThenThrowException() throws InvalidStateException {
         SprintFactory factory = new SprintFactory();
-        ISprint sprint = factory.createRegularSprint(1,new Date(), new Date(), user);
+        ISprint sprint = factory.createRegularSprint(1,startDate, pastDate, user);
         sprint.inProgress();
 
         InvalidStateException exception = assertThrows(InvalidStateException.class, sprint::inProgress);
@@ -138,9 +141,22 @@ public class SprintStateTest {
     }
 
     @Test
+    void givenRegularSprintWithInProgressStateAndDateNotPassedWhenSwitchingStateToInProgressThenTrowException() throws InvalidStateException {
+        Date currentDate = new Date();
+        long millisecondsToAdd = 7 * 24 * 60 * 60 * 1000; // Adding 7 days
+        Date futureDate = new Date(currentDate.getTime() + millisecondsToAdd);
+        SprintFactory factory = new SprintFactory();
+        ISprint sprint = factory.createRegularSprint(1,startDate,futureDate,user);
+        sprint.inProgress();
+
+        InvalidStateException exception = assertThrows(InvalidStateException.class, sprint::finished);
+        assertEquals("Cannot transition to 'finished' state! Sprint hasn't reached its end date!", exception.getMessage());
+    }
+
+    @Test
     void givenRegularSprintWithFinishedStateWhenSwitchingStateToFinishedThenThrowException() throws InvalidStateException {
         SprintFactory factory = new SprintFactory();
-        ISprint sprint = factory.createRegularSprint(1,new Date(), new Date(), user);
+        ISprint sprint = factory.createRegularSprint(1,startDate, pastDate, user);
         sprint.inProgress();
         sprint.finished();
 
@@ -151,7 +167,7 @@ public class SprintStateTest {
     @Test
     void givenRegularSprintWithClosedStateWhenSwitchingStateToClosedThenThrowException() throws InvalidStateException {
         SprintFactory factory = new SprintFactory();
-        ISprint sprint =  factory.createRegularSprint(1,new Date(), new Date(), user);
+        ISprint sprint =  factory.createRegularSprint(1,startDate, pastDate, user);
         sprint.inProgress();
         sprint.finished();
         sprint.closed();
@@ -163,7 +179,7 @@ public class SprintStateTest {
     @Test
     void givenReviewSprintWithFinishedStateWhenSwitchingToClosedStateWithoutDocument() throws InvalidStateException {
         SprintFactory factory = new SprintFactory();
-        ReviewSprint sprint = (ReviewSprint) factory.createReviewSprint(1,new Date(), new Date(), user);
+        ReviewSprint sprint = (ReviewSprint) factory.createReviewSprint(1,startDate, pastDate, user);
         sprint.inProgress();
         sprint.finished();
         sprint.setReviewed();
@@ -174,9 +190,9 @@ public class SprintStateTest {
     }
 
     @Test
-    void givenReviewSprintWhithFinishedStateWhenSwitchingToClosedStateWithDocument() throws InvalidStateException {
+    void givenReviewSprintWithFinishedStateWhenSwitchingToClosedStateWithDocument() throws InvalidStateException {
         SprintFactory factory = new SprintFactory();
-        ReviewSprint sprint = (ReviewSprint) factory.createReviewSprint(1,new Date(), new Date(), user);
+        ReviewSprint sprint = (ReviewSprint) factory.createReviewSprint(1,startDate, pastDate, user);
         Document document = new Document();
         sprint.inProgress();
         sprint.finished();
