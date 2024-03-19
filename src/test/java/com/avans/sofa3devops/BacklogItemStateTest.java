@@ -49,6 +49,17 @@ public class BacklogItemStateTest {
     }
 
     @Test
+    void givenBacklogItemWithReadyForTestingStateWhenSwitchingStateThenSwitchToToDoState() throws InvalidStateException {
+        BacklogItem item = new BacklogItem("Backlog",user);
+        item.doingState();
+        item.readyForTestingState();
+
+        item.toDoState();
+
+        assertThat(item.getState()).isInstanceOf(ToDoState.class);
+    }
+
+    @Test
     void givenBacklogItemWithReadyForTestingStateWhenSwitchingStateThenSwitchToDoingState() throws InvalidStateException {
         BacklogItem item = new BacklogItem("Backlog",user);
         item.doingState();
@@ -68,6 +79,18 @@ public class BacklogItemStateTest {
         item.testingState();
 
         assertThat(item.getState()).isInstanceOf(TestingState.class);
+    }
+
+    @Test
+    void givenBacklogItemWithTestingStateWhenSwitchingStateThenSwitchToToDoState() throws InvalidStateException {
+        BacklogItem item = new BacklogItem("Backlog",user);
+        item.doingState();
+        item.readyForTestingState();
+        item.testingState();
+
+        item.toDoState();
+
+        assertThat(item.getState()).isInstanceOf(ToDoState.class);
     }
 
     @Test
@@ -92,6 +115,19 @@ public class BacklogItemStateTest {
         item.testedState();
 
         assertThat(item.getState()).isInstanceOf(TestedState.class);
+    }
+
+    @Test
+    void givenBacklogItemWithTestedStateWhenSwitchingStateThenSwitchToReadyForTestingState() throws InvalidStateException {
+        BacklogItem item = new BacklogItem("Backlog",user);
+        item.doingState();
+        item.readyForTestingState();
+        item.testingState();
+        item.testedState();
+
+        item.readyForTestingState();
+
+        assertThat(item.getState()).isInstanceOf(ReadyForTestingState.class);
     }
 
     @Test
@@ -181,16 +217,6 @@ public class BacklogItemStateTest {
     }
 
     @Test
-    void givenBacklogItemWithReadyForTestingStateWhenSwitchingStateToToDoThenThrowException() throws InvalidStateException {
-        BacklogItem item = new BacklogItem("Backlog",user);
-        item.doingState();
-        item.readyForTestingState();
-
-        InvalidStateException exception = assertThrows(InvalidStateException.class, item::toDoState);
-        assertEquals("Cannot transition to 'to do' state!", exception.getMessage());
-    }
-
-    @Test
     void givenBacklogItemWithReadyForTestingStateWhenSwitchingStateToTestedThenThrowException() throws InvalidStateException {
         BacklogItem item = new BacklogItem("Backlog",user);
         item.doingState();
@@ -208,17 +234,6 @@ public class BacklogItemStateTest {
 
         InvalidStateException exception = assertThrows(InvalidStateException.class, item::doneState);
         assertEquals("Cannot transition to 'done' state!", exception.getMessage());
-    }
-
-    @Test
-    void givenBacklogItemWithTestingStateWhenSwitchingStateToToDoThenThrowException() throws InvalidStateException {
-        BacklogItem item = new BacklogItem("Backlog",user);
-        item.doingState();
-        item.readyForTestingState();
-        item.testingState();
-
-        InvalidStateException exception = assertThrows(InvalidStateException.class, item::toDoState);
-        assertEquals("Cannot transition to 'to do' state!", exception.getMessage());
     }
 
     @Test
@@ -265,18 +280,6 @@ public class BacklogItemStateTest {
 
         InvalidStateException exception = assertThrows(InvalidStateException.class, item::doingState);
         assertEquals("Cannot transition to 'doing' state!", exception.getMessage());
-    }
-
-    @Test
-    void givenBacklogItemWithTestedStateWhenSwitchingStateToReadyForTestingThenThrowException() throws InvalidStateException {
-        BacklogItem item = new BacklogItem("Backlog",user);
-        item.doingState();
-        item.readyForTestingState();
-        item.testingState();
-        item.testedState();
-
-        InvalidStateException exception = assertThrows(InvalidStateException.class, item::readyForTestingState);
-        assertEquals("Cannot transition to 'ready for testing' state!", exception.getMessage());
     }
 
     @Test
