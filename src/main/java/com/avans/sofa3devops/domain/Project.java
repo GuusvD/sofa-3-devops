@@ -1,5 +1,6 @@
 package com.avans.sofa3devops.domain;
 
+import com.avans.sofa3devops.domainServices.gitStrategyPattern.IGitCommands;
 import com.avans.sofa3devops.domainServices.reportStrategyPattern.IReport;
 import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprint;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.CreatedState;
@@ -16,16 +17,44 @@ public class Project {
     private List<ISprint> sprints;
     private List<BacklogItem> projectBacklog;
     private final List<IReport> _reportStrategies;
-   
 
-    public Project(String name, List<IReport> reportStrategies) {
+    private final IGitCommands _gitStrategy;
+
+    public Project(String name, List<IReport> reportStrategies, IGitCommands gitStrategy) {
+
         this.id = UUID.randomUUID();
         this.name = name;
         this.participants = new ArrayList<>();
         this.projectBacklog = new ArrayList<>();
         this.sprints = new ArrayList<>();
         _reportStrategies = reportStrategies;
-        
+
+        _gitStrategy = gitStrategy;
+  
+    }
+
+    public void pull() {
+        _gitStrategy.pull();
+    }
+
+    public void push() {
+        _gitStrategy.push();
+    }
+
+    public void commit() {
+        _gitStrategy.commit();
+    }
+
+    public void status() {
+        _gitStrategy.status();
+    }
+
+    public void checkout() {
+        _gitStrategy.checkout();
+    }
+
+    public void stash() {
+        _gitStrategy.stash();
     }
 
     public void printReports() {

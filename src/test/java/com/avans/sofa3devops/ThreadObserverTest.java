@@ -8,6 +8,7 @@ import com.avans.sofa3devops.domainServices.notificationStrategyPattern.Sms;
 import com.avans.sofa3devops.domainServices.threadObserverPattern.NotificationService;
 import com.avans.sofa3devops.domainServices.threadVisitorPattern.NotificationExecutor;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.*;
 
@@ -16,6 +17,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
+@SpringBootTest
 public class ThreadObserverTest {
     User user = new User("John Doe", "j.doe@gmail.com", "Password1234");
 

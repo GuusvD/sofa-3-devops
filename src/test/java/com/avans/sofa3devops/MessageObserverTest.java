@@ -3,6 +3,7 @@ package com.avans.sofa3devops;
 import com.avans.sofa3devops.domain.*;
 import com.avans.sofa3devops.domain.Thread;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,6 +15,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
+@SpringBootTest
 public class MessageObserverTest {
     User user = new User("John Doe", "j.doe@gmail.com", "Password1234");
 

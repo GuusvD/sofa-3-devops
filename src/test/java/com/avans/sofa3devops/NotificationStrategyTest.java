@@ -6,11 +6,13 @@ import com.avans.sofa3devops.domainServices.notificationStrategyPattern.Slack;
 import com.avans.sofa3devops.domainServices.notificationStrategyPattern.Sms;
 import com.avans.sofa3devops.domainServices.threadVisitorPattern.NotificationExecutor;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.logging.Logger;
 
 import static org.mockito.Mockito.*;
 
+@SpringBootTest
 public class NotificationStrategyTest {
     @Test
     void givenSlackWhenCallingVisitThenCallSendMessageAndGenerateALog() {
