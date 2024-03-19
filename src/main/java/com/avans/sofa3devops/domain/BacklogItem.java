@@ -6,6 +6,7 @@ import com.avans.sofa3devops.domainServices.backlogStatePattern.ToDoState;
 import com.avans.sofa3devops.domainServices.compositeInterfaces.IItemComponent;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
 import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprint;
+import com.avans.sofa3devops.domainServices.sprintStatePattern.CreatedState;
 
 import java.util.ArrayList;
 import java.util.List;
