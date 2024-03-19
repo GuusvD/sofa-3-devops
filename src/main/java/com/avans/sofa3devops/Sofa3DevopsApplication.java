@@ -29,8 +29,8 @@ public class Sofa3DevopsApplication {
 		Project project = new Project("LANGUAGESCHOOL", reportStrategies, pipeline);
 		project.printReports();
 
-		User creator= new User();
-		User developer = new User();
+		User creator= new User(UUID.randomUUID(), "John Doe", "j.doe@gmail.com", "1234");
+		User developer = new User(UUID.randomUUID(), "John Doe", "j.doe@gmail.com", "1234");
 
 		BacklogItem item = new BacklogItem("US-1",creator );
 		Activity activityOne = new Activity("AC-1-One",creator);
