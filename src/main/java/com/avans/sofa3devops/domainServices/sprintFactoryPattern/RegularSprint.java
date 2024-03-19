@@ -2,13 +2,14 @@ package com.avans.sofa3devops.domainServices.sprintFactoryPattern;
 
 import com.avans.sofa3devops.domain.*;
 
+import com.avans.sofa3devops.domain.actions.Deploy;
+import com.avans.sofa3devops.domainServices.compositeInterfaces.IPipeComponent;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.CreatedState;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.ISprintState;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.io.InvalidObjectException;
+import java.util.*;
 
 public class RegularSprint implements ISprint {
     private ISprintState state;
@@ -19,6 +20,7 @@ public class RegularSprint implements ISprint {
     private List<User> developers;
     private Document document;
     private List<Release> releases;
+    private Pipeline pipeline;
 
     public RegularSprint(int number, Date start, Date end, User user) {
         this.state = new CreatedState(this);
@@ -28,6 +30,7 @@ public class RegularSprint implements ISprint {
         this.backlog = new ArrayList<>();
         this.developers = new ArrayList<>();
         this.developers.add(user);
+        this.pipeline = new Pipeline("Sprint:" + number);
     }
 
     // State Methods
@@ -90,6 +93,17 @@ public class RegularSprint implements ISprint {
     public void removeBacklogItem(BacklogItem backlog) {
         if (state instanceof CreatedState) {
             this.backlog.remove(backlog);
+        }
+    }
+
+    @Override
+    public void addActionsToPipeline(List<IPipeComponent> actions) throws InvalidObjectException {
+        Set<IPipeComponent> set = new HashSet<>(actions);
+        boolean hasDuplicates = set.size() < actions.size();
+        if (actions.getLast() instanceof Deploy && !hasDuplicates) {
+            this.pipeline.setActions(actions);
+        } else {
+            throw new InvalidObjectException("No duplicates allowed and last action of the pipeline should be deploy!");
         }
     }
 

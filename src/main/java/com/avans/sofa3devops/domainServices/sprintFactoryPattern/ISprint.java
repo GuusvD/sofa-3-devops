@@ -3,10 +3,13 @@ package com.avans.sofa3devops.domainServices.sprintFactoryPattern;
 import com.avans.sofa3devops.domain.Activity;
 import com.avans.sofa3devops.domain.BacklogItem;
 import com.avans.sofa3devops.domain.User;
+import com.avans.sofa3devops.domainServices.compositeInterfaces.IPipeComponent;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.ISprintState;
 
+import java.io.InvalidObjectException;
 import java.util.Date;
+import java.util.List;
 
 public interface ISprint {
     void setState(ISprintState state);
@@ -32,6 +35,7 @@ public interface ISprint {
     void addBacklogItem(BacklogItem item);
 
     void removeBacklogItem(BacklogItem item);
+    void addActionsToPipeline(List<IPipeComponent> actions) throws InvalidObjectException;
 
     Date getEnd();
 }

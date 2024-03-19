@@ -22,11 +22,16 @@ public class Sofa3DevopsApplication {
         reportStrategies.add(new Pdf());
         reportStrategies.add(new Png());
 
+
+        Pipeline pipeline = new Pipeline("Pipe");
+
         IGitCommands gitStrategy = new GitHub(Logger.getLogger(GitHub.class.getName()));
 
         Pipeline pipeline = new Pipeline();
 
-        Project project = new Project("LANGUAGESCHOOL", reportStrategies, gitStrategy, pipeline);
+
+        Project project = new Project("LANGUAGESCHOOL", reportStrategies);
+
         project.printReports();
 
         User creator = new User("John Doe", "j.doe@gmail.com", "Password1234");

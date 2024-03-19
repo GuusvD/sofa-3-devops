@@ -25,7 +25,6 @@ import java.util.logging.Logger;
 public class ProjectTests {
     private List<IReport> reportStrategies;
     private IGitCommands gitStrategy;
-    private Pipeline pipeline;
     private Project project;
     private User createdBy;
 
@@ -35,8 +34,7 @@ public class ProjectTests {
         reportStrategies.add(new Pdf());
         reportStrategies.add(new Png());
         gitStrategy = new GitHub(Logger.getLogger(GitHub.class.getName()));
-        pipeline = new Pipeline();
-        project = new Project("Project", reportStrategies, gitStrategy, pipeline);
+        project = new Project("Project", reportStrategies, gitStrategy);
         createdBy = new User("John Doe", "j.doe@gmail.com", "Password1234");
     }
 

@@ -17,18 +17,20 @@ public class Project {
     private List<ISprint> sprints;
     private List<BacklogItem> projectBacklog;
     private final List<IReport> _reportStrategies;
-    private final IGitCommands _gitStrategy;
-    private Pipeline pipeline;
 
-    public Project(String name, List<IReport> reportStrategies, IGitCommands gitStrategy, Pipeline pipeline) {
+    private final IGitCommands _gitStrategy;
+
+    public Project(String name, List<IReport> reportStrategies, IGitCommands gitStrategy) {
+
         this.id = UUID.randomUUID();
         this.name = name;
         this.participants = new ArrayList<>();
         this.projectBacklog = new ArrayList<>();
         this.sprints = new ArrayList<>();
         _reportStrategies = reportStrategies;
+
         _gitStrategy = gitStrategy;
-        this.pipeline = pipeline;
+  
     }
 
     public void pull() {
@@ -63,14 +65,6 @@ public class Project {
 
     public String getName() {
         return this.name;
-    }
-
-    public Pipeline getPipeline() {
-        return pipeline;
-    }
-
-    public void setPipeline(Pipeline pipeline) {
-        this.pipeline = pipeline;
     }
 
     // methods

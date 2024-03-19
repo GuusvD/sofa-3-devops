@@ -47,8 +47,7 @@ public class ReportStrategyTests {
         // Arrange
         List<IReport> reportStrategies = Arrays.asList(new Pdf(), new Png());
         IGitCommands gitStrategy = new GitLab(Logger.getLogger(GitLab.class.getName()));
-        Pipeline pipeline = new Pipeline();
-        Project project = new Project(name, reportStrategies, gitStrategy, pipeline);
+        Project project = new Project(name, reportStrategies, gitStrategy);
 
         // Act
         project.printReports();
