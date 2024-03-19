@@ -11,7 +11,9 @@ public class ReadyForTestingState implements IBacklogItemState {
     }
 
     @Override
-    public void toDoState() throws InvalidStateException {item.setState(new ToDoState(item));}
+    public void toDoState() {
+        item.setState(new ToDoState(item));
+    }
 
     @Override
     public void doingState() {
