@@ -2,7 +2,7 @@ package com.avans.sofa3devops.domainServices.sprintFactoryPattern;
 
 import com.avans.sofa3devops.domain.*;
 
-import com.avans.sofa3devops.domain.actions.Deploy;
+import com.avans.sofa3devops.domain.action.Deploy;
 import com.avans.sofa3devops.domainServices.compositeInterfaces.IPipeComponent;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.CreatedState;
@@ -98,6 +98,7 @@ public class RegularSprint implements ISprint {
 
     @Override
     public void addActionsToPipeline(List<IPipeComponent> actions) throws InvalidObjectException {
+        // To-do: Rewrite this method to according to new pipeline composite structure!
         Set<IPipeComponent> set = new HashSet<>(actions);
         boolean hasDuplicates = set.size() < actions.size();
         if (actions.getLast() instanceof Deploy && !hasDuplicates) {

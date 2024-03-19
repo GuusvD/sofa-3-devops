@@ -54,26 +54,7 @@ public class Pipeline implements IPipeComponent {
     }
 
     @Override
-    public void start(Release release) {
-        this.release = release;
-        releases.add(release);
-        run();
-        build();
-        stop();
-    }
-
-    @Override
-    public void run() {
-        actions.forEach(action -> action.start(release));
-    }
-
-    @Override
-    public void build() {
-
-    }
-
-    @Override
-    public void stop() {
-
+    public void print() {
+        
     }
 }
