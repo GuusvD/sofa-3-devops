@@ -6,6 +6,11 @@ import com.avans.sofa3devops.domain.INotificationVisitor;
 import java.util.logging.Logger;
 
 public class Sms implements INotification {
+    private Logger logger;
+
+    public Sms(Logger logger) {
+        this.logger = logger;
+    }
 
     @Override
     public void accept(INotificationVisitor visitor) {
@@ -14,7 +19,6 @@ public class Sms implements INotification {
 
     @Override
     public void sendMessage() {
-        Logger logger = Logger.getLogger(this.getClass().getName());
         logger.info("Sent SMS message!");
     }
 }

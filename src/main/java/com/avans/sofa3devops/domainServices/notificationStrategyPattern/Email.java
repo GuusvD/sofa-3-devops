@@ -6,6 +6,11 @@ import com.avans.sofa3devops.domain.INotificationVisitor;
 import java.util.logging.Logger;
 
 public class Email implements INotification {
+    private Logger logger;
+
+    public Email(Logger logger) {
+        this.logger = logger;
+    }
 
     @Override
     public void accept(INotificationVisitor visitor) {
@@ -14,7 +19,6 @@ public class Email implements INotification {
 
     @Override
     public void sendMessage() {
-        Logger logger = Logger.getLogger(this.getClass().getName());
         logger.info("Sent email message!");
     }
 }

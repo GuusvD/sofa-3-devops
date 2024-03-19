@@ -17,6 +17,7 @@ import static org.mockito.Mockito.verify;
 public class MessageObserverTest {
     User user = new User(UUID.randomUUID(), "John Doe", "j.doe@gmail.com", "Password1234");
 
+    // Message entity and observable test
     @Test
     void givenNewMessageWhenAddingItToOtherMessageThenCallUpdateObserverMethodAndAddMessageToOtherMessage() {
         BacklogItem item = new BacklogItem("BacklogItem", user, user);
