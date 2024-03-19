@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 public class SprintStateTest {
     // Correct state switching
-    User user = new User(UUID.randomUUID(), "John Doe", "j.doe@gmail.com", "1234");
+    User user = new User("John Doe", "j.doe@gmail.com", "Password1234");
     @Test
     void givenRegularSprintWithCreatedStateWhenSwitchingStateThenSwitchToInProgressState() throws InvalidStateException {
         SprintFactory factory = new SprintFactory();

@@ -17,12 +17,12 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 public class ThreadObserverTest {
-    User user = new User(UUID.randomUUID(), "John Doe", "j.doe@gmail.com", "Password1234");
+    User user = new User("John Doe", "j.doe@gmail.com", "Password1234");
 
     // Thread entity and observable test
     @Test
     void givenNewMessageWhenAddingItToThreadThenCallUpdateObserverMethodAndAddMessageToThread() {
-        BacklogItem item = new BacklogItem("BacklogItem", user, user);
+        BacklogItem item = new BacklogItem("BacklogItem", user);
         Thread thread = new Thread(UUID.randomUUID(), "A question?", "Please help me!!", new ArrayList<>(), item, user, new Date());
         Message newMessage = new Message(UUID.randomUUID(), "Your answer!", user, new ArrayList<>(), new Date());
         Observer mock = mock(Observer.class);

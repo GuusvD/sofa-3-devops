@@ -4,21 +4,19 @@ import com.avans.sofa3devops.domain.Activity;
 import com.avans.sofa3devops.domain.BacklogItem;
 import com.avans.sofa3devops.domain.User;
 import com.avans.sofa3devops.domainServices.backlogStatePattern.DoneState;
-import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.UUID;
-
 import static org.junit.jupiter.api.Assertions.*;
+
 @SpringBootTest
 public class BacklogCompositeTest {
     private User createdByUser;
 
     @BeforeEach
     void setup() {
-        createdByUser = new User();
+        createdByUser = new User("John Doe", "j.doe@gmail.com", "Password1234");
     }
 
     @Test
@@ -42,7 +40,7 @@ public class BacklogCompositeTest {
     }
 
     @Test
-    void FinishedEqualsTrueWithOneActivityThatIsFinished()  {
+    void FinishedEqualsTrueWithOneActivityThatIsFinished() {
         BacklogItem item = new BacklogItem("BacklogItem", createdByUser);
         Activity activity = new Activity("ActivityItem", createdByUser);
         item.addActivity(activity);
@@ -111,7 +109,6 @@ public class BacklogCompositeTest {
 
         assertFalse(item.getFinished());
     }
-
 
 
 }

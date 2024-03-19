@@ -17,7 +17,7 @@ public class FactoryPatternTests {
         // Arrange
         ISprintFactory factory = new SprintFactory();
         // Act
-        ISprint rSprint = factory.createRegularSprint(1, new Date(), new Date(), new User(UUID.randomUUID(), "John Doe", "j.doe@gmail.com", "1234"));
+        ISprint rSprint = factory.createRegularSprint(1, new Date(), new Date(), new User("John Doe", "j.doe@gmail.com", "Password1234"));
         // Assert
         assertInstanceOf(RegularSprint.class, rSprint);
     }
@@ -27,7 +27,7 @@ public class FactoryPatternTests {
         // Arrange
         ISprintFactory factory = new SprintFactory();
         // Act
-        ISprint rSprint = factory.createReviewSprint(1, new Date(), new Date(), new User(UUID.randomUUID(), "John Doe", "j.doe@gmail.com", "1234"));
+        ISprint rSprint = factory.createReviewSprint(1, new Date(), new Date(), new User("John Doe", "j.doe@gmail.com", "Password1234"));
         // Assert
         assertInstanceOf(ReviewSprint.class, rSprint);
     }
