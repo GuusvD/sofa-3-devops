@@ -21,7 +21,7 @@ public class ReviewSprint implements ISprint {
     private boolean reviewed;
     private Pipeline pipeline;
 
-    public ReviewSprint(int number, Date start, Date end, User user) {
+    public ReviewSprint(int number, Date start, Date end, User user) throws Exception {
         this.state = new CreatedState(this);
         this.number = number;
         this.start = start;
@@ -102,13 +102,7 @@ public class ReviewSprint implements ISprint {
 
     @Override
     public void addActionsToPipeline(List<IPipeComponent> actions) throws InvalidObjectException {
-        Set<IPipeComponent> set = new HashSet<>(actions);
-        boolean hasDuplicates = set.size() < actions.size();
-        if (!hasDuplicates) {
-            this.pipeline.setActions(actions);
-        } else {
-            throw new InvalidObjectException("No duplicates allowed in the pipeline!");
-        }
+
     }
 
     public void addDeveloper(User user) {
@@ -134,6 +128,17 @@ public class ReviewSprint implements ISprint {
 
     public Date getEnd() {
         return end;
+    }
+
+    @Override
+    public void executePipeline() throws InvalidStateException {
+        boolean successful = pipeline.execute();
+
+        if (!successful) {
+            pipeline.failedState();
+        } else {
+            pipeline.finishedState();
+        }
     }
 
     public List<BacklogItem> getBacklog() {

@@ -38,4 +38,6 @@ public interface ISprint {
     void addActionsToPipeline(List<IPipeComponent> actions) throws InvalidObjectException;
 
     Date getEnd();
+    
+    void executePipeline() throws InvalidStateException;
 }

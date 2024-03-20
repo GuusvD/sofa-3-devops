@@ -18,13 +18,14 @@ public class GitCloneCommand extends Command {
     }
 
     @Override
-    public void execute() {
+    public boolean execute() {
         logger.info("Execute " + getCommand());
-        logger.info("Succesfully executed " + getCommand() + " without any errors!");
+        logger.info("Successfully executed " + getCommand() + " without any errors!");
+        return true;
     }
-
+    
     @Override
     public void print() {
-
+        logger.info(this.getClass().getSimpleName() + " " + getCommand());
     }
 }

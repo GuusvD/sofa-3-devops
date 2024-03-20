@@ -1,6 +1,7 @@
 package com.avans.sofa3devops;
 
 import com.avans.sofa3devops.domain.*;
+import com.avans.sofa3devops.domain.command.GitCloneCommand;
 import com.avans.sofa3devops.domainServices.gitStrategyPattern.GitHub;
 import com.avans.sofa3devops.domainServices.gitStrategyPattern.IGitCommands;
 import com.avans.sofa3devops.domainServices.reportStrategyPattern.IReport;
@@ -15,7 +16,7 @@ import java.util.logging.Logger;
 
 @SpringBootApplication
 public class Sofa3DevopsApplication {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         SpringApplication.run(Sofa3DevopsApplication.class, args);
 
         List<IReport> reportStrategies = new ArrayList<>();
@@ -41,5 +42,10 @@ public class Sofa3DevopsApplication {
         item.addActivity(activityTwo);
 
         item.getAllStories();
+
+        pipeline.print();
+        Command newCommand = new GitCloneCommand();
+        pipeline.addCommandToAction(newCommand);
+        boolean completed = pipeline.execute();
     }
 }

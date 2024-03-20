@@ -6,19 +6,35 @@ import com.avans.sofa3devops.domainServices.compositeInterfaces.IPipeComponent;
 import java.util.logging.Logger;
 
 public class Build extends Action {
-    private final String name = getClass().getName();
+    private final String name = getClass().getSimpleName();
     private final Logger logger = Logger.getLogger(getClass().getName());
-    private final Integer sortIndex = 3;
 
-    public String getName() {return name;}
+    public Build() {
+        super(3);
+    }
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public boolean execute() {
+        logger.info("Starting build action: " + getName());
+            for (IPipeComponent command : getCommands()) {
+                boolean successful = command.execute();
+
+                if (!successful) {
+                    return false;
+                }
+            }
+            return true;
+       
+    }
 
     @Override
     public void print() {
-        logger.info("Starting build action: " + getName());
-
+        logger.info(this.getClass().getSimpleName());
         for (IPipeComponent command : getCommands()) {
             command.print();
         }
     }
-
 }
