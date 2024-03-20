@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 @SpringBootTest
 public class FactoryPatternTests {
     @Test
-    void createRegularSprintWithFactory() {
+    void createRegularSprintWithFactory() throws Exception {
         // Arrange
         ISprintFactory factory = new SprintFactory();
         // Act
@@ -23,7 +23,7 @@ public class FactoryPatternTests {
     }
 
     @Test
-    void createReviewSprintWithFactory() {
+    void createReviewSprintWithFactory() throws Exception {
         // Arrange
         ISprintFactory factory = new SprintFactory();
         // Act

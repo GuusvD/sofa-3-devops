@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class PipelineStateTest {
     // Correct state switching
     @Test
-    void givenPipelineWithInitialStateWhenSwitchingStateThenSwitchToExecutedState() throws InvalidStateException {
+    void givenPipelineWithInitialStateWhenSwitchingStateThenSwitchToExecutedState() throws Exception {
         Pipeline pipeline = new Pipeline("Test");
 
         pipeline.executedState();
@@ -26,7 +26,7 @@ public class PipelineStateTest {
     }
 
     @Test
-    void givenPipelineWithInitialStateWhenSwitchingStateThenSwitchToCancelledState() throws InvalidStateException {
+    void givenPipelineWithInitialStateWhenSwitchingStateThenSwitchToCancelledState() throws Exception {
         Pipeline pipeline = new Pipeline("Test");
 
         pipeline.cancelledState();
@@ -35,7 +35,7 @@ public class PipelineStateTest {
     }
 
     @Test
-    void givenPipelineWithExecutedStateWhenSwitchingStateThenSwitchToFinishedState() throws InvalidStateException {
+    void givenPipelineWithExecutedStateWhenSwitchingStateThenSwitchToFinishedState() throws Exception {
         Pipeline pipeline = new Pipeline("Test");
         pipeline.executedState();
 
@@ -45,7 +45,7 @@ public class PipelineStateTest {
     }
 
     @Test
-    void givenPipelineWithExecutedStateWhenSwitchingStateThenSwitchToFailedState() throws InvalidStateException {
+    void givenPipelineWithExecutedStateWhenSwitchingStateThenSwitchToFailedState() throws Exception {
         Pipeline pipeline = new Pipeline("Test");
         pipeline.executedState();
 
@@ -55,7 +55,7 @@ public class PipelineStateTest {
     }
 
     @Test
-    void givenPipelineWithFailedStateWhenSwitchingStateThenSwitchToExecutedState() throws InvalidStateException {
+    void givenPipelineWithFailedStateWhenSwitchingStateThenSwitchToExecutedState() throws Exception {
         Pipeline pipeline = new Pipeline("Test");
         pipeline.executedState();
         pipeline.failedState();
@@ -66,7 +66,7 @@ public class PipelineStateTest {
     }
 
     @Test
-    void givenPipelineWithFailedStateWhenSwitchingStateThenSwitchToCancelledState() throws InvalidStateException {
+    void givenPipelineWithFailedStateWhenSwitchingStateThenSwitchToCancelledState() throws Exception {
         Pipeline pipeline = new Pipeline("Test");
         pipeline.executedState();
         pipeline.failedState();
@@ -78,7 +78,7 @@ public class PipelineStateTest {
 
     // Incorrect state switching
     @Test
-    void givenPipelineWithInitialStateWhenSwitchingStateToFinishedStateThenThrowException() {
+    void givenPipelineWithInitialStateWhenSwitchingStateToFinishedStateThenThrowException() throws Exception {
         Pipeline pipeline = new Pipeline("Test");
 
         InvalidStateException exception = assertThrows(InvalidStateException.class, pipeline::finishedState);
@@ -86,7 +86,7 @@ public class PipelineStateTest {
     }
 
     @Test
-    void givenPipelineWithInitialStateWhenSwitchingStateToFailedStateThenThrowException() {
+    void givenPipelineWithInitialStateWhenSwitchingStateToFailedStateThenThrowException() throws Exception {
         Pipeline pipeline = new Pipeline("Test");
 
         InvalidStateException exception = assertThrows(InvalidStateException.class, pipeline::failedState);
@@ -94,7 +94,7 @@ public class PipelineStateTest {
     }
 
     @Test
-    void givenPipelineWithExecutedStateWhenSwitchingStateToCancelledStateThenThrowException() throws InvalidStateException {
+    void givenPipelineWithExecutedStateWhenSwitchingStateToCancelledStateThenThrowException() throws Exception {
         Pipeline pipeline = new Pipeline("Test");
         pipeline.executedState();
 
@@ -103,7 +103,7 @@ public class PipelineStateTest {
     }
 
     @Test
-    void givenPipelineWithFinishedStateWhenSwitchingStateToExecutedStateThenThrowException() throws InvalidStateException {
+    void givenPipelineWithFinishedStateWhenSwitchingStateToExecutedStateThenThrowException() throws Exception {
         Pipeline pipeline = new Pipeline("Test");
         pipeline.executedState();
         pipeline.finishedState();
@@ -113,7 +113,7 @@ public class PipelineStateTest {
     }
 
     @Test
-    void givenPipelineWithFinishedStateWhenSwitchingStateToFailedStateThenThrowException() throws InvalidStateException {
+    void givenPipelineWithFinishedStateWhenSwitchingStateToFailedStateThenThrowException() throws Exception {
         Pipeline pipeline = new Pipeline("Test");
         pipeline.executedState();
         pipeline.finishedState();
@@ -123,7 +123,7 @@ public class PipelineStateTest {
     }
 
     @Test
-    void givenPipelineWithFinishedStateWhenSwitchingStateToCancelledStateThenThrowException() throws InvalidStateException {
+    void givenPipelineWithFinishedStateWhenSwitchingStateToCancelledStateThenThrowException() throws Exception {
         Pipeline pipeline = new Pipeline("Test");
         pipeline.executedState();
         pipeline.finishedState();
@@ -133,7 +133,7 @@ public class PipelineStateTest {
     }
 
     @Test
-    void givenPipelineWithFailedStateWhenSwitchingStateToFinishedStateThenThrowException() throws InvalidStateException {
+    void givenPipelineWithFailedStateWhenSwitchingStateToFinishedStateThenThrowException() throws Exception {
         Pipeline pipeline = new Pipeline("Test");
         pipeline.executedState();
         pipeline.failedState();
@@ -143,7 +143,7 @@ public class PipelineStateTest {
     }
 
     @Test
-    void givenPipelineWithCancelledStateWhenSwitchingStateToExecutedStateThenThrowException() throws InvalidStateException {
+    void givenPipelineWithCancelledStateWhenSwitchingStateToExecutedStateThenThrowException() throws Exception {
         Pipeline pipeline = new Pipeline("Test");
         pipeline.executedState();
         pipeline.failedState();
@@ -154,7 +154,7 @@ public class PipelineStateTest {
     }
 
     @Test
-    void givenPipelineWithCancelledStateWhenSwitchingStateToFinishedStateThenThrowException() throws InvalidStateException {
+    void givenPipelineWithCancelledStateWhenSwitchingStateToFinishedStateThenThrowException() throws Exception {
         Pipeline pipeline = new Pipeline("Test");
         pipeline.executedState();
         pipeline.failedState();
@@ -165,7 +165,7 @@ public class PipelineStateTest {
     }
 
     @Test
-    void givenPipelineWithCancelledStateWhenSwitchingStateToFailedStateThenThrowException() throws InvalidStateException {
+    void givenPipelineWithCancelledStateWhenSwitchingStateToFailedStateThenThrowException() throws Exception {
         Pipeline pipeline = new Pipeline("Test");
         pipeline.executedState();
         pipeline.failedState();
@@ -177,7 +177,7 @@ public class PipelineStateTest {
 
     // Same state switching
     @Test
-    void givenPipelineWithExecutedStateWhenSwitchingStateToExecutedStateThenThrowException() throws InvalidStateException {
+    void givenPipelineWithExecutedStateWhenSwitchingStateToExecutedStateThenThrowException() throws Exception {
         Pipeline pipeline = new Pipeline("Test");
         pipeline.executedState();
 
@@ -186,7 +186,7 @@ public class PipelineStateTest {
     }
 
     @Test
-    void givenPipelineWithFinishedStateWhenSwitchingStateToFinishedStateThenThrowException() throws InvalidStateException {
+    void givenPipelineWithFinishedStateWhenSwitchingStateToFinishedStateThenThrowException() throws Exception {
         Pipeline pipeline = new Pipeline("Test");
         pipeline.executedState();
         pipeline.finishedState();
@@ -196,7 +196,7 @@ public class PipelineStateTest {
     }
 
     @Test
-    void givenPipelineWithFailedStateWhenSwitchingStateToFailedStateThenThrowException() throws InvalidStateException {
+    void givenPipelineWithFailedStateWhenSwitchingStateToFailedStateThenThrowException() throws Exception {
         Pipeline pipeline = new Pipeline("Test");
         pipeline.executedState();
         pipeline.failedState();
@@ -206,7 +206,7 @@ public class PipelineStateTest {
     }
 
     @Test
-    void givenPipelineWithCancelledStateWhenSwitchingStateToCancelledStateThenThrowException() throws InvalidStateException {
+    void givenPipelineWithCancelledStateWhenSwitchingStateToCancelledStateThenThrowException() throws Exception {
         Pipeline pipeline = new Pipeline("Test");
         pipeline.executedState();
         pipeline.failedState();
