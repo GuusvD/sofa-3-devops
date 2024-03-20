@@ -26,7 +26,7 @@ public class SprintStateTest {
     User user = new User("John Doe", "j.doe@gmail.com", "Password1234");
 
     @Test
-    void givenRegularSprintWithCreatedStateWhenSwitchingStateThenSwitchToInProgressState() throws InvalidStateException {
+    void givenRegularSprintWithCreatedStateWhenSwitchingStateThenSwitchToInProgressState() throws Exception {
         SprintFactory factory = new SprintFactory();
 
         ISprint sprint = factory.createRegularSprint(1, startDate, pastDate, user);
@@ -37,7 +37,7 @@ public class SprintStateTest {
     }
 
     @Test
-    void givenRegularSprintWithInProgressStateWhenSwitchingStateThenSwitchToFinishedState() throws InvalidStateException {
+    void givenRegularSprintWithInProgressStateWhenSwitchingStateThenSwitchToFinishedState() throws Exception {
         SprintFactory factory = new SprintFactory();
         ISprint sprint = factory.createRegularSprint(1, startDate, pastDate, user);
         sprint.inProgress();
@@ -48,7 +48,7 @@ public class SprintStateTest {
     }
 
     @Test
-    void givenRegularSprintWithFinishedStateWhenSwitchingStateThenSwitchToClosedState() throws InvalidStateException {
+    void givenRegularSprintWithFinishedStateWhenSwitchingStateThenSwitchToClosedState() throws Exception {
         SprintFactory factory = new SprintFactory();
         ISprint sprint = factory.createRegularSprint(1, startDate, pastDate, user);
         sprint.inProgress();
@@ -60,7 +60,7 @@ public class SprintStateTest {
     }
 
     @Test
-    void givenReviewSprintWithFinishedStateAndWithDocumentAndWithReviewWhenSwitchingStateToClosedThenSwitchToClosedState() throws InvalidStateException {
+    void givenReviewSprintWithFinishedStateAndWithDocumentAndWithReviewWhenSwitchingStateToClosedThenSwitchToClosedState() throws Exception {
         SprintFactory factory = new SprintFactory();
         ReviewSprint sprint = (ReviewSprint) factory.createReviewSprint(1, startDate, pastDate, user);
         sprint.inProgress();
@@ -75,7 +75,7 @@ public class SprintStateTest {
 
     // Incorrect state switching
     @Test
-    void givenRegularSprintWithFinishedStateWhenSwitchingStateToInProgressThenThrowException() throws InvalidStateException {
+    void givenRegularSprintWithFinishedStateWhenSwitchingStateToInProgressThenThrowException() throws Exception {
         SprintFactory factory = new SprintFactory();
         ISprint sprint = factory.createRegularSprint(1, startDate, pastDate, user);
         sprint.inProgress();
@@ -86,7 +86,7 @@ public class SprintStateTest {
     }
 
     @Test
-    void givenRegularSprintWithClosedStateWhenSwitchingStateToFinishedThenThrowException() throws InvalidStateException {
+    void givenRegularSprintWithClosedStateWhenSwitchingStateToFinishedThenThrowException() throws Exception {
         SprintFactory factory = new SprintFactory();
         ISprint sprint = factory.createRegularSprint(1, startDate, pastDate, user);
         sprint.inProgress();
@@ -98,7 +98,7 @@ public class SprintStateTest {
     }
 
     @Test
-    void givenRegularSprintWithClosedStateWhenSwitchingStateToInProgressThenThrowException() throws InvalidStateException {
+    void givenRegularSprintWithClosedStateWhenSwitchingStateToInProgressThenThrowException() throws Exception {
         SprintFactory factory = new SprintFactory();
         ISprint sprint = factory.createRegularSprint(1, startDate, pastDate, user);
         sprint.inProgress();
@@ -110,7 +110,7 @@ public class SprintStateTest {
     }
 
     @Test
-    void givenRegularSprintWithInProgressStateWhenSwitchingStateToClosedThenThrowException() throws InvalidStateException {
+    void givenRegularSprintWithInProgressStateWhenSwitchingStateToClosedThenThrowException() throws Exception {
         SprintFactory factory = new SprintFactory();
         ISprint sprint = factory.createRegularSprint(1, startDate, pastDate, user);
         sprint.inProgress();
@@ -120,7 +120,7 @@ public class SprintStateTest {
     }
 
     @Test
-    void givenReviewSprintWithFinishedStateAndWithoutReviewWhenSwitchingStateToClosedThenThrowException() throws InvalidStateException {
+    void givenReviewSprintWithFinishedStateAndWithoutReviewWhenSwitchingStateToClosedThenThrowException() throws Exception {
         SprintFactory factory = new SprintFactory();
         ISprint sprint = factory.createReviewSprint(1, startDate, pastDate, user);
         sprint.inProgress();
@@ -132,7 +132,7 @@ public class SprintStateTest {
 
     // Same state switching
     @Test
-    void givenRegularSprintWithInProgressStateWhenSwitchingStateToInProgressThenThrowException() throws InvalidStateException {
+    void givenRegularSprintWithInProgressStateWhenSwitchingStateToInProgressThenThrowException() throws Exception {
         SprintFactory factory = new SprintFactory();
         ISprint sprint = factory.createRegularSprint(1, startDate, pastDate, user);
         sprint.inProgress();
@@ -142,7 +142,7 @@ public class SprintStateTest {
     }
 
     @Test
-    void givenRegularSprintWithInProgressStateAndDateNotPassedWhenSwitchingStateToInProgressThenTrowException() throws InvalidStateException {
+    void givenRegularSprintWithInProgressStateAndDateNotPassedWhenSwitchingStateToInProgressThenTrowException() throws Exception {
         Date currentDate = new Date();
         long millisecondsToAdd = 7 * 24 * 60 * 60 * 1000; // Adding 7 days
         Date futureDate = new Date(currentDate.getTime() + millisecondsToAdd);
@@ -155,7 +155,7 @@ public class SprintStateTest {
     }
 
     @Test
-    void givenRegularSprintWithFinishedStateWhenSwitchingStateToFinishedThenThrowException() throws InvalidStateException {
+    void givenRegularSprintWithFinishedStateWhenSwitchingStateToFinishedThenThrowException() throws Exception {
         SprintFactory factory = new SprintFactory();
         ISprint sprint = factory.createRegularSprint(1, startDate, pastDate, user);
         sprint.inProgress();
@@ -166,7 +166,7 @@ public class SprintStateTest {
     }
 
     @Test
-    void givenRegularSprintWithClosedStateWhenSwitchingStateToClosedThenThrowException() throws InvalidStateException {
+    void givenRegularSprintWithClosedStateWhenSwitchingStateToClosedThenThrowException() throws Exception {
         SprintFactory factory = new SprintFactory();
         ISprint sprint = factory.createRegularSprint(1, startDate, pastDate, user);
         sprint.inProgress();
@@ -178,7 +178,7 @@ public class SprintStateTest {
     }
 
     @Test
-    void givenReviewSprintWithFinishedStateWhenSwitchingToClosedStateWithoutDocument() throws InvalidStateException {
+    void givenReviewSprintWithFinishedStateWhenSwitchingToClosedStateWithoutDocument() throws Exception {
         SprintFactory factory = new SprintFactory();
         ReviewSprint sprint = (ReviewSprint) factory.createReviewSprint(1, startDate, pastDate, user);
         sprint.inProgress();
@@ -191,7 +191,7 @@ public class SprintStateTest {
     }
 
     @Test
-    void givenReviewSprintWithFinishedStateWhenSwitchingToClosedStateWithDocument() throws InvalidStateException {
+    void givenReviewSprintWithFinishedStateWhenSwitchingToClosedStateWithDocument() throws Exception {
         SprintFactory factory = new SprintFactory();
         ReviewSprint sprint = (ReviewSprint) factory.createReviewSprint(1, startDate, pastDate, user);
         Document document = new Document();

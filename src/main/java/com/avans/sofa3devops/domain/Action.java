@@ -10,11 +10,14 @@ import java.util.logging.Logger;
 public abstract class Action implements IPipeComponent {
     private UUID id;
     private String name;
+    private int sortIndex;
 
     private List<IPipeComponent> commands;
 
-    public Action() {
-        this.commands = new ArrayList<>();
+    public Action(int sortIndex) {
+        this.id = UUID.randomUUID();
+        this.sortIndex = sortIndex;
+        this.commands = new ArrayList<IPipeComponent>();
     }
 
     public void add(IPipeComponent action) {
@@ -25,11 +28,13 @@ public abstract class Action implements IPipeComponent {
         this.commands.remove(action);
     }
 
-    public abstract void print();
+    public abstract boolean execute();
+
+    public int getIndex() {
+        return sortIndex;
+    }
 
     public List<IPipeComponent> getCommands() {
         return commands;
     }
-
-
 }

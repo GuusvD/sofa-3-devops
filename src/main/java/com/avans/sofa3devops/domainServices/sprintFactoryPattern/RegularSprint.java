@@ -22,7 +22,7 @@ public class RegularSprint implements ISprint {
     private List<Release> releases;
     private Pipeline pipeline;
 
-    public RegularSprint(int number, Date start, Date end, User user) {
+    public RegularSprint(int number, Date start, Date end, User user) throws Exception {
         this.state = new CreatedState(this);
         this.number = number;
         this.start = start;
@@ -99,13 +99,7 @@ public class RegularSprint implements ISprint {
     @Override
     public void addActionsToPipeline(List<IPipeComponent> actions) throws InvalidObjectException {
         // To-do: Rewrite this method to according to new pipeline composite structure!
-        Set<IPipeComponent> set = new HashSet<>(actions);
-        boolean hasDuplicates = set.size() < actions.size();
-        if (actions.getLast() instanceof Deploy && !hasDuplicates) {
-            this.pipeline.setActions(actions);
-        } else {
-            throw new InvalidObjectException("No duplicates allowed and last action of the pipeline should be deploy!");
-        }
+     
     }
 
     public void addDeveloper(User user) {
@@ -131,6 +125,17 @@ public class RegularSprint implements ISprint {
 
     public Date getEnd() {
         return end;
+    }
+
+    @Override
+    public void executePipeline() throws InvalidStateException {
+        boolean successful = pipeline.execute();
+        
+        if (!successful) {
+            pipeline.failedState();
+        } else {
+            pipeline.finishedState();
+        }
     }
 
     public List<BacklogItem> getBacklog() {

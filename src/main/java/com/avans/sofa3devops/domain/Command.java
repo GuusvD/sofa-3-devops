@@ -5,11 +5,12 @@ import java.util.UUID;
 
 public abstract class Command implements IPipeComponent {
 
-    private UUID id = UUID.randomUUID();
+    private UUID id;
     private String command;
     private Action action;
 
     public Command() {
+        id = UUID.randomUUID();
         connectToAction();
     }
 
@@ -31,5 +32,5 @@ public abstract class Command implements IPipeComponent {
 
     public abstract void connectToAction();
 
-    public abstract void execute();
+    public abstract boolean execute();
 }
