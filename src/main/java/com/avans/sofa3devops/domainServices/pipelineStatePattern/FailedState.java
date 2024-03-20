@@ -3,7 +3,9 @@ package com.avans.sofa3devops.domainServices.pipelineStatePattern;
 import com.avans.sofa3devops.domain.Pipeline;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
 
-public class FailedState implements IPipelineState {
+import java.util.Observable;
+
+public class FailedState extends Observable implements IPipelineState {
     private final Pipeline pipeline;
 
     public FailedState(Pipeline pipeline) {
@@ -28,5 +30,8 @@ public class FailedState implements IPipelineState {
     @Override
     public void cancelledState() {
         pipeline.setState(new CancelledState());
+
+        setChanged();
+        notifyObservers();
     }
 }

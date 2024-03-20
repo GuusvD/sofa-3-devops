@@ -3,7 +3,9 @@ package com.avans.sofa3devops.domainServices.backlogStatePattern;
 import com.avans.sofa3devops.domainServices.compositeInterfaces.IItemComponent;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
 
-public class TestedState implements IBacklogItemState {
+import java.util.Observable;
+
+public class TestedState extends Observable implements IBacklogItemState {
     private IItemComponent item;
 
     public TestedState(IItemComponent item) {
@@ -23,6 +25,9 @@ public class TestedState implements IBacklogItemState {
     @Override
     public void readyForTestingState() {
         item.setState(new ReadyForTestingState(item));
+
+        setChanged();
+        notifyObservers();
     }
 
     @Override
