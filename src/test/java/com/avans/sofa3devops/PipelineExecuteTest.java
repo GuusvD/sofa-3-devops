@@ -16,7 +16,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Date;
 
-
 @SpringBootTest
 public class PipelineExecuteTest {
     private Pipeline pipeline;
@@ -45,9 +44,5 @@ public class PipelineExecuteTest {
     void givenAnSprintInFinishedStateWithPipelineInProgressStateWhenAnEditIsCalledInSprintThenNoEditShouldBeAllowed() throws InvalidStateException {
         sprint.setState(new FinishedState(sprint,new NotificationService(new NotificationExecutor())));
         pipeline.executedState();
-
-        sprint.removeCommandToAction(new );
-
-
     }
 }

@@ -35,6 +35,7 @@ public class SprintStateTest {
     private User user;
     private ISprintFactory factory;
     private ISprint regularSprint;
+    private ISprint reviewSprint;
     @BeforeEach
     void setup() throws Exception {
         endDate = new Date(System.currentTimeMillis() - 86400000);
@@ -42,6 +43,7 @@ public class SprintStateTest {
         user = new User("John Doe", "j.doe@gmail.com", "Password1234");
         factory = new SprintFactory();
         regularSprint = factory.createRegularSprint(1, startDate, endDate, user);
+        reviewSprint = factory.createReviewSprint(1, startDate, endDate, user);
 
         Command commandAnalysis = new DotnetAnalyseCommand();
         Command commandBuild = new DotnetBuildCommand();
@@ -58,6 +60,14 @@ public class SprintStateTest {
         regularSprint.addCommandToAction(commandSource);
         regularSprint.addCommandToAction(commandTest);
         regularSprint.addCommandToAction(commandUtility);
+
+        reviewSprint.addCommandToAction(commandAnalysis);
+        reviewSprint.addCommandToAction(commandBuild);
+        reviewSprint.addCommandToAction(commandDeploy);
+        reviewSprint.addCommandToAction(commandPackage);
+        reviewSprint.addCommandToAction(commandSource);
+        reviewSprint.addCommandToAction(commandTest);
+        reviewSprint.addCommandToAction(commandUtility);
     }
 
     @Test
@@ -279,5 +289,77 @@ public class SprintStateTest {
         InvalidStateException exception = assertThrows(InvalidStateException.class, sprint::finished);
         assertEquals("Cannot transition to 'finished' state! Sprint hasn't reached its end date!", exception.getMessage());
         assertThat(sprint.getState()).isInstanceOf(InProgressState.class);
+    }
+
+    // Set document
+    @Test
+    void givenRegularSprintWithFinishedStateAndPipelineWithFinishedStateWhenSettingDocumentThenSetDocument() throws Exception {
+        regularSprint.inProgress();
+        regularSprint.finished();
+        regularSprint.executePipeline();
+        Document document = new Document();
+
+        regularSprint.setDocument(document);
+
+        assertThat(regularSprint.getDocument()).isEqualTo(document);
+    }
+
+    @Test
+    void givenRegularSprintWithFinishedStateAndPipelineWithExecutedStateWhenSettingDocumentThenDoNotSetDocument() throws Exception {
+        regularSprint.inProgress();
+        regularSprint.finished();
+        regularSprint.getPipeline().executedState();
+        Document document = new Document();
+
+        regularSprint.setDocument(document);
+
+        assertThat(regularSprint.getDocument()).isEqualTo(null);
+    }
+
+    @Test
+    void givenRegularSprintWithInProgressStateAndPipelineWithFinishedStateWhenSettingDocumentThenDoNotSetDocument() throws Exception {
+        regularSprint.inProgress();
+        regularSprint.executePipeline();
+        Document document = new Document();
+
+        regularSprint.setDocument(document);
+
+        assertThat(regularSprint.getDocument()).isEqualTo(null);
+    }
+
+    //
+    @Test
+    void givenReviewSprintWithFinishedStateAndPipelineWithFinishedStateWhenSettingDocumentThenSetDocument() throws Exception {
+        reviewSprint.inProgress();
+        reviewSprint.finished();
+        reviewSprint.executePipeline();
+        Document document = new Document();
+
+        reviewSprint.setDocument(document);
+
+        assertThat(reviewSprint.getDocument()).isEqualTo(document);
+    }
+
+    @Test
+    void givenReviewSprintWithFinishedStateAndPipelineWithExecutedStateWhenSettingDocumentThenDoNotSetDocument() throws Exception {
+        reviewSprint.inProgress();
+        reviewSprint.finished();
+        reviewSprint.getPipeline().executedState();
+        Document document = new Document();
+
+        reviewSprint.setDocument(document);
+
+        assertThat(reviewSprint.getDocument()).isEqualTo(null);
+    }
+
+    @Test
+    void givenReviewSprintWithInProgressStateAndPipelineWithFinishedStateWhenSettingDocumentThenDoNotSetDocument() throws Exception {
+        reviewSprint.inProgress();
+        reviewSprint.executePipeline();
+        Document document = new Document();
+
+        reviewSprint.setDocument(document);
+
+        assertThat(reviewSprint.getDocument()).isEqualTo(null);
     }
 }
