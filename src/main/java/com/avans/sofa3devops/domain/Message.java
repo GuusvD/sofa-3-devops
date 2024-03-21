@@ -26,7 +26,9 @@ public class Message extends Observable {
     }
 
     public void setThread(Thread thread) {
-        this.thread=thread;
+        if (this.thread != null) {
+            this.thread=thread;
+        }
     }
 
     public void addMessage(Message newMessage) {
