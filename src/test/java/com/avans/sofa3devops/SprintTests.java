@@ -21,7 +21,7 @@ public class SprintTests {
     private User user;
 
     @BeforeEach
-    void setup() {
+    void setup() throws Exception {
         start = new Date();
         end = new Date();
         user = new User("John Doe", "j.doe@gmail.com", "Password1234");
