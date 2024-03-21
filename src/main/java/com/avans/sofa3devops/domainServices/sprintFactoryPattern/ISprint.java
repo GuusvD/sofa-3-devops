@@ -11,6 +11,7 @@ import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
 import com.avans.sofa3devops.domainServices.pipelineStatePattern.ExecutedState;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.ISprintState;
 import java.util.Date;
+import java.util.List;
 
 public interface ISprint {
     void setState(ISprintState state);
@@ -32,4 +33,6 @@ public interface ISprint {
     void addCommandToAction(Command command);
     void removeCommandToAction(Command command);
     boolean pipelineIsRunning();
+    void setDocument(Document document);
+    Document getDocument();
 }
