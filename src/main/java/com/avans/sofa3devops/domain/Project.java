@@ -83,6 +83,11 @@ public class Project {
     public void addSprint(ISprint sprint) {
         this.sprints.add(sprint);
     }
+    public void removeSprint(ISprint sprint) {
+        if (sprint.getState() instanceof CreatedState) {
+            this.sprints.remove(sprint);
+        }
+    }
 
     public void removeBacklogItem(BacklogItem item) {
         boolean delete = true;

@@ -19,6 +19,7 @@ public class BacklogItem implements IItemComponent {
     private String name;
     private List<Activity> activities;
     private User createdBy;
+    private ISprint sprint;
     private User assignedTo;
     private List<Thread> threads;
     private IBacklogItemState state;
@@ -42,12 +43,22 @@ public class BacklogItem implements IItemComponent {
         }
     }
 
+    public void setSprint(ISprint sprint){
+        if(canEdit()) {
+            this.sprint = sprint;
+        }
+    }
+
     public void addActivity(Activity activity) {
-        this.activities.add(activity);
+        if(canEdit()) {
+            this.activities.add(activity);
+        }
     }
 
     public void removeActivity(Activity activity) {
-        this.activities.remove(activity);
+        if (canEdit()) {
+            this.activities.remove(activity);
+        }
     }
 
     public boolean containsActivity(Activity activity) {
@@ -69,13 +80,17 @@ public class BacklogItem implements IItemComponent {
     }
 
     @Override
-    public User getAssignedTo() {
-        return assignedTo;
-    }
+    public User getAssignedTo() {return assignedTo;}
 
     @Override
     public void setAssignedTo(User assignedTo) {
-        this.assignedTo = assignedTo;
+        if(canEdit()) {
+            this.assignedTo = assignedTo;
+        }
+    }
+
+    public boolean canEdit() {
+        return sprint == null || this.sprint.getState() instanceof CreatedState;
     }
 
     @Override
@@ -105,8 +120,10 @@ public class BacklogItem implements IItemComponent {
 
     @Override
     public void removeFromSprints(List<ISprint> sprints) {
-        for (var sprint : sprints) {
-            sprint.removeBacklogItem(this);
+        if(canEdit()) {
+            for (var sprint : sprints) {
+                sprint.removeBacklogItem(this);
+            }
         }
     }
     // Composite Methods End
@@ -142,7 +159,6 @@ public class BacklogItem implements IItemComponent {
     // State Methods End
 
     // General methods
-
     public UUID getId() {
         return id;
     }
@@ -150,10 +166,13 @@ public class BacklogItem implements IItemComponent {
     public String getName() {
         return name;
     }
-
+  
     public void setName(String name) {
-        this.name = name;
+        if(canEdit()) {
+            this.name = name;
+        }
     }
+
 
     public User getCreatedBy() {
         return createdBy;
@@ -169,4 +188,12 @@ public class BacklogItem implements IItemComponent {
             this.threads.add(thread);
         }
     }
+
+    public void removeThread(Thread thread) {
+        if (!(this.state instanceof DoneState)) {
+            this.threads.remove(thread);
+        }
+    }
+
+
 }

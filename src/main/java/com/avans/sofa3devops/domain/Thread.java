@@ -1,5 +1,7 @@
 package com.avans.sofa3devops.domain;
 
+import com.avans.sofa3devops.domainServices.backlogStatePattern.DoneState;
+
 import java.util.*;
 
 public class Thread extends Observable {
@@ -10,7 +12,6 @@ public class Thread extends Observable {
     private BacklogItem backlogItem;
     private final User createdBy;
     private final Date created;
-    private boolean closed;
 
     public Thread(String title, String body, BacklogItem backlogItem, User createdBy) {
         this.id = UUID.randomUUID();
@@ -20,7 +21,6 @@ public class Thread extends Observable {
         this.backlogItem = backlogItem;
         this.createdBy = createdBy;
         this.created = new Date();
-        this.closed = false;
     }
 
     public List<Message> getMessages() {
@@ -28,15 +28,23 @@ public class Thread extends Observable {
     }
 
     public void addMessage(Message newMessage) {
-        if (!this.closed) {
+        if(canEdit()) {
             messages.add(newMessage);
-
+            newMessage.setThread(this);
+          
             setChanged();
             notifyObservers();
         }
+
+    }
+  
+    public void removeMessage(Message message) {
+        if(canEdit()) {
+            this.messages.remove(message);
+        }
     }
 
-    public String getTitle() {
+   public String getTitle() {
         return title;
     }
 
@@ -48,11 +56,12 @@ public class Thread extends Observable {
         return backlogItem;
     }
 
-    public boolean isClosed() {
-        return closed;
+    public boolean canEdit() {
+        return !this.backlogItem.getFinished();
     }
 
     public void setClosed(boolean closed) {
         this.closed = closed;
     }
+
 }

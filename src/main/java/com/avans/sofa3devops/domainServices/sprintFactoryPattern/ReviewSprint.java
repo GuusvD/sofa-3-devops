@@ -51,6 +51,7 @@ public class ReviewSprint implements ISprint {
 
     @Override
     public void finished() throws InvalidStateException {
+        // if document is uploaded?
         this.state.finishedState();
     }
 
@@ -92,6 +93,7 @@ public class ReviewSprint implements ISprint {
     public void addBacklogItem(BacklogItem backlog) {
         if (state instanceof CreatedState && !this.backlog.contains(backlog)) {
             this.backlog.add(backlog);
+            backlog.setSprint(this);
         }
     }
 
