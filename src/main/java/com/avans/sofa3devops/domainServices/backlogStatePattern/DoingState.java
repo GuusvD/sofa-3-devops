@@ -7,8 +7,8 @@ import com.avans.sofa3devops.domainServices.threadObserverPattern.NotificationSe
 import java.util.Observable;
 
 public class DoingState extends Observable implements IBacklogItemState {
-    private IItemComponent item;
-    private NotificationService service;
+    private final IItemComponent item;
+    private final NotificationService service;
 
     public DoingState(IItemComponent item, NotificationService service) {
         this.item = item;

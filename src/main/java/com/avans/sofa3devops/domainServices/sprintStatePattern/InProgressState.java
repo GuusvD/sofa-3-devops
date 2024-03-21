@@ -3,18 +3,19 @@ package com.avans.sofa3devops.domainServices.sprintStatePattern;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
 import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprint;
 import com.avans.sofa3devops.domainServices.threadObserverPattern.NotificationService;
-import com.avans.sofa3devops.domainServices.threadVisitorPattern.NotificationExecutor;
 
 import java.util.Date;
 import java.util.Observable;
 
 public class InProgressState extends Observable implements ISprintState {
     private final ISprint sprint;
+    private final NotificationService service;
 
-    public InProgressState(ISprint sprint) {
+    public InProgressState(ISprint sprint, NotificationService service) {
         this.sprint = sprint;
+        this.service = service;
 
-        this.addObserver(new NotificationService(new NotificationExecutor()));
+        this.addObserver(service);
     }
 
     @Override
@@ -28,7 +29,7 @@ public class InProgressState extends Observable implements ISprintState {
         Date sprintEndDate = sprint.getEnd();
 
         if (currentDate.after(sprintEndDate)) {
-            sprint.setState(new FinishedState(sprint));
+            sprint.setState(new FinishedState(sprint, service));
 
             setChanged();
             notifyObservers();

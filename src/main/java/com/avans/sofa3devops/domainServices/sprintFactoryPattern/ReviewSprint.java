@@ -6,6 +6,8 @@ import com.avans.sofa3devops.domainServices.pipelineStatePattern.CancelledState;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.CreatedState;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.FinishedState;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.ISprintState;
+import com.avans.sofa3devops.domainServices.threadObserverPattern.NotificationService;
+import com.avans.sofa3devops.domainServices.threadVisitorPattern.NotificationExecutor;
 
 import java.util.*;
 import java.util.logging.Logger;
@@ -25,7 +27,7 @@ public class ReviewSprint implements ISprint {
     private Logger logger = Logger.getLogger(this.getClass().getName());
 
     public ReviewSprint(int number, Date start, Date end, User user) throws Exception {
-        this.state = new CreatedState(this);
+        this.state = new CreatedState(this, new NotificationService(new NotificationExecutor()));
         this.number = number;
         this.start = start;
         this.end = end;
@@ -144,6 +146,11 @@ public class ReviewSprint implements ISprint {
                 addRelease(new Release(this, pipeline));
             }
         }
+    }
+
+    @Override
+    public Pipeline getPipeline() {
+        return pipeline;
     }
 
     public List<BacklogItem> getBacklog() {

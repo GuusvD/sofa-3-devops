@@ -2,6 +2,7 @@ package com.avans.sofa3devops.domainServices.sprintFactoryPattern;
 
 import com.avans.sofa3devops.domain.Activity;
 import com.avans.sofa3devops.domain.BacklogItem;
+import com.avans.sofa3devops.domain.Pipeline;
 import com.avans.sofa3devops.domain.User;
 import com.avans.sofa3devops.domainServices.compositeInterfaces.IPipeComponent;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
@@ -37,6 +38,8 @@ public interface ISprint {
     void removeBacklogItem(BacklogItem item);
 
     Date getEnd();
-    
+
     void executePipeline() throws InvalidStateException;
+
+    Pipeline getPipeline();
 }

@@ -5,8 +5,8 @@ import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
 import com.avans.sofa3devops.domainServices.threadObserverPattern.NotificationService;
 
 public class ToDoState implements IBacklogItemState {
-    private IItemComponent item;
-    private NotificationService service;
+    private final IItemComponent item;
+    private final NotificationService service;
 
     public ToDoState(IItemComponent item, NotificationService service) {
         this.item = item;

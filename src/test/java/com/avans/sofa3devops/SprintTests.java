@@ -4,6 +4,8 @@ import com.avans.sofa3devops.domain.BacklogItem;
 import com.avans.sofa3devops.domain.User;
 import com.avans.sofa3devops.domainServices.sprintFactoryPattern.*;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.InProgressState;
+import com.avans.sofa3devops.domainServices.threadObserverPattern.NotificationService;
+import com.avans.sofa3devops.domainServices.threadVisitorPattern.NotificationExecutor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +21,7 @@ public class SprintTests {
     private Date start;
     private Date end;
     private User user;
+    private NotificationService service;
 
     @BeforeEach
     void setup() throws Exception {
@@ -27,12 +30,13 @@ public class SprintTests {
         user = new User("John Doe", "j.doe@gmail.com", "Password1234");
         reviewSprint = new ReviewSprint(0, start, end, user);
         regularSprint = new RegularSprint(0, start, end, user);
+        service = new NotificationService(new NotificationExecutor());
     }
 
     @Test
     void GivenSprintNotInCreatedStateWhenSprintEditIsCalledThenSprintIsNotEdited() {
-        reviewSprint.setState(new InProgressState(reviewSprint));
-        regularSprint.setState(new InProgressState(regularSprint));
+        reviewSprint.setState(new InProgressState(reviewSprint, service));
+        regularSprint.setState(new InProgressState(regularSprint, service));
         Date newStart = new Date();
         Date newEnd = new Date();
 
@@ -65,8 +69,8 @@ public class SprintTests {
 
     @Test
     void GivenSprintNotInCreatedStateWhenAddBacklogItemIsCalledThenItemIsNotAdded() {
-        regularSprint.setState(new InProgressState(regularSprint));
-        reviewSprint.setState(new InProgressState(reviewSprint));
+        regularSprint.setState(new InProgressState(regularSprint, service));
+        reviewSprint.setState(new InProgressState(reviewSprint, service));
         BacklogItem item = new BacklogItem("Item", user);
 
         regularSprint.addBacklogItem(item);
@@ -105,8 +109,8 @@ public class SprintTests {
         BacklogItem item = new BacklogItem("Item", user);
         regularSprint.addBacklogItem(item);
         reviewSprint.addBacklogItem(item);
-        reviewSprint.setState(new InProgressState(reviewSprint));
-        regularSprint.setState(new InProgressState(regularSprint));
+        reviewSprint.setState(new InProgressState(reviewSprint, service));
+        regularSprint.setState(new InProgressState(regularSprint, service));
 
         reviewSprint.removeBacklogItem(item);
         regularSprint.removeBacklogItem(item);
@@ -131,8 +135,8 @@ public class SprintTests {
     @Test
     void GivenSprintNotInCreatedStateWhenAddDeveloperIsCalledThenNoDeveloperIsNotAdded() {
         User addedUser = new User("Addy Doe", "A.doe@gmail.com", "Password1234");
-        reviewSprint.setState(new InProgressState(reviewSprint));
-        regularSprint.setState(new InProgressState(regularSprint));
+        reviewSprint.setState(new InProgressState(reviewSprint, service));
+        regularSprint.setState(new InProgressState(regularSprint, service));
 
         reviewSprint.addDeveloper(addedUser);
         regularSprint.addDeveloper(addedUser);
@@ -168,8 +172,8 @@ public class SprintTests {
     @Test
     void GivenSprintNotInCreatedStateWithUserWhenRemoveDeveloperThenUserIsNotRemoved() {
         User addedUser = new User("Addy Doe", "A.doe@gmail.com", "Password1234");
-        reviewSprint.setState(new InProgressState(reviewSprint));
-        regularSprint.setState(new InProgressState(regularSprint));
+        reviewSprint.setState(new InProgressState(reviewSprint, service));
+        regularSprint.setState(new InProgressState(regularSprint, service));
         reviewSprint.addDeveloper(addedUser);
         regularSprint.addDeveloper(addedUser);
 
