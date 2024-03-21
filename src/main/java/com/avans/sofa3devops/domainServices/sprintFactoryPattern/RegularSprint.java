@@ -138,11 +138,6 @@ public class RegularSprint implements ISprint {
         }
     }
 
-    @Override
-    public Pipeline getPipeline() {
-        return pipeline;
-    }
-
     public List<BacklogItem> getBacklog() {
         return backlog;
     }

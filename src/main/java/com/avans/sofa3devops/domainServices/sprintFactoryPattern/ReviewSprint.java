@@ -33,7 +33,7 @@ public class ReviewSprint implements ISprint {
         this.developers = new ArrayList<>();
         this.developers.add(user);
         this.reviewed = false;
-        this.pipeline = new Pipeline("Sprint:" + number ,this);
+        this.pipeline = new Pipeline("Sprint:" + number, this);
     }
 
     @Override
@@ -53,7 +53,7 @@ public class ReviewSprint implements ISprint {
 
     @Override
     public void finished() throws InvalidStateException {
-        if(reviewed) {
+        if (reviewed) {
             this.state.finishedState();
         } else {
             logger.info("Sprint isn't reviewed yet! Make sure a document is uploaded and confirmed!");
@@ -144,11 +144,6 @@ public class ReviewSprint implements ISprint {
                 addRelease(new Release(this, pipeline));
             }
         }
-    }
-
-    @Override
-    public Pipeline getPipeline() {
-        return pipeline;
     }
 
     public List<BacklogItem> getBacklog() {
