@@ -35,7 +35,6 @@ public interface ISprint {
     void addBacklogItem(BacklogItem item);
 
     void removeBacklogItem(BacklogItem item);
-    void addActionsToPipeline(List<IPipeComponent> actions) throws InvalidObjectException;
 
     Date getEnd();
     
