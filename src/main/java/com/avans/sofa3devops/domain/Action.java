@@ -9,9 +9,7 @@ import java.util.UUID;
 
 public abstract class Action implements IPipeComponent {
     private UUID id;
-    private String name;
-    private int sortIndex;
-
+    private final int sortIndex;
     private List<IPipeComponent> commands;
 
     public Action(int sortIndex) {

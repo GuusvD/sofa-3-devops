@@ -20,13 +20,11 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 public class PipelineStateTest {
     private ISprint sprint;
-    private User creator;
-    private ISprintFactory factory;
 
     @BeforeEach
     void setup() throws Exception {
-        creator = new User("John Doe", "j.doe@gmail.com", "Password1234");
-        factory = new SprintFactory();
+        User creator = new User("John Doe", "j.doe@gmail.com", "Password1234");
+        ISprintFactory factory = new SprintFactory();
         sprint = factory.createRegularSprint(1, new Date(), new Date(), creator);
     }
 

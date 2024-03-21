@@ -5,13 +5,11 @@ import com.avans.sofa3devops.domainServices.reportStrategyPattern.IReport;
 import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprint;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.CreatedState;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Logger;
 
 public class Project {
-    private UUID id;
+    private final UUID id;
     private String name;
     private User owner;
     private List<User> participants;
@@ -19,20 +17,16 @@ public class Project {
     private List<BacklogItem> projectBacklog;
     private final List<IReport> _reportStrategies;
     private final IGitCommands _gitStrategy;
-
     private final Logger logger = Logger.getLogger(this.getClass().getName());
 
     public Project(String name, List<IReport> reportStrategies, IGitCommands gitStrategy) {
-
         this.id = UUID.randomUUID();
         this.name = name;
         this.participants = new ArrayList<>();
         this.projectBacklog = new ArrayList<>();
         this.sprints = new ArrayList<>();
         _reportStrategies = reportStrategies;
-
         _gitStrategy = gitStrategy;
-  
     }
 
     public void pull() {
@@ -68,10 +62,6 @@ public class Project {
     public String getName() {
         return this.name;
     }
-
-    // methods
-    // add/remove sprint
-    // add/remove backLogItem
 
     public void addParticipant(User user) {
         if (!this.participants.contains(user)) {
@@ -127,7 +117,6 @@ public class Project {
     public void setOwner(User owner) {
         this.owner = owner;
     }
-
     public List<User> getParticipants() {
         return this.participants;
     }
@@ -156,6 +145,4 @@ public class Project {
             logger.info("Title: " + thread.getTitle() + "\nBody: " + thread.getBody() + "\n");
         }
     }
-
-
 }
