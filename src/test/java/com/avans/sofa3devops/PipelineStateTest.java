@@ -233,7 +233,7 @@ public class PipelineStateTest {
 
     // Notifications sending
     @Test
-    void givenPipelineWhenExecutingPipelineFailsThenSendNotification() throws Exception {
+    void givenPipelineWithExecutedStateWhenExecutingPipelineFailsThenSendNotification() throws Exception {
         NotificationService mock = mock(NotificationService.class);
         Pipeline pipeline = new Pipeline("Test", sprint);
         pipeline.setState(new InitialState(pipeline, mock));
@@ -243,5 +243,44 @@ public class PipelineStateTest {
 
         assertThat(pipeline.getState()).isInstanceOf(FailedState.class);
         verify(mock).update(any(ExecutedState.class), eq(null));
+    }
+
+    @Test
+    void givenPipelineWithExecutedStateWhenExecutingPipelineFinishesThenSendNotification() throws Exception {
+        NotificationService mock = mock(NotificationService.class);
+        Pipeline pipeline = new Pipeline("Test", sprint);
+        pipeline.setState(new InitialState(pipeline, mock));
+        pipeline.executedState();
+
+        pipeline.finishedState();
+
+        assertThat(pipeline.getState()).isInstanceOf(FinishedState.class);
+        verify(mock).update(any(ExecutedState.class), eq(null));
+    }
+
+    @Test
+    void givenPipelineWithFailedStateWhenCancellingReleaseThenSendNotification() throws Exception {
+        NotificationService mock = mock(NotificationService.class);
+        Pipeline pipeline = new Pipeline("Test", sprint);
+        pipeline.setState(new InitialState(pipeline, mock));
+        pipeline.executedState();
+        pipeline.failedState();
+
+        pipeline.cancelledState();
+
+        assertThat(pipeline.getState()).isInstanceOf(CancelledState.class);
+        verify(mock).update(any(FailedState.class), eq(null));
+    }
+
+    @Test
+    void givenPipelineWithInitialStateWhenCancellingReleaseThenSendNotification() throws Exception {
+        NotificationService mock = mock(NotificationService.class);
+        Pipeline pipeline = new Pipeline("Test", sprint);
+        pipeline.setState(new InitialState(pipeline, mock));
+
+        pipeline.cancelledState();
+
+        assertThat(pipeline.getState()).isInstanceOf(CancelledState.class);
+        verify(mock).update(any(InitialState.class), eq(null));
     }
 }
