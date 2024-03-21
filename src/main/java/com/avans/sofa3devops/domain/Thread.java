@@ -60,8 +60,4 @@ public class Thread extends Observable {
         return !this.backlogItem.getFinished();
     }
 
-    public void setClosed(boolean closed) {
-        this.closed = closed;
-    }
-
 }
