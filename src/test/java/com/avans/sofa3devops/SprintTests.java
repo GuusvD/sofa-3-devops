@@ -30,7 +30,7 @@ public class SprintTests {
     }
 
     @Test
-    void GivenSprintNotInCreatedStateWhenSprintEditIsCalledThenSprintIsNotEdited() {
+    void givenSprintNotInCreatedStateWhenSprintEditIsCalledThenSprintIsNotEdited() {
         reviewSprint.setState(new InProgressState(reviewSprint));
         regularSprint.setState(new InProgressState(regularSprint));
         Date newStart = new Date();
@@ -48,7 +48,7 @@ public class SprintTests {
     }
 
     @Test
-    void GivenSprintInCreatedStateWhenSprintEditIsCalledThenSprintIsEdited() {
+    void givenSprintInCreatedStateWhenSprintEditIsCalledThenSprintIsEdited() {
         Date newStart = new Date();
         Date newEnd = new Date();
 
@@ -64,7 +64,7 @@ public class SprintTests {
     }
 
     @Test
-    void GivenSprintNotInCreatedStateWhenAddBacklogItemIsCalledThenItemIsNotAdded() {
+    void givenSprintNotInCreatedStateWhenAddBacklogItemIsCalledThenItemIsNotAdded() {
         regularSprint.setState(new InProgressState(regularSprint));
         reviewSprint.setState(new InProgressState(reviewSprint));
         BacklogItem item = new BacklogItem("Item", user);
@@ -77,7 +77,7 @@ public class SprintTests {
     }
 
     @Test
-    void GivenSprintInCreatedStateWhenAddBacklogItemIsCalledThenItemIsAdded() {
+    void givenSprintInCreatedStateWhenAddBacklogItemIsCalledThenItemIsAdded() {
         BacklogItem item = new BacklogItem("Item", user);
 
         regularSprint.addBacklogItem(item);
@@ -88,7 +88,7 @@ public class SprintTests {
     }
 
     @Test
-    void GivenSprintInCreatedStateWhenAddBacklogItemIsCalledTwiceThenItemIsNotAddedTwice() {
+    void givenSprintInCreatedStateWhenAddBacklogItemIsCalledTwiceThenItemIsNotAddedTwice() {
         BacklogItem item = new BacklogItem("Item", user);
 
         regularSprint.addBacklogItem(item);
@@ -101,7 +101,7 @@ public class SprintTests {
     }
 
     @Test
-    void GivenSprintNotInCreatedStateWithBacklogItemWhenRemoveBacklogItemIsCalledThenItemIsNotRemoved() {
+    void givenSprintNotInCreatedStateWithBacklogItemWhenRemoveBacklogItemIsCalledThenItemIsNotRemoved() {
         BacklogItem item = new BacklogItem("Item", user);
         regularSprint.addBacklogItem(item);
         reviewSprint.addBacklogItem(item);
@@ -116,7 +116,7 @@ public class SprintTests {
     }
 
     @Test
-    void GivenSprintInCreatedStateWithBacklogItemWhenRemoveBacklogItemIsCalledThenItemIsRemoved() {
+    void givenSprintInCreatedStateWithBacklogItemWhenRemoveBacklogItemIsCalledThenItemIsRemoved() {
         BacklogItem item = new BacklogItem("Item", user);
         regularSprint.addBacklogItem(item);
         reviewSprint.addBacklogItem(item);
@@ -129,7 +129,7 @@ public class SprintTests {
     }
 
     @Test
-    void GivenSprintNotInCreatedStateWhenAddDeveloperIsCalledThenNoDeveloperIsNotAdded() {
+    void givenSprintNotInCreatedStateWhenAddDeveloperIsCalledThenNoDeveloperIsNotAdded() {
         User addedUser = new User("Addy Doe", "A.doe@gmail.com", "Password1234");
         reviewSprint.setState(new InProgressState(reviewSprint));
         regularSprint.setState(new InProgressState(regularSprint));
@@ -142,7 +142,7 @@ public class SprintTests {
     }
 
     @Test
-    void GivenSprintInCreatedStateWhenAddDeveloperIsCalledThenNoDeveloperIsAdded() {
+    void givenSprintInCreatedStateWhenAddDeveloperIsCalledThenNoDeveloperIsAdded() {
         User addedUser = new User("Addy Doe", "A.doe@gmail.com", "Password1234");
 
         reviewSprint.addDeveloper(addedUser);
@@ -153,7 +153,7 @@ public class SprintTests {
     }
 
     @Test
-    void GivenSprintInCreatedStateWhenAddDeveloperIsCalledTwiceThenUserIsNotAddedTwice() {
+    void givenSprintInCreatedStateWhenAddDeveloperIsCalledTwiceThenUserIsNotAddedTwice() {
         User addedUser = new User("Addy Doe", "A.doe@gmail.com", "Password1234");
 
         reviewSprint.addDeveloper(addedUser);
@@ -166,7 +166,7 @@ public class SprintTests {
     }
 
     @Test
-    void GivenSprintNotInCreatedStateWithUserWhenRemoveDeveloperThenUserIsNotRemoved() {
+    void givenSprintNotInCreatedStateWithUserWhenRemoveDeveloperThenUserIsNotRemoved() {
         User addedUser = new User("Addy Doe", "A.doe@gmail.com", "Password1234");
         reviewSprint.setState(new InProgressState(reviewSprint));
         regularSprint.setState(new InProgressState(regularSprint));
@@ -181,7 +181,7 @@ public class SprintTests {
     }
 
     @Test
-    void GivenSprintInCreatedStateWithUserWhenRemoveDeveloperThenUserIsRemoved() {
+    void givenSprintInCreatedStateWithUserWhenRemoveDeveloperThenUserIsRemoved() {
         User addedUser = new User("Addy Doe", "A.doe@gmail.com", "Password1234");
         reviewSprint.addDeveloper(addedUser);
         regularSprint.addDeveloper(addedUser);

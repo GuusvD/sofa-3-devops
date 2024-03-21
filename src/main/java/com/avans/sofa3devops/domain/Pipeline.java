@@ -129,7 +129,9 @@ public class Pipeline implements IPipeComponent {
     }
 
     @Override
-    public boolean execute() {
+    public boolean execute() throws InvalidStateException {
+        this.executedState();
+
         boolean containsDeploy = false;
         for (IPipeComponent component : selectedCommands) {
             if (component instanceof Deploy) {

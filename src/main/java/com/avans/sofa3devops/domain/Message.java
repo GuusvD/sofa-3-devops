@@ -32,7 +32,7 @@ public class Message extends Observable {
     }
 
     public void addMessage(Message newMessage) {
-        if(this.thread.canEdit()) {
+        if(this.thread == null ||this.thread.canEdit() ) {
             responses.add(newMessage);
 
             setChanged();

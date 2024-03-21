@@ -3,6 +3,7 @@ package com.avans.sofa3devops.domain.action;
 import com.avans.sofa3devops.domain.Action;
 import com.avans.sofa3devops.domain.Release;
 import com.avans.sofa3devops.domainServices.compositeInterfaces.IPipeComponent;
+import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
 
 import java.util.logging.Logger;
 
@@ -18,7 +19,7 @@ public class Sources extends Action {
     }
 
     @Override
-    public boolean execute() {
+    public boolean execute() throws InvalidStateException {
         logger.info("Starting source action: " + getName());
 
             for (IPipeComponent command : getCommands()) {

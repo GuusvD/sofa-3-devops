@@ -43,7 +43,8 @@ public class ReportStrategyTests {
     }
 
     @Test
-    void checkIfReportsAreCreatedFromProjectInPdfAndPng() {
+
+    void givenProjectWithReportStrategiesWhenPrintReportIsCalledThenPngAndPdfReportsAreCreatedInDesignatedFolder() {
         // Arrange
         List<IReport> reportStrategies = Arrays.asList(new Pdf(), new Png());
         IGitCommands gitStrategy = new GitLab(Logger.getLogger(GitLab.class.getName()));
