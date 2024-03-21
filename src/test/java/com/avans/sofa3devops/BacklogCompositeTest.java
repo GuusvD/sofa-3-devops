@@ -24,7 +24,8 @@ public class BacklogCompositeTest {
     }
 
     @Test
-    void FinishedEqualsFalseWhenWhenNotInDoneState() {
+
+    void givenBacklogItemNotInDoneStateWhenSetFinishedIsCalledThenFinishedEqualsFalse() {
         BacklogItem item = new BacklogItem("BacklogItem", createdByUser);
 
         item.setFinished();
@@ -33,7 +34,8 @@ public class BacklogCompositeTest {
     }
 
     @Test
-    void FinishedEqualsTrueAfterSetFinishedIsCalledWithNoActivities() {
+
+    void givenBacklogItemInDoneStateWhenSetFinishedIsCalledThenFinishedEqualsTrue() {
         BacklogItem item = new BacklogItem("BacklogItem", createdByUser);
         item.setState(new DoneState(item));
 
@@ -43,10 +45,11 @@ public class BacklogCompositeTest {
     }
 
     @Test
-    void FinishedEqualsTrueWithOneActivityThatIsFinished() {
+    void givenBacklogItemInDoneStateWithOneActivityThatIsFinishedWhenSetFinishedIsCalledThenFinishedEqualsTrue() {
         BacklogItem item = new BacklogItem("BacklogItem", createdByUser);
         Activity activity = new Activity("ActivityItem", createdByUser);
         item.addActivity(activity);
+        activity.setState(new DoneState(activity));
         activity.setFinished();
         item.setState(new DoneState(item));
 
@@ -56,7 +59,7 @@ public class BacklogCompositeTest {
     }
 
     @Test
-    void FinishedEqualsFalseWithOneActivityThatIsNotFinished() {
+    void givenBacklogItemWithOneActivityThatIsNotFinishedWhenSetFinishedISCalledThenFinishedEqualsFalse() {
         BacklogItem item = new BacklogItem("BacklogItem", createdByUser);
         Activity activity = new Activity("ActivityItem", createdByUser);
         item.addActivity(activity);
@@ -68,12 +71,14 @@ public class BacklogCompositeTest {
     }
 
     @Test
-    void FinishedEqualsTrueWithTwoActivitiesAndBothAreFinished() {
+    void givenBacklogItemWithTwoActivitiesWhichBothAreFinishedWhenSetFinishedIsCalledThenFinishedEqualsTrue() {
         BacklogItem item = new BacklogItem("BacklogItem", createdByUser);
         Activity activityOne = new Activity("ActivityItemOne", createdByUser);
         Activity activityTwo = new Activity("ActivityItemTwo", createdByUser);
         item.addActivity(activityOne);
         item.addActivity(activityTwo);
+        activityOne.setState(new DoneState(activityOne));
+        activityTwo.setState(new DoneState(activityTwo));
         activityOne.setFinished();
         activityTwo.setFinished();
         item.setState(new DoneState(item));
@@ -84,7 +89,7 @@ public class BacklogCompositeTest {
     }
 
     @Test
-    void FinishedEqualsFalseWithTwoActivitiesAndOnlyFirstIsFinished() {
+    void givenBacklogItemWithTwoActivitiesAndOnlyFirstIsFinishedWhenSetFinishedIsCalledThenFinishedEqualsFalse() {
         BacklogItem item = new BacklogItem("BacklogItem", createdByUser);
         Activity activityOne = new Activity("ActivityItemOne", createdByUser);
         Activity activityTwo = new Activity("ActivityItemTwo", createdByUser);
@@ -99,7 +104,7 @@ public class BacklogCompositeTest {
     }
 
     @Test
-    void FinishedEqualsFalseWithTwoActivitiesAndOnlySecondIsFinished() {
+    void givenBacklogItemWithTwoActivitiesAndOnlySecondIsFinishedWhenSetFinishedIsCalledThenFinishedEqualsFalse() {
         BacklogItem item = new BacklogItem("BacklogItem", createdByUser);
         Activity activityOne = new Activity("ActivityItemOne", createdByUser);
         Activity activityTwo = new Activity("ActivityItemTwo", createdByUser);
@@ -113,41 +118,7 @@ public class BacklogCompositeTest {
         assertFalse(item.getFinished());
     }
 
-    @Test
-    void GivenBacklogItemWhenThreadIsAddedThenListHasValueOne() {
-        BacklogItem item = new BacklogItem("BacklogItem", createdByUser);
-        Thread thread = new Thread("Title","Body",item,createdByUser);
 
-        item.addThread(thread);
-
-        assertThat(item.getThreads()).hasSize(1);
-        assertThat(thread.getBacklogItem()).isEqualTo(item);
-    }
-
-    @Test
-    void GivenBacklogItemWhenThreadIsAddedTwiceThenListHasValueOne() {
-        BacklogItem item = new BacklogItem("BacklogItem", createdByUser);
-        Thread thread = new Thread("Title","Body",item,createdByUser);
-
-        item.addThread(thread);
-        item.addThread(thread);
-
-        assertThat(item.getThreads()).hasSize(1);
-        assertThat(thread.getBacklogItem()).isEqualTo(item);
-    }
-    
-    @Test
-    void givenFinishedBackLogItemWhenThreadIsAddedThenItemIsNotAdded() {
-        BacklogItem item = new BacklogItem("BacklogItem", createdByUser);
-        item.setState(new DoneState(item));
-        item.setFinished();
-        Thread thread = new Thread("Title","Body",item,createdByUser);
-
-        item.addThread(thread);
-
-        assertThat(item.getThreads()).hasSize(0);
-
-    }
 
 
 

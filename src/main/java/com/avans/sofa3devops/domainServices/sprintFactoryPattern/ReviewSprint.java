@@ -3,7 +3,9 @@ package com.avans.sofa3devops.domainServices.sprintFactoryPattern;
 import com.avans.sofa3devops.domain.*;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
 import com.avans.sofa3devops.domainServices.pipelineStatePattern.CancelledState;
+import com.avans.sofa3devops.domainServices.pipelineStatePattern.ExecutedState;
 import com.avans.sofa3devops.domainServices.pipelineStatePattern.FailedState;
+import com.avans.sofa3devops.domainServices.pipelineStatePattern.InitialState;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.CreatedState;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.FinishedState;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.ISprintState;
@@ -35,6 +37,7 @@ public class ReviewSprint implements ISprint {
         this.developers.add(user);
         this.reviewed = false;
         this.pipeline = new Pipeline("Sprint:" + number ,this);
+        this.releases = new ArrayList<>();
     }
 
     @Override
@@ -54,16 +57,12 @@ public class ReviewSprint implements ISprint {
 
     @Override
     public void finished() throws InvalidStateException {
-        if(reviewed) {
-            this.state.finishedState();
-        } else {
-            logger.info("Sprint isn't reviewed yet! Make sure a document is uploaded and confirmed!");
-        }
+        this.state.finishedState();
     }
 
     @Override
     public void closed() throws InvalidStateException {
-        if (this.reviewed && (pipeline.getState() instanceof CancelledState || pipeline.getState() instanceof com.avans.sofa3devops.domainServices.pipelineStatePattern.FinishedState)) {
+        if (this.reviewed) {
             this.state.closedState();
         } else {
             throw new InvalidStateException("Cannot transition to 'closed' state! Sprint is not reviewed or pipeline is not cancelled/finished!");
@@ -92,6 +91,16 @@ public class ReviewSprint implements ISprint {
             this.start = start;
             this.end = end;
         }
+    }
+
+    @Override
+    public void addCommandToAction(Command command) {
+        pipeline.addCommandToAction(command);
+    }
+
+    @Override
+    public void removeCommandToAction(Command command) {
+        pipeline.removeCommandToAction(command);
     }
 
     // General methods
@@ -160,7 +169,7 @@ public class ReviewSprint implements ISprint {
     }
 
     public void setDocument(Document document) {
-        if (state instanceof FinishedState && (pipeline.getState() instanceof CancelledState || pipeline.getState() instanceof com.avans.sofa3devops.domainServices.pipelineStatePattern.FinishedState)) {
+        if (state instanceof FinishedState && !(pipeline.getState() instanceof InitialState || pipeline.getState() instanceof ExecutedState)) {
             this.document = document;
         }
     }
@@ -180,7 +189,7 @@ public class ReviewSprint implements ISprint {
     }
 
     public void setReviewed() {
-        if (state instanceof FinishedState && this.document != null && (pipeline.getState() instanceof CancelledState || pipeline.getState() instanceof com.avans.sofa3devops.domainServices.pipelineStatePattern.FinishedState)) {
+        if (state instanceof FinishedState && this.document != null && !(pipeline.getState() instanceof InitialState || pipeline.getState() instanceof ExecutedState)) {
             this.reviewed = true;
         }
     }

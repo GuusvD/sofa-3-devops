@@ -39,7 +39,7 @@ public class ProjectTests {
     }
 
     @Test
-    void OneUserIsAddedToProject() {
+    void givenOneProjectWithoutDevelopersWhenOneUserIsAddedToProjectThenParticipantsSizeEqualsOne () {
         User user = new User("John Doe", "j.doe@gmail.com", "Password1234");
 
         project.addParticipant(user);
@@ -48,7 +48,7 @@ public class ProjectTests {
     }
 
     @Test
-    void TwoUsersAreAddedToProject() {
+    void givenOneProjectWithoutDevelopersWhenTwoUserAreAddedToProjectThenParticipantsSizeEqualsTwo() {
         User userOne = new User("John Doe", "j.doe@gmail.com", "Password1234");
         User userTwo = new User("John Doe", "j.doe@gmail.com", "Password1234");
 
@@ -59,7 +59,7 @@ public class ProjectTests {
     }
 
     @Test
-    void OneUserIsAddedWhenTheSamePersonIsAddedAgain() {
+    void givenOneProjectWithoutDevelopersWhenOneUserIsAddedTwiceThenParticipantsSizeEqualsOne() {
         User userOne = new User("John Doe", "j.doe@gmail.com", "Password1234");
 
         project.addParticipant(userOne);
@@ -69,7 +69,7 @@ public class ProjectTests {
     }
 
     @Test
-    void BacklogItemIsRemovedWhenNoSprintArrayIsEmpty() {
+    void givenProjectWithoutSprintsWhenRemoveBacklogItemIsCalledThenProjectBacklogSizeEqualsZero() {
         BacklogItem item = new BacklogItem("Item", createdBy);
         project.addBacklogItem(item);
 
@@ -79,7 +79,7 @@ public class ProjectTests {
     }
 
     @Test
-    void BackLogItemIsRemovedWhenNoSprintContainsTheBackLogItemAndSprintIsInCreatedState() throws Exception {
+    void givenProjectWithOneSprintWithoutBacklogItemsWhenRemoveBacklogItemIsCalledThenProjectBacklogSizeEqualsZero() throws Exception {
         BacklogItem item = new BacklogItem("Item", createdBy);
         project.addBacklogItem(item);
         SprintFactory factory = new SprintFactory();
@@ -93,7 +93,7 @@ public class ProjectTests {
     }
 
     @Test
-    void BackLogItemIsRemovedWhenSprintContainsTheBacklogItemAndSprintIsInCreatedState() throws Exception {
+    void givenProjectWithOneSprintInCreatedStateWithBacklogItemWhenRemoveBacklogItemIsCalledThenProjectBacklogSizeEqualsZero() throws Exception {
         BacklogItem item = new BacklogItem("Item", createdBy);
         project.addBacklogItem(item);
         SprintFactory factory = new SprintFactory();
@@ -107,7 +107,7 @@ public class ProjectTests {
     }
 
     @Test
-    void BackLogItemIsRemovedWhenNoSprintContainsTheBackLogItemAndSprintIsNotInCreatedState() throws Exception {
+    void givenProjectWithOneSprintNotInCreatedStateWithoutBacklogItemsWhenRemoveBacklogItemIsCalledThenProjectBacklogSizeEqualsZero() throws Exception {
         BacklogItem item = new BacklogItem("Item", createdBy);
         project.addBacklogItem(item);
         SprintFactory factory = new SprintFactory();
@@ -121,7 +121,7 @@ public class ProjectTests {
     }
 
     @Test
-    void BackLogItemIsNotRemovedWhenSprintContainsBackLogItemAndIsNotInCreatedState() throws Exception {
+    void givenProjectWithOneSprintNotInCreatedStateWithBacklogItemWhenRemoveBacklogItemIsCalledThenProjectBacklogSizeEqualsOne() throws Exception {
         BacklogItem item = new BacklogItem("Item", createdBy);
         project.addBacklogItem(item);
         SprintFactory factory = new SprintFactory();
@@ -136,7 +136,7 @@ public class ProjectTests {
     }
 
     @Test
-    void ActivityIsRemovedWhenSprintListIsEmpty() {
+    void givenProjectWithoutSprintsAndWithBacklogItemWithActivityWhenRemoveActivityIsCalledThenBacklogItemActivityListEqualsZero() {
         BacklogItem item = new BacklogItem("Item", createdBy);
         Activity activity = new Activity("Activity", createdBy);
         item.addActivity(activity);
@@ -148,7 +148,7 @@ public class ProjectTests {
     }
 
     @Test
-    void ActivityIsRemovedWithOneSprintAndBackLogListIsEmpty() throws Exception {
+    void givenProjectWithOneSprintWithNoBacklogAndOneBacklogItemWithActivityWhenRemoveActivityIsCalledThenBacklogItemActivityListEqualsZero() throws Exception {
         BacklogItem item = new BacklogItem("Item", createdBy);
         Activity activity = new Activity("Activity", createdBy);
         item.addActivity(activity);
@@ -164,7 +164,8 @@ public class ProjectTests {
     }
 
     @Test
-    void ActivityIsRemovedWithTwoSprintsAndBackLogListsAreEmpty() throws Exception {
+
+    void givenProjectWithTwoEmptySprintsAndBacklogContainsItemWithActivityWhenRemoveActivityIsCalledThenItemActivityListEqualsZero() throws Exception {
         BacklogItem item = new BacklogItem("Item", createdBy);
         Activity activity = new Activity("Activity", createdBy);
         item.addActivity(activity);
@@ -182,7 +183,7 @@ public class ProjectTests {
     }
 
     @Test
-    void ActivityIsRemovedWithOneSprintAndBacklogDoesNotContainActivityAndSprintStateEqualsCreatedState() throws Exception {
+    void givenProjectWithSprintInCreatedStateWhichHasAItemThatDoesNotContainTheActivityWhenRemoveActivityIsCalledThenItemActivityListEqualsZero() throws Exception {
         BacklogItem itemOne = new BacklogItem("ItemOne", createdBy);
         BacklogItem itemTwo = new BacklogItem("ItemTwo", createdBy);
         Activity activityKeep = new Activity("ActivityOne", createdBy);
@@ -203,7 +204,7 @@ public class ProjectTests {
     }
 
     @Test
-    void ActivityIsRemovedWithOneSprintAndBacklogDoesNotContainActivityAndSprintStateNotEqualsCreatedState() throws Exception {
+    void givenProjectWithSprintNotInCreatedStateWhichHasAItemThatDoesNotContainTheActivityWhenRemoveActivityIsCalledThenItemActivityListEqualsZero() throws Exception {
         BacklogItem itemOne = new BacklogItem("ItemOne", createdBy);
         BacklogItem itemTwo = new BacklogItem("ItemTwo", createdBy);
         Activity activityKeep = new Activity("ActivityOne", createdBy);
@@ -224,7 +225,7 @@ public class ProjectTests {
     }
 
     @Test
-    void ActivityIsRemovedWithOneSprintAndBacklogDoesContainActivityAndSprintStateEqualsCreatedState() throws Exception {
+    void givenProjectWithSprintInCreatedStateWhichHasAItemThatDoesContainTheActivityWhenRemoveActivityIsCalledThenItemActivityListEqualsZero() throws Exception {
         BacklogItem itemOne = new BacklogItem("ItemOne", createdBy);
         BacklogItem itemTwo = new BacklogItem("ItemTwo", createdBy);
         Activity activityKeep = new Activity("ActivityOne", createdBy);
@@ -244,20 +245,20 @@ public class ProjectTests {
     }
 
     @Test
-    void ActivityIsNotRemovedWithOneSprintAndBacklogDoesContainActivityAndSprintStateNotEqualsCreatedState() throws Exception {
+    void givenProjectWithSprintNotInCreatedStateWhichHasAItemThatDoesContainTheActivityWhenRemoveActivityIsCalledThenItemActivityListEqualsZero() throws Exception {
         BacklogItem itemOne = new BacklogItem("ItemOne", createdBy);
         BacklogItem itemTwo = new BacklogItem("ItemTwo", createdBy);
-        Activity activityKeep = new Activity("ActivityOne", createdBy);
-        Activity activityRemove = new Activity("ActivityTwo", createdBy);
+        Activity activityKeep = new Activity("ActivityKeep", createdBy);
+        Activity activityRemove = new Activity("ActivityRemove", createdBy);
         project.addBacklogItem(itemOne);
         project.addBacklogItem(itemTwo);
         itemOne.addActivity(activityKeep);
         itemTwo.addActivity(activityRemove);
         SprintFactory factory = new SprintFactory();
         ISprint sprintOne = factory.createReviewSprint(1, new Date(), new Date(), createdBy);
+        sprintOne.addBacklogItem(itemTwo);
         sprintOne.setState(new InProgressState(sprintOne));
         project.addSprint(sprintOne);
-        sprintOne.addBacklogItem(itemTwo);
 
         project.removeActivity(activityRemove);
 

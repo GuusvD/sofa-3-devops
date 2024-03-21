@@ -113,7 +113,6 @@ public class BacklogItem implements IItemComponent {
 
             if (checkAll) {
                 this.finished = true;
-                // To-do: Close thread
             }
         }
     }

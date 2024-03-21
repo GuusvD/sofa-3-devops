@@ -1,6 +1,7 @@
 package com.avans.sofa3devops.domain;
 
 import com.avans.sofa3devops.domainServices.compositeInterfaces.IPipeComponent;
+import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ public abstract class Action implements IPipeComponent {
         this.commands.remove(action);
     }
 
-    public abstract boolean execute();
+    public abstract boolean execute() throws InvalidStateException;
 
     public int getIndex() {
         return sortIndex;

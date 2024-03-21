@@ -1,14 +1,15 @@
 package com.avans.sofa3devops;
 
+import com.avans.sofa3devops.domain.Command;
 import com.avans.sofa3devops.domain.Document;
 import com.avans.sofa3devops.domain.User;
+import com.avans.sofa3devops.domain.command.*;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
-import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprint;
-import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ReviewSprint;
-import com.avans.sofa3devops.domainServices.sprintFactoryPattern.SprintFactory;
+import com.avans.sofa3devops.domainServices.sprintFactoryPattern.*;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.ClosedState;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.FinishedState;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.InProgressState;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -20,135 +21,154 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 public class SprintStateTest {
     // Correct state switching
-    private final Date pastDate = new Date(System.currentTimeMillis() - 86400000);
-    private final Date startDate = new Date(pastDate.getTime() - 7 * 24 * 60 * 60 * 1000);
+    private Date endDate;
+    private Date startDate;
+    private User user;
+    private ISprintFactory factory;
+    private ISprint regularSprint;
+    @BeforeEach
+    void setup() throws Exception {
+        endDate = new Date(System.currentTimeMillis() - 86400000);
+        startDate = new Date(endDate.getTime() - 7 * 24 * 60 * 60 * 1000);
+        user = new User("John Doe", "j.doe@gmail.com", "Password1234");
+        factory = new SprintFactory();
+        regularSprint = factory.createRegularSprint(1, startDate, endDate, user);
 
-    User user = new User("John Doe", "j.doe@gmail.com", "Password1234");
+        Command commandAnalysis = new DotnetAnalyseCommand();
+        Command commandBuild = new DotnetBuildCommand();
+        Command commandDeploy = new DotnetPublishCommand();
+        Command commandPackage = new DotnetRestoreCommand();
+        Command commandSource = new GitCloneCommand();
+        Command commandTest = new DotnetTestCommand();
+        Command commandUtility = new DotnetCleanCommand();
+
+        regularSprint.addCommandToAction(commandAnalysis);
+        regularSprint.addCommandToAction(commandBuild);
+        regularSprint.addCommandToAction(commandDeploy);
+        regularSprint.addCommandToAction(commandPackage);
+        regularSprint.addCommandToAction(commandSource);
+        regularSprint.addCommandToAction(commandTest);
+        regularSprint.addCommandToAction(commandUtility);
+    }
 
     @Test
     void givenRegularSprintWithCreatedStateWhenSwitchingStateThenSwitchToInProgressState() throws Exception {
-        SprintFactory factory = new SprintFactory();
 
-        ISprint sprint = factory.createRegularSprint(1, startDate, pastDate, user);
+        regularSprint.inProgress();
 
-        sprint.inProgress();
-
-        assertThat(sprint.getState()).isInstanceOf(InProgressState.class);
+        assertThat(regularSprint.getState()).isInstanceOf(InProgressState.class);
     }
 
     @Test
     void givenRegularSprintWithInProgressStateWhenSwitchingStateThenSwitchToFinishedState() throws Exception {
-        SprintFactory factory = new SprintFactory();
-        ISprint sprint = factory.createRegularSprint(1, startDate, pastDate, user);
-        sprint.inProgress();
+        regularSprint.inProgress();
 
-        sprint.finished();
+        regularSprint.finished();
 
-        assertThat(sprint.getState()).isInstanceOf(FinishedState.class);
+        assertThat(regularSprint.getState()).isInstanceOf(FinishedState.class);
     }
 
     @Test
     void givenRegularSprintWithFinishedStateWhenSwitchingStateThenSwitchToClosedState() throws Exception {
-        SprintFactory factory = new SprintFactory();
-        ISprint sprint = factory.createRegularSprint(1, startDate, pastDate, user);
-        sprint.inProgress();
-        sprint.finished();
+        regularSprint.inProgress();
+        regularSprint.finished();
+        regularSprint.executePipeline();
 
-        sprint.closed();
+        regularSprint.closed();
 
-        assertThat(sprint.getState()).isInstanceOf(ClosedState.class);
+        assertThat(regularSprint.getState()).isInstanceOf(ClosedState.class);
     }
 
     @Test
     void givenReviewSprintWithFinishedStateAndWithDocumentAndWithReviewWhenSwitchingStateToClosedThenSwitchToClosedState() throws Exception {
-        SprintFactory factory = new SprintFactory();
-        ReviewSprint sprint = (ReviewSprint) factory.createReviewSprint(1, startDate, pastDate, user);
-        sprint.inProgress();
-        sprint.finished();
-        sprint.setDocument(new Document());
-        sprint.setReviewed();
+        ReviewSprint reviewSprint = (ReviewSprint) factory.createReviewSprint(1,startDate,endDate,user);
+        reviewSprint.inProgress();
+        reviewSprint.finished();
+        reviewSprint.executePipeline();
+        reviewSprint.setDocument(new Document());
+        reviewSprint.setReviewed();
 
-        sprint.closed();
+        reviewSprint.closed();
 
-        assertThat(sprint.getState()).isInstanceOf(ClosedState.class);
+        assertThat(reviewSprint.getState()).isInstanceOf(ClosedState.class);
     }
 
     // Incorrect state switching
     @Test
     void givenRegularSprintWithFinishedStateWhenSwitchingStateToInProgressThenThrowException() throws Exception {
-        SprintFactory factory = new SprintFactory();
-        ISprint sprint = factory.createRegularSprint(1, startDate, pastDate, user);
-        sprint.inProgress();
-        sprint.finished();
+        regularSprint.inProgress();
+        regularSprint.finished();
 
-        InvalidStateException exception = assertThrows(InvalidStateException.class, sprint::inProgress);
+
+        InvalidStateException exception = assertThrows(InvalidStateException.class, regularSprint::inProgress);
         assertEquals("Cannot transition to 'in progress' state!", exception.getMessage());
     }
 
     @Test
     void givenRegularSprintWithClosedStateWhenSwitchingStateToFinishedThenThrowException() throws Exception {
-        SprintFactory factory = new SprintFactory();
-        ISprint sprint = factory.createRegularSprint(1, startDate, pastDate, user);
-        sprint.inProgress();
-        sprint.finished();
-        sprint.closed();
+        regularSprint.inProgress();
+        regularSprint.finished();
+        regularSprint.executePipeline();
 
-        InvalidStateException exception = assertThrows(InvalidStateException.class, sprint::finished);
+        regularSprint.closed();
+
+        InvalidStateException exception = assertThrows(InvalidStateException.class, regularSprint::finished);
         assertEquals("Cannot transition to 'finished' state!", exception.getMessage());
     }
 
     @Test
     void givenRegularSprintWithClosedStateWhenSwitchingStateToInProgressThenThrowException() throws Exception {
-        SprintFactory factory = new SprintFactory();
-        ISprint sprint = factory.createRegularSprint(1, startDate, pastDate, user);
-        sprint.inProgress();
-        sprint.finished();
-        sprint.closed();
+        regularSprint.inProgress();
+        regularSprint.finished();
+        regularSprint.executePipeline();
 
-        InvalidStateException exception = assertThrows(InvalidStateException.class, sprint::inProgress);
+        regularSprint.closed();
+
+        InvalidStateException exception = assertThrows(InvalidStateException.class,regularSprint::inProgress);
         assertEquals("Cannot transition to 'in progress' state!", exception.getMessage());
     }
 
     @Test
     void givenRegularSprintWithInProgressStateWhenSwitchingStateToClosedThenThrowException() throws Exception {
-        SprintFactory factory = new SprintFactory();
-        ISprint sprint = factory.createRegularSprint(1, startDate, pastDate, user);
-        sprint.inProgress();
+        regularSprint.inProgress();
+        regularSprint.executePipeline();
 
-        InvalidStateException exception = assertThrows(InvalidStateException.class, sprint::closed);
-        assertEquals("Cannot transition to 'closed' state!", exception.getMessage());
+
+        InvalidStateException exception = assertThrows(InvalidStateException.class, regularSprint::closed);
+        assertEquals("Cannot transition to 'closed' state! Pipeline is not cancelled/finished!", exception.getMessage());
     }
 
     @Test
     void givenReviewSprintWithFinishedStateAndWithoutReviewWhenSwitchingStateToClosedThenThrowException() throws Exception {
-        SprintFactory factory = new SprintFactory();
-        ISprint sprint = factory.createReviewSprint(1, startDate, pastDate, user);
-        sprint.inProgress();
-        sprint.finished();
+        ReviewSprint reviewSprint = (ReviewSprint) factory.createReviewSprint(1, startDate, endDate, user);
+        reviewSprint.inProgress();
+        reviewSprint.finished();
+        reviewSprint.executePipeline();
 
-        InvalidStateException exception = assertThrows(InvalidStateException.class, sprint::closed);
-        assertEquals("Cannot transition to 'closed' state! Sprint is not reviewed!", exception.getMessage());
+
+        InvalidStateException exception = assertThrows(InvalidStateException.class, reviewSprint::closed);
+        assertEquals("Cannot transition to 'closed' state! Sprint is not reviewed or pipeline is not cancelled/finished!", exception.getMessage());
     }
 
     // Same state switching
     @Test
     void givenRegularSprintWithInProgressStateWhenSwitchingStateToInProgressThenThrowException() throws Exception {
-        SprintFactory factory = new SprintFactory();
-        ISprint sprint = factory.createRegularSprint(1, startDate, pastDate, user);
-        sprint.inProgress();
+        regularSprint.inProgress();
 
-        InvalidStateException exception = assertThrows(InvalidStateException.class, sprint::inProgress);
+        InvalidStateException exception = assertThrows(InvalidStateException.class, regularSprint::inProgress);
         assertEquals("Already in 'in progress' state!", exception.getMessage());
     }
 
     @Test
     void givenRegularSprintWithInProgressStateAndDateNotPassedWhenSwitchingStateToInProgressThenTrowException() throws Exception {
+
         Date currentDate = new Date();
         long millisecondsToAdd = 7 * 24 * 60 * 60 * 1000; // Adding 7 days
         Date futureDate = new Date(currentDate.getTime() + millisecondsToAdd);
-        SprintFactory factory = new SprintFactory();
-        ISprint sprint = factory.createRegularSprint(1, startDate, futureDate, user);
+        ISprint sprint = factory.createRegularSprint(1,startDate,futureDate,user);
         sprint.inProgress();
+        sprint.executePipeline();
+
 
         InvalidStateException exception = assertThrows(InvalidStateException.class, sprint::finished);
         assertEquals("Cannot transition to 'finished' state! Sprint hasn't reached its end date!", exception.getMessage());
@@ -156,52 +176,53 @@ public class SprintStateTest {
 
     @Test
     void givenRegularSprintWithFinishedStateWhenSwitchingStateToFinishedThenThrowException() throws Exception {
-        SprintFactory factory = new SprintFactory();
-        ISprint sprint = factory.createRegularSprint(1, startDate, pastDate, user);
-        sprint.inProgress();
-        sprint.finished();
+        regularSprint.inProgress();
+        regularSprint.finished();
 
-        InvalidStateException exception = assertThrows(InvalidStateException.class, sprint::finished);
+        InvalidStateException exception = assertThrows(InvalidStateException.class, regularSprint::finished);
         assertEquals("Already in 'finished' state!", exception.getMessage());
     }
 
     @Test
     void givenRegularSprintWithClosedStateWhenSwitchingStateToClosedThenThrowException() throws Exception {
-        SprintFactory factory = new SprintFactory();
-        ISprint sprint = factory.createRegularSprint(1, startDate, pastDate, user);
-        sprint.inProgress();
-        sprint.finished();
-        sprint.closed();
+        regularSprint.inProgress();
+        regularSprint.finished();
+        regularSprint.executePipeline();
 
-        InvalidStateException exception = assertThrows(InvalidStateException.class, sprint::closed);
+        regularSprint.closed();
+
+        InvalidStateException exception = assertThrows(InvalidStateException.class, regularSprint::closed);
         assertEquals("Already in 'closed' state!", exception.getMessage());
     }
 
     @Test
     void givenReviewSprintWithFinishedStateWhenSwitchingToClosedStateWithoutDocument() throws Exception {
-        SprintFactory factory = new SprintFactory();
-        ReviewSprint sprint = (ReviewSprint) factory.createReviewSprint(1, startDate, pastDate, user);
-        sprint.inProgress();
-        sprint.finished();
-        sprint.setReviewed();
-        sprint.closed();
+        ReviewSprint reviewSprint = (ReviewSprint) factory.createReviewSprint(1, startDate, endDate, user);
+        reviewSprint.inProgress();
+        reviewSprint.finished();
+        reviewSprint.executePipeline();
 
-        assertInstanceOf(FinishedState.class, sprint.getState());
+        reviewSprint.setReviewed();
+
+        InvalidStateException exception = assertThrows(InvalidStateException.class, regularSprint::closed);
+        assertEquals("Cannot transition to 'closed' state! Pipeline is not cancelled/finished!", exception.getMessage());
+
 
     }
 
     @Test
     void givenReviewSprintWithFinishedStateWhenSwitchingToClosedStateWithDocument() throws Exception {
-        SprintFactory factory = new SprintFactory();
-        ReviewSprint sprint = (ReviewSprint) factory.createReviewSprint(1, startDate, pastDate, user);
+        ReviewSprint reviewSprint = (ReviewSprint) factory.createReviewSprint(1, startDate, endDate, user);
         Document document = new Document();
-        sprint.inProgress();
-        sprint.finished();
-        sprint.setDocument(document);
-        sprint.setReviewed();
-        sprint.closed();
+        reviewSprint.inProgress();
+        reviewSprint.finished();
+        reviewSprint.executePipeline();
 
-        assertInstanceOf(ClosedState.class, sprint.getState());
+        reviewSprint.setDocument(document);
+        reviewSprint.setReviewed();
+        reviewSprint.closed();
+
+        assertInstanceOf(ClosedState.class, reviewSprint.getState());
 
     }
 }

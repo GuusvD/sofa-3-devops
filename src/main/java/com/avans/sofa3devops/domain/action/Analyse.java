@@ -1,6 +1,7 @@
 package com.avans.sofa3devops.domain.action;
 
 import com.avans.sofa3devops.domain.Action;
+import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
 import org.springframework.stereotype.Component;
 
 import com.avans.sofa3devops.domainServices.compositeInterfaces.IPipeComponent;
@@ -23,7 +24,7 @@ public class Analyse extends Action {
     }
 
     @Override
-    public boolean execute() {
+    public boolean execute() throws InvalidStateException {
         logger.info("Starting analysis action: " + getName());
             for (IPipeComponent command : getCommands()) {
                 boolean successful = command.execute();
