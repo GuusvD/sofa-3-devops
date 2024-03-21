@@ -1,7 +1,6 @@
 package com.avans.sofa3devops.domain.action;
 
 import com.avans.sofa3devops.domain.Action;
-import com.avans.sofa3devops.domain.Release;
 import com.avans.sofa3devops.domainServices.compositeInterfaces.IPipeComponent;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
 

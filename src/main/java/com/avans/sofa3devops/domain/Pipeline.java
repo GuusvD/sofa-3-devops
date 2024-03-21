@@ -7,6 +7,8 @@ import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
 import com.avans.sofa3devops.domainServices.pipelineStatePattern.IPipelineState;
 import com.avans.sofa3devops.domainServices.pipelineStatePattern.InitialState;
 import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprint;
+import com.avans.sofa3devops.domainServices.threadObserverPattern.NotificationService;
+import com.avans.sofa3devops.domainServices.threadVisitorPattern.NotificationExecutor;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,7 +29,7 @@ public class Pipeline implements IPipeComponent {
     public Pipeline(String name, ISprint sprint) throws Exception {
         this.name = name;
         this.releases = new ArrayList<>();
-        this.state = new InitialState(this);
+        this.state = new InitialState(this, new NotificationService(new NotificationExecutor()));
         this.allCommands = new ArrayList<>();
         this.selectedCommands = new ArrayList<>();
         this.sprint = sprint;
@@ -40,7 +42,7 @@ public class Pipeline implements IPipeComponent {
         List<Command> commands = new ArrayList<>();
         List<Action> actions = new ArrayList<>();
 
-        for (Class<?> commandClass : AssemblyScanner.getAllClasses( "com.avans.sofa3devops.domain.command")) {
+        for (Class<?> commandClass : AssemblyScanner.getAllClasses("com.avans.sofa3devops.domain.command")) {
             try {
                 Command command = (Command) commandClass.getDeclaredConstructor().newInstance();
                 commands.add(command);
@@ -49,7 +51,7 @@ public class Pipeline implements IPipeComponent {
             }
         }
 
-        for (Class<?> actionClass : AssemblyScanner.getAllClasses( "com.avans.sofa3devops.domain.action")) {
+        for (Class<?> actionClass : AssemblyScanner.getAllClasses("com.avans.sofa3devops.domain.action")) {
             try {
                 Action action = (Action) actionClass.getDeclaredConstructor().newInstance();
                 actions.add(action);
@@ -62,8 +64,8 @@ public class Pipeline implements IPipeComponent {
 
         for (var action : actions) {
             commands.stream()
-               .filter(a -> a.getAction().getClass() == action.getClass())
-               .forEach(action::add);
+                    .filter(a -> a.getAction().getClass() == action.getClass())
+                    .forEach(action::add);
 
             allCommands.add(action);
         }
@@ -72,7 +74,7 @@ public class Pipeline implements IPipeComponent {
     private void initSelectedCommands() throws Exception {
         List<Action> actions = new ArrayList<>();
 
-        for (Class<?> actionClass : AssemblyScanner.getAllClasses( "com.avans.sofa3devops.domain.action")) {
+        for (Class<?> actionClass : AssemblyScanner.getAllClasses("com.avans.sofa3devops.domain.action")) {
             try {
                 Action action = (Action) actionClass.getDeclaredConstructor().newInstance();
                 actions.add(action);
@@ -147,7 +149,7 @@ public class Pipeline implements IPipeComponent {
 
         for (IPipeComponent action : selectedCommands) {
             Action comp = (Action) action;
-            if(comp.getCommands().isEmpty()) {
+            if (comp.getCommands().isEmpty()) {
                 logger.info("Pipeline action '" + action.getClass().getSimpleName() + "' failed, check configuration!");
                 return false;
             }
@@ -160,5 +162,7 @@ public class Pipeline implements IPipeComponent {
         return true;
     }
 
-    public ISprint getSprint() { return this.sprint;}
+    public ISprint getSprint() {
+        return this.sprint;
+    }
 }

@@ -11,7 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-
 @SpringBootTest
 public class BacklogCompositeTest {
     private User createdByUser;
@@ -35,7 +34,7 @@ public class BacklogCompositeTest {
 
     void givenBacklogItemInDoneStateWhenSetFinishedIsCalledThenFinishedEqualsTrue() {
         BacklogItem item = new BacklogItem("BacklogItem", createdByUser);
-        item.setState(new DoneState(item));
+        item.setState(new DoneState());
 
         item.setFinished();
 
@@ -49,7 +48,7 @@ public class BacklogCompositeTest {
         item.addActivity(activity);
         activity.setState(new DoneState(activity));
         activity.setFinished();
-        item.setState(new DoneState(item));
+        item.setState(new DoneState());
 
         item.setFinished();
 
@@ -61,7 +60,7 @@ public class BacklogCompositeTest {
         BacklogItem item = new BacklogItem("BacklogItem", createdByUser);
         Activity activity = new Activity("ActivityItem", createdByUser);
         item.addActivity(activity);
-        item.setState(new DoneState(item));
+        item.setState(new DoneState());
 
         item.setFinished();
 
@@ -79,7 +78,7 @@ public class BacklogCompositeTest {
         activityTwo.setState(new DoneState(activityTwo));
         activityOne.setFinished();
         activityTwo.setFinished();
-        item.setState(new DoneState(item));
+        item.setState(new DoneState());
 
         item.setFinished();
 
@@ -94,7 +93,7 @@ public class BacklogCompositeTest {
         item.addActivity(activityOne);
         item.addActivity(activityTwo);
         activityOne.setFinished();
-        item.setState(new DoneState(item));
+        item.setState(new DoneState());
 
         item.setFinished();
 
@@ -109,16 +108,10 @@ public class BacklogCompositeTest {
         item.addActivity(activityOne);
         item.addActivity(activityTwo);
         activityTwo.setFinished();
-        item.setState(new DoneState(item));
+        item.setState(new DoneState());
 
         item.setFinished();
 
         assertFalse(item.getFinished());
     }
-
-
-
-
-
-
 }

@@ -12,6 +12,8 @@ import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprintFactory;
 import com.avans.sofa3devops.domainServices.sprintFactoryPattern.SprintFactory;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.ClosedState;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.InProgressState;
+import com.avans.sofa3devops.domainServices.threadObserverPattern.NotificationService;
+import com.avans.sofa3devops.domainServices.threadVisitorPattern.NotificationExecutor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -218,7 +220,7 @@ public class ProjectTests {
         itemTwo.addActivity(activityRemove);
         SprintFactory factory = new SprintFactory();
         ISprint sprintOne = factory.createReviewSprint(1, new Date(), new Date(), createdBy);
-        sprintOne.setState(new InProgressState(sprintOne));
+        sprintOne.setState(new InProgressState(sprintOne, new NotificationService(new NotificationExecutor())));
         project.addSprint(sprintOne);
         sprintOne.addBacklogItem(itemOne);
 
@@ -259,8 +261,11 @@ public class ProjectTests {
         itemTwo.addActivity(activityRemove);
         SprintFactory factory = new SprintFactory();
         ISprint sprintOne = factory.createReviewSprint(1, new Date(), new Date(), createdBy);
+
+        sprintOne.setState(new InProgressState(sprintOne, new NotificationService(new NotificationExecutor())));
+        
         sprintOne.addBacklogItem(itemTwo);
-        sprintOne.setState(new InProgressState(sprintOne));
+
         project.addSprint(sprintOne);
 
         project.removeActivity(activityRemove);

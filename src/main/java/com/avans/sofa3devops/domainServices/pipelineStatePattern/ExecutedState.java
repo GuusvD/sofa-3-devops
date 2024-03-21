@@ -2,14 +2,19 @@ package com.avans.sofa3devops.domainServices.pipelineStatePattern;
 
 import com.avans.sofa3devops.domain.Pipeline;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
+import com.avans.sofa3devops.domainServices.threadObserverPattern.NotificationService;
 
 import java.util.Observable;
 
 public class ExecutedState extends Observable implements IPipelineState {
     private final Pipeline pipeline;
+    private final NotificationService service;
 
-    public ExecutedState(Pipeline pipeline) {
+    public ExecutedState(Pipeline pipeline, NotificationService service) {
         this.pipeline = pipeline;
+        this.service = service;
+
+        this.addObserver(service);
     }
 
     @Override
@@ -27,7 +32,7 @@ public class ExecutedState extends Observable implements IPipelineState {
 
     @Override
     public void failedState() {
-        pipeline.setState(new FailedState(pipeline));
+        pipeline.setState(new FailedState(pipeline, service));
 
         setChanged();
         notifyObservers();

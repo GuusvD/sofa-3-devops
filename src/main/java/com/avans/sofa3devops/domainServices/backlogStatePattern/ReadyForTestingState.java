@@ -2,19 +2,24 @@ package com.avans.sofa3devops.domainServices.backlogStatePattern;
 
 import com.avans.sofa3devops.domainServices.compositeInterfaces.IItemComponent;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
+import com.avans.sofa3devops.domainServices.threadObserverPattern.NotificationService;
 
 import java.util.Observable;
 
 public class ReadyForTestingState extends Observable implements IBacklogItemState {
-    private IItemComponent item;
+    private final IItemComponent item;
+    private final NotificationService service;
 
-    public ReadyForTestingState(IItemComponent item) {
+    public ReadyForTestingState(IItemComponent item, NotificationService service) {
         this.item = item;
+        this.service = service;
+
+        this.addObserver(service);
     }
 
     @Override
     public void toDoState() {
-        item.setState(new ToDoState(item));
+        item.setState(new ToDoState(item, service));
 
         setChanged();
         notifyObservers();
@@ -32,7 +37,7 @@ public class ReadyForTestingState extends Observable implements IBacklogItemStat
 
     @Override
     public void testingState() {
-        item.setState(new TestingState(item));
+        item.setState(new TestingState(item, service));
     }
 
     @Override

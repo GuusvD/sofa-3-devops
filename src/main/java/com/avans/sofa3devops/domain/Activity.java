@@ -6,10 +6,11 @@ import com.avans.sofa3devops.domainServices.backlogStatePattern.ToDoState;
 import com.avans.sofa3devops.domainServices.compositeInterfaces.IItemComponent;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
 import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprint;
+import com.avans.sofa3devops.domainServices.threadObserverPattern.NotificationService;
+import com.avans.sofa3devops.domainServices.threadVisitorPattern.NotificationExecutor;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.CreatedState;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.InProgressState;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,7 +28,7 @@ public class Activity implements IItemComponent {
         this.id = UUID.randomUUID();
         this.name = name;
         this.createdBy = createdBy;
-        this.state = new ToDoState(this);
+        this.state = new ToDoState(this, new NotificationService(new NotificationExecutor()));
         this.finished = false;
     }
 

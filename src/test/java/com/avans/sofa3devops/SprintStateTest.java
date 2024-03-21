@@ -2,21 +2,30 @@ package com.avans.sofa3devops;
 
 import com.avans.sofa3devops.domain.Command;
 import com.avans.sofa3devops.domain.Document;
+import com.avans.sofa3devops.domain.Pipeline;
 import com.avans.sofa3devops.domain.User;
 import com.avans.sofa3devops.domain.command.*;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
 import com.avans.sofa3devops.domainServices.sprintFactoryPattern.*;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.ClosedState;
+import com.avans.sofa3devops.domainServices.sprintStatePattern.CreatedState;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.FinishedState;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.InProgressState;
+import com.avans.sofa3devops.domainServices.threadObserverPattern.NotificationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 @SpringBootTest
 public class SprintStateTest {
@@ -206,8 +215,6 @@ public class SprintStateTest {
 
         InvalidStateException exception = assertThrows(InvalidStateException.class, regularSprint::closed);
         assertEquals("Cannot transition to 'closed' state! Pipeline is not cancelled/finished!", exception.getMessage());
-
-
     }
 
     @Test
@@ -223,6 +230,54 @@ public class SprintStateTest {
         reviewSprint.closed();
 
         assertInstanceOf(ClosedState.class, reviewSprint.getState());
+    }
 
+    // Notifications sending
+    @Test
+    void givenRegularSprintWithFinishedStateWhenSwitchingToClosedStateThenSendNotification() throws Exception {
+        NotificationService mock = mock(NotificationService.class);
+        SprintFactory factory = new SprintFactory();
+        ISprint sprint = factory.createRegularSprint(1, startDate, pastDate, user);
+        Pipeline pipeline = sprint.getPipeline();
+        sprint.setState(new CreatedState(sprint, mock));
+        sprint.inProgress();
+        sprint.finished();
+        pipeline.executedState();
+        pipeline.failedState();
+        pipeline.cancelledState();
+
+        sprint.closed();
+
+        assertThat(sprint.getState()).isInstanceOf(ClosedState.class);
+        verify(mock).update(any(FinishedState.class), eq(null));
+    }
+
+    @Test
+    void givenRegularSprintWithInProgressStateWhenSwitchingToFinishedStateThenSendNotification() throws Exception {
+        NotificationService mock = mock(NotificationService.class);
+        SprintFactory factory = new SprintFactory();
+        ISprint sprint = factory.createRegularSprint(1, startDate, pastDate, user);
+        sprint.setState(new CreatedState(sprint, mock));
+        sprint.inProgress();
+
+        sprint.finished();
+
+        assertThat(sprint.getState()).isInstanceOf(FinishedState.class);
+        verify(mock).update(any(InProgressState.class), eq(null));
+    }
+
+    @Test
+    void givenRegularSprintWithInProgressStateAndNotReachedEndDateWhenSwitchingToFinishedStateThenThrowException() throws Exception {
+        NotificationService mock = mock(NotificationService.class);
+        SprintFactory factory = new SprintFactory();
+        LocalDateTime localDateTime = LocalDateTime.now().plusHours(1);
+        Date wrongDate = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+        ISprint sprint = factory.createRegularSprint(1, startDate, wrongDate, user);
+        sprint.setState(new CreatedState(sprint, mock));
+        sprint.inProgress();
+
+        InvalidStateException exception = assertThrows(InvalidStateException.class, sprint::finished);
+        assertEquals("Cannot transition to 'finished' state! Sprint hasn't reached its end date!", exception.getMessage());
+        assertThat(sprint.getState()).isInstanceOf(InProgressState.class);
     }
 }

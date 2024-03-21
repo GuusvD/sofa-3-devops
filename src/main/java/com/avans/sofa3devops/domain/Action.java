@@ -6,7 +6,6 @@ import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.logging.Logger;
 
 public abstract class Action implements IPipeComponent {
     private UUID id;

@@ -4,6 +4,9 @@ import com.avans.sofa3devops.domain.BacklogItem;
 import com.avans.sofa3devops.domain.User;
 import com.avans.sofa3devops.domainServices.backlogStatePattern.*;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
+import com.avans.sofa3devops.domainServices.threadObserverPattern.NotificationService;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprint;
 import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprintFactory;
 import com.avans.sofa3devops.domainServices.sprintFactoryPattern.SprintFactory;
@@ -18,6 +21,10 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 @SpringBootTest
 public class BacklogItemStateTest {
@@ -493,5 +500,49 @@ public class BacklogItemStateTest {
 
         InvalidStateException exception = assertThrows(InvalidStateException.class, item::doneState);
         assertEquals("Already in 'done' state!", exception.getMessage());
+    }
+
+    // Notifications sending
+    @Test
+    void givenBacklogItemWithDoingStateWhenSwitchingToReadyForTestingStateThenSendNotification() throws Exception {
+        NotificationService mock = mock(NotificationService.class);
+        BacklogItem item = new BacklogItem("Backlog", user);
+        item.setState(new ToDoState(item, mock));
+        item.doingState();
+
+        item.readyForTestingState();
+
+        assertThat(item.getState()).isInstanceOf(ReadyForTestingState.class);
+        verify(mock).update(any(DoingState.class), eq(null));
+    }
+
+    @Test
+    void givenBacklogItemWithReadyForTestingStateWhenSwitchingToToDoStateThenSendNotification() throws Exception {
+        NotificationService mock = mock(NotificationService.class);
+        BacklogItem item = new BacklogItem("Backlog", user);
+        item.setState(new ToDoState(item, mock));
+        item.doingState();
+        item.readyForTestingState();
+
+        item.toDoState();
+
+        assertThat(item.getState()).isInstanceOf(ToDoState.class);
+        verify(mock).update(any(ReadyForTestingState.class), eq(null));
+    }
+
+    @Test
+    void givenBacklogItemWithTestedStateWhenSwitchingToReadyForTestingStateThenSendNotification() throws Exception {
+        NotificationService mock = mock(NotificationService.class);
+        BacklogItem item = new BacklogItem("Backlog", user);
+        item.setState(new ToDoState(item, mock));
+        item.doingState();
+        item.readyForTestingState();
+        item.testingState();
+        item.testedState();
+
+        item.readyForTestingState();
+
+        assertThat(item.getState()).isInstanceOf(ReadyForTestingState.class);
+        verify(mock).update(any(TestedState.class), eq(null));
     }
 }

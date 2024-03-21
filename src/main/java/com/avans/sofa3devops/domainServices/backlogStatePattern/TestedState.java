@@ -1,17 +1,20 @@
 package com.avans.sofa3devops.domainServices.backlogStatePattern;
 
-import com.avans.sofa3devops.domain.Thread;
 import com.avans.sofa3devops.domainServices.compositeInterfaces.IItemComponent;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
+import com.avans.sofa3devops.domainServices.threadObserverPattern.NotificationService;
 
-import java.util.List;
 import java.util.Observable;
 
 public class TestedState extends Observable implements IBacklogItemState {
-    private IItemComponent item;
+    private final IItemComponent item;
+    private final NotificationService service;
 
-    public TestedState(IItemComponent item) {
+    public TestedState(IItemComponent item, NotificationService service) {
         this.item = item;
+        this.service = service;
+
+        this.addObserver(service);
     }
 
     @Override
@@ -26,7 +29,7 @@ public class TestedState extends Observable implements IBacklogItemState {
 
     @Override
     public void readyForTestingState() {
-        item.setState(new ReadyForTestingState(item));
+        item.setState(new ReadyForTestingState(item, service));
 
         setChanged();
         notifyObservers();
@@ -34,7 +37,7 @@ public class TestedState extends Observable implements IBacklogItemState {
 
     @Override
     public void testingState() {
-        item.setState(new TestingState(item));
+        item.setState(new TestingState(item, service));
     }
 
     @Override
@@ -44,6 +47,6 @@ public class TestedState extends Observable implements IBacklogItemState {
 
     @Override
     public void doneState() {
-        item.setState(new DoneState(item));
+        item.setState(new DoneState());
     }
 }
