@@ -7,6 +7,8 @@ import com.avans.sofa3devops.domainServices.compositeInterfaces.IItemComponent;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
 import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprint;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.CreatedState;
+import com.avans.sofa3devops.domainServices.threadObserverPattern.NotificationService;
+import com.avans.sofa3devops.domainServices.threadVisitorPattern.NotificationExecutor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +33,7 @@ public class BacklogItem implements IItemComponent {
         this.activities = new ArrayList<>();
         this.createdBy = createdBy;
         this.threads = new ArrayList<>();
-        this.state = new ToDoState(this);
+        this.state = new ToDoState(this, new NotificationService(new NotificationExecutor()));
         this.finished = false;
     }
 

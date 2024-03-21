@@ -2,12 +2,15 @@ package com.avans.sofa3devops.domainServices.backlogStatePattern;
 
 import com.avans.sofa3devops.domainServices.compositeInterfaces.IItemComponent;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
+import com.avans.sofa3devops.domainServices.threadObserverPattern.NotificationService;
 
 public class ToDoState implements IBacklogItemState {
     private IItemComponent item;
+    private NotificationService service;
 
-    public ToDoState(IItemComponent item) {
+    public ToDoState(IItemComponent item, NotificationService service) {
         this.item = item;
+        this.service = service;
     }
 
     @Override
@@ -17,7 +20,7 @@ public class ToDoState implements IBacklogItemState {
 
     @Override
     public void doingState() {
-        item.setState(new DoingState(item));
+        item.setState(new DoingState(item, service));
     }
 
     @Override

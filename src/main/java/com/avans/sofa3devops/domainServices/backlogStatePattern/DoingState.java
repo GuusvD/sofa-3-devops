@@ -3,22 +3,23 @@ package com.avans.sofa3devops.domainServices.backlogStatePattern;
 import com.avans.sofa3devops.domainServices.compositeInterfaces.IItemComponent;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
 import com.avans.sofa3devops.domainServices.threadObserverPattern.NotificationService;
-import com.avans.sofa3devops.domainServices.threadVisitorPattern.NotificationExecutor;
 
 import java.util.Observable;
 
 public class DoingState extends Observable implements IBacklogItemState {
     private IItemComponent item;
+    private NotificationService service;
 
-    public DoingState(IItemComponent item) {
+    public DoingState(IItemComponent item, NotificationService service) {
         this.item = item;
+        this.service = service;
 
-        this.addObserver(new NotificationService(new NotificationExecutor()));
+        this.addObserver(service);
     }
 
     @Override
     public void toDoState() {
-        item.setState(new ToDoState(item));
+        item.setState(new ToDoState(item, service));
     }
 
     @Override
@@ -28,7 +29,7 @@ public class DoingState extends Observable implements IBacklogItemState {
 
     @Override
     public void readyForTestingState() {
-        item.setState(new ReadyForTestingState(item));
+        item.setState(new ReadyForTestingState(item, service));
 
         setChanged();
         notifyObservers();
