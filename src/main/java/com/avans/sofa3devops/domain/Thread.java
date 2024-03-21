@@ -60,5 +60,4 @@ public class Thread extends Observable {
         return !this.backlogItem.getFinished();
     }
 
-
 }
