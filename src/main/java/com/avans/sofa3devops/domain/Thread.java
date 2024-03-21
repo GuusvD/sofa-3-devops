@@ -5,7 +5,7 @@ import com.avans.sofa3devops.domainServices.backlogStatePattern.DoneState;
 import java.util.*;
 
 public class Thread extends Observable {
-    private UUID id;
+    private final UUID id;
     private String title;
     private String body;
     private List<Message> messages;
@@ -31,24 +31,37 @@ public class Thread extends Observable {
         if(canEdit()) {
             messages.add(newMessage);
             newMessage.setThread(this);
-
+          
             setChanged();
             notifyObservers();
         }
+
     }
+  
     public void removeMessage(Message message) {
         if(canEdit()) {
             this.messages.remove(message);
         }
     }
 
-    public String getTitle() {return title;}
-    public String getBody() {return body;}
-    public BacklogItem getBacklogItem() {return backlogItem;}
+   public String getTitle() {
+        return title;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public BacklogItem getBacklogItem() {
+        return backlogItem;
+    }
 
     public boolean canEdit() {
         return !this.backlogItem.getFinished();
     }
 
+    public void setClosed(boolean closed) {
+        this.closed = closed;
+    }
 
 }

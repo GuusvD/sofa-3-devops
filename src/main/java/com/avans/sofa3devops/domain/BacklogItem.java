@@ -159,18 +159,32 @@ public class BacklogItem implements IItemComponent {
     // State Methods End
 
     // General methods
+    public UUID getId() {
+        return id;
+    }
 
-    public UUID getId() {return id;}
-    public String getName() {return name;}
+    public String getName() {
+        return name;
+    }
+  
     public void setName(String name) {
         if(canEdit()) {
             this.name = name;
         }
     }
-    public User getCreatedBy() {return createdBy;}
-    public List<Thread> getThreads() {return this.threads;}
+
+
+    public User getCreatedBy() {
+        return createdBy;
+    }
+
+    @Override
+    public List<Thread> getThreads() {
+        return this.threads;
+    }
+
     public void addThread(Thread thread) {
-        if(!this.threads.contains(thread) && !(state instanceof DoneState && finished)) {
+        if (!this.threads.contains(thread) && !(state instanceof DoneState && finished)) {
             this.threads.add(thread);
         }
     }
@@ -180,5 +194,6 @@ public class BacklogItem implements IItemComponent {
             this.threads.remove(thread);
         }
     }
+
 
 }
