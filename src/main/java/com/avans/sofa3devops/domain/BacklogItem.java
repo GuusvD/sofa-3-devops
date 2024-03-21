@@ -143,15 +143,30 @@ public class BacklogItem implements IItemComponent {
 
     // General methods
 
-    public UUID getId() {return id;}
-    public String getName() {return name;}
-    public void setName(String name) {this.name = name;}
-    public User getCreatedBy() {return createdBy;}
-    public List<Thread> getThreads() {return this.threads;}
+    public UUID getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public User getCreatedBy() {
+        return createdBy;
+    }
+
+    @Override
+    public List<Thread> getThreads() {
+        return this.threads;
+    }
+
     public void addThread(Thread thread) {
-        if(!this.threads.contains(thread) && !(state instanceof DoneState && finished)) {
+        if (!this.threads.contains(thread) && !(state instanceof DoneState && finished)) {
             this.threads.add(thread);
         }
     }
-
 }

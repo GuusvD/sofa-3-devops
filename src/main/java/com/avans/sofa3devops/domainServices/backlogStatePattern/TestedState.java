@@ -1,8 +1,10 @@
 package com.avans.sofa3devops.domainServices.backlogStatePattern;
 
+import com.avans.sofa3devops.domain.Thread;
 import com.avans.sofa3devops.domainServices.compositeInterfaces.IItemComponent;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
 
+import java.util.List;
 import java.util.Observable;
 
 public class TestedState extends Observable implements IBacklogItemState {
@@ -43,5 +45,10 @@ public class TestedState extends Observable implements IBacklogItemState {
     @Override
     public void doneState() {
         item.setState(new DoneState(item));
+
+        List<Thread> threads = item.getThreads();
+        for (Thread thread : threads) {
+            thread.setClosed(true);
+        }
     }
 }

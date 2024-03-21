@@ -3,13 +3,14 @@ package com.avans.sofa3devops.domain;
 import java.util.*;
 
 public class Thread extends Observable {
-    private UUID id;
+    private final UUID id;
     private String title;
     private String body;
     private List<Message> messages;
     private BacklogItem backlogItem;
-    private User createdBy;
-    private Date created;
+    private final User createdBy;
+    private final Date created;
+    private boolean closed;
 
     public Thread(String title, String body, BacklogItem backlogItem, User createdBy) {
         this.id = UUID.randomUUID();
@@ -19,6 +20,7 @@ public class Thread extends Observable {
         this.backlogItem = backlogItem;
         this.createdBy = createdBy;
         this.created = new Date();
+        this.closed = false;
     }
 
     public List<Message> getMessages() {
@@ -26,13 +28,31 @@ public class Thread extends Observable {
     }
 
     public void addMessage(Message newMessage) {
-        messages.add(newMessage);
+        if (!this.closed) {
+            messages.add(newMessage);
 
-        setChanged();
-        notifyObservers();
+            setChanged();
+            notifyObservers();
+        }
     }
 
-    public String getTitle() {return title;}
-    public String getBody() {return body;}
-    public BacklogItem getBacklogItem() {return backlogItem;}
+    public String getTitle() {
+        return title;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public BacklogItem getBacklogItem() {
+        return backlogItem;
+    }
+
+    public boolean isClosed() {
+        return closed;
+    }
+
+    public void setClosed(boolean closed) {
+        this.closed = closed;
+    }
 }
