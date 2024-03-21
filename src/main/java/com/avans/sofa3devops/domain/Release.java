@@ -6,10 +6,10 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class Release {
-    private UUID id;
-    private ISprint sprint;
-    private Pipeline pipeline;
-    private LocalDateTime released;
+    private final UUID id;
+    private final ISprint sprint;
+    private final Pipeline pipeline;
+    private final LocalDateTime released;
 
     public Release(ISprint sprint, Pipeline pipeline) {
         this.id = UUID.randomUUID();

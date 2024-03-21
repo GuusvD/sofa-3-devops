@@ -29,17 +29,15 @@ import java.util.logging.Logger;
 
 @SpringBootTest
 public class ProjectTests {
-    private List<IReport> reportStrategies;
-    private IGitCommands gitStrategy;
     private Project project;
     private User createdBy;
 
     @BeforeEach
     void setUp() {
-        reportStrategies = new ArrayList<>();
+        List<IReport> reportStrategies = new ArrayList<>();
         reportStrategies.add(new Pdf());
         reportStrategies.add(new Png());
-        gitStrategy = new GitHub(Logger.getLogger(GitHub.class.getName()));
+        IGitCommands gitStrategy = new GitHub(Logger.getLogger(GitHub.class.getName()));
         project = new Project("Project", reportStrategies, gitStrategy);
         createdBy = new User("John Doe", "j.doe@gmail.com", "Password1234");
     }

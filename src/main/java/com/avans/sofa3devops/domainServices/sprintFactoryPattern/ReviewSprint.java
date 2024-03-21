@@ -2,9 +2,7 @@ package com.avans.sofa3devops.domainServices.sprintFactoryPattern;
 
 import com.avans.sofa3devops.domain.*;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
-import com.avans.sofa3devops.domainServices.pipelineStatePattern.CancelledState;
 import com.avans.sofa3devops.domainServices.pipelineStatePattern.ExecutedState;
-import com.avans.sofa3devops.domainServices.pipelineStatePattern.FailedState;
 import com.avans.sofa3devops.domainServices.pipelineStatePattern.InitialState;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.CreatedState;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.FinishedState;
@@ -26,8 +24,6 @@ public class ReviewSprint implements ISprint {
     private List<Release> releases;
     private boolean reviewed;
     private Pipeline pipeline;
-
-    private Logger logger = Logger.getLogger(this.getClass().getName());
 
     public ReviewSprint(int number, Date start, Date end, User user) throws Exception {
         this.state = new CreatedState(this, new NotificationService(new NotificationExecutor()));
@@ -97,12 +93,16 @@ public class ReviewSprint implements ISprint {
 
     @Override
     public void addCommandToAction(Command command) {
-        pipeline.addCommandToAction(command);
+        if(!pipelineIsRunning()){
+            pipeline.addCommandToAction(command);
+        }
     }
 
     @Override
     public void removeCommandToAction(Command command) {
-        pipeline.removeCommandToAction(command);
+        if(!pipelineIsRunning()){
+            pipeline.removeCommandToAction(command);
+        }
     }
 
     // General methods
@@ -163,6 +163,10 @@ public class ReviewSprint implements ISprint {
         return pipeline;
     }
 
+    public boolean pipelineIsRunning() {
+        return !(this.pipeline.getState() instanceof ExecutedState);
+    }
+
     public List<BacklogItem> getBacklog() {
         return backlog;
     }
@@ -176,8 +180,10 @@ public class ReviewSprint implements ISprint {
     }
 
     public void setDocument(Document document) {
-        if (state instanceof FinishedState && !(pipeline.getState() instanceof InitialState || pipeline.getState() instanceof ExecutedState)) {
-            this.document = document;
+        if(!pipelineIsRunning()) {
+            if (state instanceof FinishedState && !(pipeline.getState() instanceof InitialState || pipeline.getState() instanceof ExecutedState)) {
+                this.document = document;
+            }
         }
     }
 
@@ -186,18 +192,16 @@ public class ReviewSprint implements ISprint {
     }
 
     public void addRelease(Release release) {
-        if (state instanceof FinishedState && pipeline.getState() instanceof com.avans.sofa3devops.domainServices.pipelineStatePattern.FinishedState) {
-            this.releases.add(release);
+        if(!pipelineIsRunning()) {
+            if (state instanceof FinishedState && pipeline.getState() instanceof com.avans.sofa3devops.domainServices.pipelineStatePattern.FinishedState) {
+                this.releases.add(release);
+            }
         }
-    }
-
-    public boolean isReviewed() {
-        return reviewed;
     }
 
     public void setReviewed() {
-        if (state instanceof FinishedState && this.document != null && !(pipeline.getState() instanceof InitialState || pipeline.getState() instanceof ExecutedState)) {
-            this.reviewed = true;
-        }
+            if (state instanceof FinishedState && this.document != null && !(pipeline.getState() instanceof InitialState || pipeline.getState() instanceof ExecutedState)) {
+                this.reviewed = true;
+            }
     }
 }

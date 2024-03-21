@@ -3,10 +3,10 @@ package com.avans.sofa3devops.domain;
 import java.util.UUID;
 
 public class User {
-    private UUID id;
-    private String name;
-    private String email;
-    private String password;
+    private final UUID id;
+    private final String name;
+    private final String email;
+    private final String password;
 
     public User(String name, String email, String password) {
         this.id = UUID.randomUUID();

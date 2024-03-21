@@ -8,15 +8,13 @@ import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
 import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprint;
 import com.avans.sofa3devops.domainServices.threadObserverPattern.NotificationService;
 import com.avans.sofa3devops.domainServices.threadVisitorPattern.NotificationExecutor;
-import com.avans.sofa3devops.domainServices.sprintStatePattern.CreatedState;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.InProgressState;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class Activity implements IItemComponent {
-    private UUID id;
-    private String name;
+    private final UUID id;
+    private final String name;
     private Boolean finished;
     private User createdBy;
     private User assignedTo;
@@ -98,7 +96,6 @@ public class Activity implements IItemComponent {
     // general methods
     public UUID getId() {return id;}
     public String getName() {return name;}
-    public User getCreated() {return createdBy;}
     public void setSprint(ISprint sprint) {
         if(this.sprint == null) {
             this.sprint = sprint;

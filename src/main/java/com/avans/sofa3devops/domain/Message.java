@@ -5,12 +5,12 @@ import com.avans.sofa3devops.domainServices.threadVisitorPattern.NotificationExe
 import java.util.*;
 
 public class Message extends Observable {
-    private UUID id;
+    private final UUID id;
     private String body;
-    private User creator;
+    private final User creator;
     private List<Message> responses;
     private Thread thread;
-    private Date sent;
+    private final Date sent;
 
     public Message(String body, User creator) {
         this.id = UUID.randomUUID();

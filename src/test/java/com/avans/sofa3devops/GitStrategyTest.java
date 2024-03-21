@@ -1,6 +1,5 @@
 package com.avans.sofa3devops;
 
-import com.avans.sofa3devops.domain.Pipeline;
 import com.avans.sofa3devops.domain.Project;
 import com.avans.sofa3devops.domainServices.gitStrategyPattern.GitHub;
 import com.avans.sofa3devops.domainServices.gitStrategyPattern.GitLab;

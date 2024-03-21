@@ -6,14 +6,11 @@ import com.avans.sofa3devops.domainServices.notificationStrategyPattern.Slack;
 import com.avans.sofa3devops.domainServices.notificationStrategyPattern.Sms;
 import com.avans.sofa3devops.domainServices.threadVisitorPattern.NotificationExecutor;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.*;
 import java.util.logging.Logger;
 
 public class NotificationService implements Observer {
-    private NotificationExecutor notificationExecutor;
+    private final NotificationExecutor notificationExecutor;
 
     public NotificationService(NotificationExecutor notificationExecutor) {
         this.notificationExecutor = notificationExecutor;

@@ -17,22 +17,19 @@ import java.util.Date;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MessageTest {
-    private ISprintFactory factory;
-    private ISprint sprint;
-    private User createdByUser;
     private BacklogItem item;
     private Thread thread;
     private Message message;
     private Message response;
     @BeforeEach
     void setup() throws Exception {
-        createdByUser = new User("John Doe", "j.doe@gmail.com", "Password1234");
-        factory = new SprintFactory();
-        sprint = factory.createRegularSprint(1,new Date(),new Date(),createdByUser);
-        item = new BacklogItem("Item",createdByUser);
-        thread = new Thread("Title","Body",createdByUser);
-        message = new Message("Body",createdByUser);
-        response = new Message("Response",createdByUser);
+        User createdByUser = new User("John Doe", "j.doe@gmail.com", "Password1234");
+        ISprintFactory factory = new SprintFactory();
+        ISprint sprint = factory.createRegularSprint(1, new Date(), new Date(), createdByUser);
+        item = new BacklogItem("Item", createdByUser);
+        thread = new Thread("Title","Body", createdByUser);
+        message = new Message("Body", createdByUser);
+        response = new Message("Response", createdByUser);
     }
     @Test
     void givenFinishedBacklogItemWithThreadWhenResponseMessageIsAddedThenListEqualsZero() throws InvalidStateException {

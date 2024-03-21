@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public abstract class Command implements IPipeComponent {
 
-    private UUID id;
+    private final UUID id;
     private String command;
     private Action action;
 

@@ -9,18 +9,11 @@ import java.util.List;
 
 public interface IItemComponent {
     String getStory();
-
     IBacklogItemState getState();
-
     void setState(IBacklogItemState state);
-
     User getAssignedTo();
-
     void setAssignedTo(User assignedTo);
-
     boolean getFinished();
-
     void setFinished();
-
     void removeFromSprints(List<ISprint> sprints);
 }
