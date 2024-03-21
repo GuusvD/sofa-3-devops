@@ -179,9 +179,9 @@ public class RegularSprint implements ISprint {
     }
 
     public void addRelease(Release release) {
-            if (state instanceof FinishedState && pipeline.getState() instanceof com.avans.sofa3devops.domainServices.pipelineStatePattern.FinishedState) {
-                this.releases.add(release);
-            }
+        if (state instanceof FinishedState && pipeline.getState() instanceof com.avans.sofa3devops.domainServices.pipelineStatePattern.FinishedState) {
+            this.releases.add(release);
+        }
     }
 
     public boolean pipelineIsRunning() {
