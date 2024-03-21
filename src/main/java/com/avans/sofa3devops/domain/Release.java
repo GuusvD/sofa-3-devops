@@ -1,23 +1,20 @@
 package com.avans.sofa3devops.domain;
 
-import com.avans.sofa3devops.domainServices.compositeInterfaces.IPipeComponent;
 import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprint;
 
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class Release {
     private UUID id;
     private ISprint sprint;
     private Pipeline pipeline;
+    private LocalDateTime released;
 
-    private List<IPipeComponent> actions;
-
-    public Release(List<IPipeComponent> actions) {
-        this.actions = actions;
-    }
-
-    public List<IPipeComponent> getActions() {
-        return actions;
+    public Release(ISprint sprint, Pipeline pipeline) {
+        this.id = UUID.randomUUID();
+        this.sprint = sprint;
+        this.pipeline = pipeline;
+        this.released = LocalDateTime.now();
     }
 }
