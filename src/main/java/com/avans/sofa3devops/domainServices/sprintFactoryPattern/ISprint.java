@@ -1,5 +1,7 @@
 package com.avans.sofa3devops.domainServices.sprintFactoryPattern;
 
+import com.avans.sofa3devops.domain.*;
+import com.avans.sofa3devops.domainServices.compositeInterfaces.IPipeComponent;
 import com.avans.sofa3devops.domain.Activity;
 import com.avans.sofa3devops.domain.BacklogItem;
 import com.avans.sofa3devops.domain.Pipeline;
@@ -26,7 +28,8 @@ public interface ISprint {
     Date getEnd();
     void executePipeline() throws InvalidStateException;
     Pipeline getPipeline();
+    List<Release> getReleases();
     void addCommandToAction(Command command);
     void removeCommandToAction(Command command);
-   boolean pipelineIsRunning();
+    boolean pipelineIsRunning();
 }
