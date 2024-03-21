@@ -50,6 +50,7 @@ public class ReviewSprint implements ISprint {
 
     @Override
     public void finished() throws InvalidStateException {
+        // if document is uploaded?
         this.state.finishedState();
     }
 
