@@ -180,11 +180,9 @@ public class ReviewSprint implements ISprint {
     }
 
     public void setDocument(Document document) {
-        if(!pipelineIsRunning()) {
             if (state instanceof FinishedState && !(pipeline.getState() instanceof InitialState || pipeline.getState() instanceof ExecutedState)) {
                 this.document = document;
             }
-        }
     }
 
     public List<Release> getReleases() {
@@ -192,11 +190,9 @@ public class ReviewSprint implements ISprint {
     }
 
     public void addRelease(Release release) {
-        if(!pipelineIsRunning()) {
             if (state instanceof FinishedState && pipeline.getState() instanceof com.avans.sofa3devops.domainServices.pipelineStatePattern.FinishedState) {
                 this.releases.add(release);
             }
-        }
     }
 
     public void setReviewed() {

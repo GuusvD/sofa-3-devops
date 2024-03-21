@@ -51,7 +51,7 @@ public class RegularSprint implements ISprint {
 
     @Override
     public void closed() throws InvalidStateException {
-        if(pipelineIsRunning()) {
+        if(!pipelineIsRunning()) {
             if (pipeline.getState() instanceof CancelledState || pipeline.getState() instanceof com.avans.sofa3devops.domainServices.pipelineStatePattern.FinishedState) {
                 this.state.closedState();
             } else {
@@ -86,14 +86,14 @@ public class RegularSprint implements ISprint {
 
     @Override
     public void addCommandToAction(Command command) {
-        if(pipelineIsRunning()) {
+        if(!pipelineIsRunning()) {
             pipeline.addCommandToAction(command);
         }
     }
 
     @Override
     public void removeCommandToAction(Command command) {
-        if(pipelineIsRunning()) {
+        if(!pipelineIsRunning()) {
             pipeline.removeCommandToAction(command);
         }
     }
@@ -169,11 +169,9 @@ public class RegularSprint implements ISprint {
     }
 
     public void setDocument(Document document) {
-        if(pipelineIsRunning()) {
             if (state instanceof FinishedState && (pipeline.getState() instanceof CancelledState || pipeline.getState() instanceof com.avans.sofa3devops.domainServices.pipelineStatePattern.FinishedState)) {
                 this.document = document;
             }
-        }
     }
 
     public List<Release> getReleases() {
@@ -181,11 +179,9 @@ public class RegularSprint implements ISprint {
     }
 
     public void addRelease(Release release) {
-        if(pipelineIsRunning()) {
             if (state instanceof FinishedState && pipeline.getState() instanceof com.avans.sofa3devops.domainServices.pipelineStatePattern.FinishedState) {
                 this.releases.add(release);
             }
-        }
     }
 
     public boolean pipelineIsRunning() {
