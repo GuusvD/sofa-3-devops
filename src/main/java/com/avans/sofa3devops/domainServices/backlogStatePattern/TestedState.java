@@ -1,10 +1,10 @@
 package com.avans.sofa3devops.domainServices.backlogStatePattern;
 
-import com.avans.sofa3devops.domain.Thread;
 import com.avans.sofa3devops.domainServices.compositeInterfaces.IItemComponent;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
+import com.avans.sofa3devops.domainServices.threadObserverPattern.NotificationService;
+import com.avans.sofa3devops.domainServices.threadVisitorPattern.NotificationExecutor;
 
-import java.util.List;
 import java.util.Observable;
 
 public class TestedState extends Observable implements IBacklogItemState {
@@ -12,6 +12,8 @@ public class TestedState extends Observable implements IBacklogItemState {
 
     public TestedState(IItemComponent item) {
         this.item = item;
+
+        this.addObserver(new NotificationService(new NotificationExecutor()));
     }
 
     @Override

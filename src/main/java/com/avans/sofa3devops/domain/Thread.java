@@ -1,6 +1,7 @@
 package com.avans.sofa3devops.domain;
 
-import com.avans.sofa3devops.domainServices.backlogStatePattern.DoneState;
+import com.avans.sofa3devops.domainServices.threadObserverPattern.NotificationService;
+import com.avans.sofa3devops.domainServices.threadVisitorPattern.NotificationExecutor;
 
 import java.util.*;
 
@@ -21,6 +22,8 @@ public class Thread extends Observable {
         this.backlogItem = backlogItem;
         this.createdBy = createdBy;
         this.created = new Date();
+
+        this.addObserver(new NotificationService(new NotificationExecutor()));
     }
 
     public List<Message> getMessages() {
@@ -35,7 +38,6 @@ public class Thread extends Observable {
             setChanged();
             notifyObservers();
         }
-
     }
   
     public void removeMessage(Message message) {

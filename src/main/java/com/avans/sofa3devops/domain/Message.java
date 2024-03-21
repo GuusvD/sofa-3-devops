@@ -1,5 +1,8 @@
 package com.avans.sofa3devops.domain;
 
+import com.avans.sofa3devops.domainServices.threadObserverPattern.NotificationService;
+import com.avans.sofa3devops.domainServices.threadVisitorPattern.NotificationExecutor;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Observable;
@@ -19,6 +22,8 @@ public class Message extends Observable {
         this.creator = creator;
         this.responses = responses;
         this.sent = sent;
+
+        this.addObserver(new NotificationService(new NotificationExecutor()));
     }
 
     public List<Message> getResponses() {
