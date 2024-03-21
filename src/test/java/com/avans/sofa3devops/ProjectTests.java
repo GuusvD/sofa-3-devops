@@ -1,12 +1,14 @@
 package com.avans.sofa3devops;
 
 import com.avans.sofa3devops.domain.*;
+import com.avans.sofa3devops.domain.Thread;
 import com.avans.sofa3devops.domainServices.gitStrategyPattern.GitHub;
 import com.avans.sofa3devops.domainServices.gitStrategyPattern.IGitCommands;
 import com.avans.sofa3devops.domainServices.reportStrategyPattern.IReport;
 import com.avans.sofa3devops.domainServices.reportStrategyPattern.Pdf;
 import com.avans.sofa3devops.domainServices.reportStrategyPattern.Png;
 import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprint;
+import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprintFactory;
 import com.avans.sofa3devops.domainServices.sprintFactoryPattern.SprintFactory;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.ClosedState;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.InProgressState;
@@ -16,6 +18,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -164,7 +168,6 @@ public class ProjectTests {
     }
 
     @Test
-
     void givenProjectWithTwoEmptySprintsAndBacklogContainsItemWithActivityWhenRemoveActivityIsCalledThenItemActivityListEqualsZero() throws Exception {
         BacklogItem item = new BacklogItem("Item", createdBy);
         Activity activity = new Activity("Activity", createdBy);
@@ -263,5 +266,52 @@ public class ProjectTests {
         project.removeActivity(activityRemove);
 
         assertThat(itemTwo.getActivities()).hasSize(1);
+    }
+
+    @Test
+    void givenProjectWithSprintInCreatedStateWhenRemoveSprintIsCalledThenSprintListEqualsZero() throws Exception {
+        ISprintFactory factory = new SprintFactory();
+        ISprint sprint = factory.createReviewSprint(1,new Date(),new Date(),createdBy);
+        project.addSprint(sprint);
+
+        project.removeSprint(sprint);
+
+        assertThat(project.getSprints()).hasSize(0);
+    }
+
+    @Test
+    void givenProjectWithSprintNotInCreatedStateWhenRemoveSprintIsCalledThenSprintListEqualsOne() throws Exception {
+        ISprintFactory factory = new SprintFactory();
+        ISprint sprint = factory.createReviewSprint(1,new Date(),new Date(),createdBy);
+        project.addSprint(sprint);
+        sprint.inProgress();
+
+        project.removeSprint(sprint);
+
+        assertThat(project.getSprints()).hasSize(1);
+    }
+
+    @Test
+    void givenProjectWithTwoBacklogItemsAndBothHaveAThreadWhenGetAllProjectThreadsIsCalledThenAllArePrintedOut() {
+        BacklogItem itemOne = new BacklogItem("ItemOne",createdBy);
+        Thread threadOne = new Thread("ThreadOne","BodyOne",createdBy);
+        itemOne.addThread(threadOne);
+        BacklogItem itemTwo = new BacklogItem("ItemTwo",createdBy);
+        Thread threadTwo = new Thread("ThreadTwo","BodyTwo",createdBy);
+        itemTwo.addThread(threadTwo);
+        project.addBacklogItem(itemOne);
+        project.addBacklogItem(itemTwo);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream captureStream = new PrintStream(outputStream);
+        System.setOut(captureStream);
+
+        project.getAllProjectThreads();
+
+        String capturedLogs = outputStream.toString();
+
+        assertThat(capturedLogs.contains("Title: " + threadOne.getTitle()));
+        assertThat(capturedLogs.contains("Title: " +threadOne.getTitle()));
+        assertThat(capturedLogs.contains("Body: " +threadTwo.getBody()));
+        assertThat(capturedLogs.contains("Body: " +threadTwo.getBody()));
     }
 }

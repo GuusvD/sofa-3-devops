@@ -13,12 +13,11 @@ public class Thread extends Observable {
     private final User createdBy;
     private final Date created;
 
-    public Thread(String title, String body, BacklogItem backlogItem, User createdBy) {
+    public Thread(String title, String body, User createdBy) {
         this.id = UUID.randomUUID();
         this.title = title;
         this.body = body;
         this.messages = new ArrayList<>();
-        this.backlogItem = backlogItem;
         this.createdBy = createdBy;
         this.created = new Date();
     }
@@ -27,11 +26,13 @@ public class Thread extends Observable {
         return messages;
     }
 
+    public void setBacklogItem(BacklogItem item) {this.backlogItem = item;}
+
     public void addMessage(Message newMessage) {
         if(canEdit()) {
-            messages.add(newMessage);
             newMessage.setThread(this);
-          
+            messages.add(newMessage);
+
             setChanged();
             notifyObservers();
         }

@@ -7,10 +7,8 @@ import com.avans.sofa3devops.domainServices.backlogStatePattern.DoneState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import com.avans.sofa3devops.domain.Thread;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.assertj.core.api.Assertions.*;
 
 
 
