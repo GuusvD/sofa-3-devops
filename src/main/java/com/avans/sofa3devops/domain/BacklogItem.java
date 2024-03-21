@@ -184,7 +184,6 @@ public class BacklogItem implements IItemComponent {
         }
     }
 
-
     public User getCreatedBy() {
         return createdBy;
     }
