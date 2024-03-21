@@ -4,10 +4,15 @@ import com.avans.sofa3devops.domain.BacklogItem;
 import com.avans.sofa3devops.domain.User;
 import com.avans.sofa3devops.domainServices.backlogStatePattern.*;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
+import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprint;
+import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprintFactory;
+import com.avans.sofa3devops.domainServices.sprintFactoryPattern.SprintFactory;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -17,12 +22,22 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @SpringBootTest
 public class BacklogItemStateTest {
     // Correct state switching
-    User user = new User("John Doe", "j.doe@gmail.com", "Password1234");
+    private User user;
+    private ISprintFactory factory;
+    private ISprint sprint;
+
+    @BeforeEach
+    void setUp() throws Exception {
+       user =  new User("John Doe", "j.doe@gmail.com", "Password1234");
+       factory = new SprintFactory();
+       sprint = factory.createRegularSprint(1,new Date(),new Date(),user);
+    }
 
     @Test
     void givenBacklogItemWithToDoStateWhenSwitchingStateThenSwitchToDoingState() throws InvalidStateException {
         BacklogItem item = new BacklogItem("Backlog", user);
-
+        sprint.addBacklogItem(item);
+        sprint.inProgress();
         item.doingState();
 
         assertThat(item.getState()).isInstanceOf(DoingState.class);
@@ -31,6 +46,8 @@ public class BacklogItemStateTest {
     @Test
     void givenBacklogItemWithDoingStateWhenSwitchingStateThenSwitchToReadyForTestingState() throws InvalidStateException {
         BacklogItem item = new BacklogItem("Backlog", user);
+        sprint.addBacklogItem(item);
+        sprint.inProgress();
         item.doingState();
 
         item.readyForTestingState();
@@ -41,6 +58,8 @@ public class BacklogItemStateTest {
     @Test
     void givenBacklogItemWithDoingStateWhenSwitchingStateThenSwitchToToDoState() throws InvalidStateException {
         BacklogItem item = new BacklogItem("Backlog", user);
+        sprint.addBacklogItem(item);
+        sprint.inProgress();
         item.doingState();
 
         item.toDoState();
@@ -51,6 +70,8 @@ public class BacklogItemStateTest {
     @Test
     void givenBacklogItemWithReadyForTestingStateWhenSwitchingStateThenSwitchToToDoState() throws InvalidStateException {
         BacklogItem item = new BacklogItem("Backlog", user);
+        sprint.addBacklogItem(item);
+        sprint.inProgress();
         item.doingState();
         item.readyForTestingState();
 
@@ -62,6 +83,8 @@ public class BacklogItemStateTest {
     @Test
     void givenBacklogItemWithReadyForTestingStateWhenSwitchingStateThenSwitchToTestingState() throws InvalidStateException {
         BacklogItem item = new BacklogItem("Backlog", user);
+        sprint.addBacklogItem(item);
+        sprint.inProgress();
         item.doingState();
         item.readyForTestingState();
 
@@ -73,6 +96,8 @@ public class BacklogItemStateTest {
     @Test
     void givenBacklogItemWithTestingStateWhenSwitchingStateThenSwitchToToDoState() throws InvalidStateException {
         BacklogItem item = new BacklogItem("Backlog", user);
+        sprint.addBacklogItem(item);
+        sprint.inProgress();
         item.doingState();
         item.readyForTestingState();
         item.testingState();
@@ -85,6 +110,8 @@ public class BacklogItemStateTest {
     @Test
     void givenBacklogItemWithTestingStateWhenSwitchingStateThenSwitchToDoingState() throws InvalidStateException {
         BacklogItem item = new BacklogItem("Backlog", user);
+        sprint.addBacklogItem(item);
+        sprint.inProgress();
         item.doingState();
         item.readyForTestingState();
         item.testingState();
@@ -97,6 +124,8 @@ public class BacklogItemStateTest {
     @Test
     void givenBacklogItemWithTestingStateWhenSwitchingStateThenSwitchToTestedState() throws InvalidStateException {
         BacklogItem item = new BacklogItem("Backlog", user);
+        sprint.addBacklogItem(item);
+        sprint.inProgress();
         item.doingState();
         item.readyForTestingState();
         item.testingState();
@@ -109,6 +138,8 @@ public class BacklogItemStateTest {
     @Test
     void givenBacklogItemWithTestedStateWhenSwitchingStateThenSwitchToReadyForTestingState() throws InvalidStateException {
         BacklogItem item = new BacklogItem("Backlog", user);
+        sprint.addBacklogItem(item);
+        sprint.inProgress();
         item.doingState();
         item.readyForTestingState();
         item.testingState();
@@ -122,6 +153,8 @@ public class BacklogItemStateTest {
     @Test
     void givenBacklogItemWithTestedStateWhenSwitchingStateThenSwitchToTestingState() throws InvalidStateException {
         BacklogItem item = new BacklogItem("Backlog", user);
+        sprint.addBacklogItem(item);
+        sprint.inProgress();
         item.doingState();
         item.readyForTestingState();
         item.testingState();
@@ -135,6 +168,8 @@ public class BacklogItemStateTest {
     @Test
     void givenBacklogItemWithTestedStateWhenSwitchingStateThenSwitchToDoneState() throws InvalidStateException {
         BacklogItem item = new BacklogItem("Backlog", user);
+        sprint.addBacklogItem(item);
+        sprint.inProgress();
         item.doingState();
         item.readyForTestingState();
         item.testingState();
@@ -149,6 +184,8 @@ public class BacklogItemStateTest {
     @Test
     void givenBacklogItemWithToDoStateWhenSwitchingStateToReadyForTestingThenThrowException() throws InvalidStateException {
         BacklogItem item = new BacklogItem("Backlog", user);
+        sprint.addBacklogItem(item);
+        sprint.inProgress();
 
         InvalidStateException exception = assertThrows(InvalidStateException.class, item::readyForTestingState);
         assertEquals("Cannot transition to 'ready for testing' state!", exception.getMessage());
@@ -157,6 +194,8 @@ public class BacklogItemStateTest {
     @Test
     void givenBacklogItemWithToDoStateWhenSwitchingStateToTestingThenThrowException() throws InvalidStateException {
         BacklogItem item = new BacklogItem("Backlog", user);
+        sprint.addBacklogItem(item);
+        sprint.inProgress();
 
         InvalidStateException exception = assertThrows(InvalidStateException.class, item::testingState);
         assertEquals("Cannot transition to 'testing' state!", exception.getMessage());
@@ -165,6 +204,8 @@ public class BacklogItemStateTest {
     @Test
     void givenBacklogItemWithToDoStateWhenSwitchingStateToTestedThenThrowException() throws InvalidStateException {
         BacklogItem item = new BacklogItem("Backlog", user);
+        sprint.addBacklogItem(item);
+        sprint.inProgress();
 
         InvalidStateException exception = assertThrows(InvalidStateException.class, item::testedState);
         assertEquals("Cannot transition to 'tested' state!", exception.getMessage());
@@ -173,6 +214,8 @@ public class BacklogItemStateTest {
     @Test
     void givenBacklogItemWithToDoStateWhenSwitchingStateToDoneThenThrowException() throws InvalidStateException {
         BacklogItem item = new BacklogItem("Backlog", user);
+        sprint.addBacklogItem(item);
+        sprint.inProgress();
 
         InvalidStateException exception = assertThrows(InvalidStateException.class, item::doneState);
         assertEquals("Cannot transition to 'done' state!", exception.getMessage());
@@ -181,6 +224,8 @@ public class BacklogItemStateTest {
     @Test
     void givenBacklogItemWithDoingStateWhenSwitchingStateToTestingThenThrowException() throws InvalidStateException {
         BacklogItem item = new BacklogItem("Backlog", user);
+        sprint.addBacklogItem(item);
+        sprint.inProgress();
         item.doingState();
 
         InvalidStateException exception = assertThrows(InvalidStateException.class, item::testingState);
@@ -190,6 +235,8 @@ public class BacklogItemStateTest {
     @Test
     void givenBacklogItemWithDoingStateWhenSwitchingStateToTestedThenThrowException() throws InvalidStateException {
         BacklogItem item = new BacklogItem("Backlog", user);
+        sprint.addBacklogItem(item);
+        sprint.inProgress();
         item.doingState();
 
         InvalidStateException exception = assertThrows(InvalidStateException.class, item::testedState);
@@ -199,6 +246,8 @@ public class BacklogItemStateTest {
     @Test
     void givenBacklogItemWithDoingStateWhenSwitchingStateToDoneThenThrowException() throws InvalidStateException {
         BacklogItem item = new BacklogItem("Backlog", user);
+        sprint.addBacklogItem(item);
+        sprint.inProgress();
         item.doingState();
 
         InvalidStateException exception = assertThrows(InvalidStateException.class, item::doneState);
@@ -208,6 +257,8 @@ public class BacklogItemStateTest {
     @Test
     void givenBacklogItemWithReadyForTestingStateWhenSwitchingStateToDoingThenThrowException() throws InvalidStateException {
         BacklogItem item = new BacklogItem("Backlog", user);
+        sprint.addBacklogItem(item);
+        sprint.inProgress();
         item.doingState();
         item.readyForTestingState();
 
@@ -218,6 +269,8 @@ public class BacklogItemStateTest {
     @Test
     void givenBacklogItemWithReadyForTestingStateWhenSwitchingStateToTestedThenThrowException() throws InvalidStateException {
         BacklogItem item = new BacklogItem("Backlog", user);
+        sprint.addBacklogItem(item);
+        sprint.inProgress();
         item.doingState();
         item.readyForTestingState();
 
@@ -228,6 +281,8 @@ public class BacklogItemStateTest {
     @Test
     void givenBacklogItemWithReadyForTestingStateWhenSwitchingStateToDoneThenThrowException() throws InvalidStateException {
         BacklogItem item = new BacklogItem("Backlog", user);
+        sprint.addBacklogItem(item);
+        sprint.inProgress();
         item.doingState();
         item.readyForTestingState();
 
@@ -238,6 +293,8 @@ public class BacklogItemStateTest {
     @Test
     void givenBacklogItemWithTestingStateWhenSwitchingStateToReadyForTestingThenThrowException() throws InvalidStateException {
         BacklogItem item = new BacklogItem("Backlog", user);
+        sprint.addBacklogItem(item);
+        sprint.inProgress();
         item.doingState();
         item.readyForTestingState();
         item.testingState();
@@ -249,6 +306,8 @@ public class BacklogItemStateTest {
     @Test
     void givenBacklogItemWithTestingStateWhenSwitchingStateToDoneThenThrowException() throws InvalidStateException {
         BacklogItem item = new BacklogItem("Backlog", user);
+        sprint.addBacklogItem(item);
+        sprint.inProgress();
         item.doingState();
         item.readyForTestingState();
         item.testingState();
@@ -260,6 +319,8 @@ public class BacklogItemStateTest {
     @Test
     void givenBacklogItemWithTestedStateWhenSwitchingStateToToDoThenThrowException() throws InvalidStateException {
         BacklogItem item = new BacklogItem("Backlog", user);
+        sprint.addBacklogItem(item);
+        sprint.inProgress();
         item.doingState();
         item.readyForTestingState();
         item.testingState();
@@ -272,6 +333,8 @@ public class BacklogItemStateTest {
     @Test
     void givenBacklogItemWithTestedStateWhenSwitchingStateToDoingThenThrowException() throws InvalidStateException {
         BacklogItem item = new BacklogItem("Backlog", user);
+        sprint.addBacklogItem(item);
+        sprint.inProgress();
         item.doingState();
         item.readyForTestingState();
         item.testingState();
@@ -284,6 +347,8 @@ public class BacklogItemStateTest {
     @Test
     void givenBacklogItemWithDoneStateWhenSwitchingStateToToDoThenThrowException() throws InvalidStateException {
         BacklogItem item = new BacklogItem("Backlog", user);
+        sprint.addBacklogItem(item);
+        sprint.inProgress();
         item.doingState();
         item.readyForTestingState();
         item.testingState();
@@ -297,6 +362,8 @@ public class BacklogItemStateTest {
     @Test
     void givenBacklogItemWithDoneStateWhenSwitchingStateToDoingThenThrowException() throws InvalidStateException {
         BacklogItem item = new BacklogItem("Backlog", user);
+        sprint.addBacklogItem(item);
+        sprint.inProgress();
         item.doingState();
         item.readyForTestingState();
         item.testingState();
@@ -310,6 +377,8 @@ public class BacklogItemStateTest {
     @Test
     void givenBacklogItemWithDoneStateWhenSwitchingStateToReadyForTestingThenThrowException() throws InvalidStateException {
         BacklogItem item = new BacklogItem("Backlog", user);
+        sprint.addBacklogItem(item);
+        sprint.inProgress();
         item.doingState();
         item.readyForTestingState();
         item.testingState();
@@ -323,6 +392,8 @@ public class BacklogItemStateTest {
     @Test
     void givenBacklogItemWithDoneStateWhenSwitchingStateToTestingThenThrowException() throws InvalidStateException {
         BacklogItem item = new BacklogItem("Backlog", user);
+        sprint.addBacklogItem(item);
+        sprint.inProgress();
         item.doingState();
         item.readyForTestingState();
         item.testingState();
@@ -336,6 +407,8 @@ public class BacklogItemStateTest {
     @Test
     void givenBacklogItemWithDoneStateWhenSwitchingStateToTestedThenThrowException() throws InvalidStateException {
         BacklogItem item = new BacklogItem("Backlog", user);
+        sprint.addBacklogItem(item);
+        sprint.inProgress();
         item.doingState();
         item.readyForTestingState();
         item.testingState();
@@ -350,6 +423,8 @@ public class BacklogItemStateTest {
     @Test
     void givenBacklogItemWithToDoStateWhenSwitchingStateToToDoThenThrowException() throws InvalidStateException {
         BacklogItem item = new BacklogItem("Backlog", user);
+        sprint.addBacklogItem(item);
+        sprint.inProgress();
 
         InvalidStateException exception = assertThrows(InvalidStateException.class, item::toDoState);
         assertEquals("Already in 'to do' state!", exception.getMessage());
@@ -358,6 +433,8 @@ public class BacklogItemStateTest {
     @Test
     void givenBacklogItemWithDoingStateWhenSwitchingStateToDoingThenThrowException() throws InvalidStateException {
         BacklogItem item = new BacklogItem("Backlog", user);
+        sprint.addBacklogItem(item);
+        sprint.inProgress();
         item.doingState();
 
         InvalidStateException exception = assertThrows(InvalidStateException.class, item::doingState);
@@ -367,6 +444,8 @@ public class BacklogItemStateTest {
     @Test
     void givenBacklogItemWithReadyForTestingStateWhenSwitchingStateToReadyForTestingThenThrowException() throws InvalidStateException {
         BacklogItem item = new BacklogItem("Backlog", user);
+        sprint.addBacklogItem(item);
+        sprint.inProgress();
         item.doingState();
         item.readyForTestingState();
 
@@ -377,6 +456,8 @@ public class BacklogItemStateTest {
     @Test
     void givenBacklogItemWithTestingStateWhenSwitchingStateToTestingThenThrowException() throws InvalidStateException {
         BacklogItem item = new BacklogItem("Backlog", user);
+        sprint.addBacklogItem(item);
+        sprint.inProgress();
         item.doingState();
         item.readyForTestingState();
         item.testingState();
@@ -388,6 +469,8 @@ public class BacklogItemStateTest {
     @Test
     void givenBacklogItemWithTestedStateWhenSwitchingStateToTestedThenThrowException() throws InvalidStateException {
         BacklogItem item = new BacklogItem("Backlog", user);
+        sprint.addBacklogItem(item);
+        sprint.inProgress();
         item.doingState();
         item.readyForTestingState();
         item.testingState();
@@ -400,6 +483,8 @@ public class BacklogItemStateTest {
     @Test
     void givenBacklogItemWithDoneStateWhenSwitchingStateToDoneThenThrowException() throws InvalidStateException {
         BacklogItem item = new BacklogItem("Backlog", user);
+        sprint.addBacklogItem(item);
+        sprint.inProgress();
         item.doingState();
         item.readyForTestingState();
         item.testingState();

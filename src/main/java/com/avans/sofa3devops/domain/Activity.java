@@ -6,6 +6,8 @@ import com.avans.sofa3devops.domainServices.backlogStatePattern.ToDoState;
 import com.avans.sofa3devops.domainServices.compositeInterfaces.IItemComponent;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
 import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprint;
+import com.avans.sofa3devops.domainServices.sprintStatePattern.CreatedState;
+import com.avans.sofa3devops.domainServices.sprintStatePattern.InProgressState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +19,7 @@ public class Activity implements IItemComponent {
     private Boolean finished;
     private User createdBy;
     private User assignedTo;
+    private ISprint sprint;
 
     private IBacklogItemState state;
 
@@ -53,7 +56,6 @@ public class Activity implements IItemComponent {
     public void setFinished() {
         if (state instanceof DoneState) {
             this.finished = true;
-            // to-do: close threads
         }
     }
 
@@ -63,19 +65,42 @@ public class Activity implements IItemComponent {
     }
 
     // State Methods Start
-    public void setState(IBacklogItemState state) {
-        this.state = state;
-    }
+    public void setState(IBacklogItemState state) {this.state = state;}
     public void toDoState() throws InvalidStateException {this.state.toDoState();}
-    public void doingState() throws InvalidStateException {this.state.doingState();}
-    public void readyForTestingState() throws InvalidStateException {this.state.readyForTestingState();}
-    public void testingState() throws InvalidStateException {this.state.testingState();}
-    public void testedState() throws InvalidStateException {this.state.testedState();}
-    public void doneState() throws InvalidStateException {this.state.doneState();}
+    public void doingState() throws InvalidStateException {
+        if(this.sprint.getState() instanceof InProgressState){
+            this.state.doingState();
+        }
+    }
+    public void readyForTestingState() throws InvalidStateException {
+        if(this.sprint.getState() instanceof InProgressState){
+            this.state.readyForTestingState();
+        }
+    }
+    public void testingState() throws InvalidStateException {
+        if(this.sprint.getState() instanceof InProgressState){
+            this.state.testingState();
+        }
+    }
+    public void testedState() throws InvalidStateException {
+        if(this.sprint.getState() instanceof InProgressState){
+            this.state.testedState();
+        }
+    }
+    public void doneState() throws InvalidStateException {
+        if(this.sprint.getState() instanceof InProgressState){
+            this.state.doneState();
+        }
+    }
     // State Methods End
 
     // general methods
     public UUID getId() {return id;}
     public String getName() {return name;}
     public User getCreated() {return createdBy;}
+    public void setSprint(ISprint sprint) {
+        if(this.sprint == null) {
+            this.sprint = sprint;
+        }
+    }
 }

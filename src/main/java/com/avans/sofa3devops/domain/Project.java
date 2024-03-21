@@ -8,6 +8,7 @@ import com.avans.sofa3devops.domainServices.sprintStatePattern.CreatedState;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 public class Project {
     private UUID id;
@@ -18,6 +19,8 @@ public class Project {
     private List<BacklogItem> projectBacklog;
     private final List<IReport> _reportStrategies;
     private final IGitCommands _gitStrategy;
+
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
 
     public Project(String name, List<IReport> reportStrategies, IGitCommands gitStrategy) {
 
@@ -133,6 +136,10 @@ public class Project {
         return this.projectBacklog;
     }
 
+    public List<ISprint> getSprints() {
+        return this.sprints;
+    }
+
     void getBacklog() {
         for (var backlog : projectBacklog) {
             backlog.getAllStories();
@@ -146,9 +153,7 @@ public class Project {
         }
 
         for (Thread thread : forum) {
-            System.out.println("Title: " + thread.getTitle());
-            System.out.println("Body: " + thread.getBody());
-            System.out.println();
+            logger.info("Title: " + thread.getTitle() + "\nBody: " + thread.getBody() + "\n");
         }
     }
 
