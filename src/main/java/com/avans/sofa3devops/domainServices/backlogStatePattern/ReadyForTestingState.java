@@ -3,7 +3,9 @@ package com.avans.sofa3devops.domainServices.backlogStatePattern;
 import com.avans.sofa3devops.domainServices.compositeInterfaces.IItemComponent;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
 
-public class ReadyForTestingState implements IBacklogItemState {
+import java.util.Observable;
+
+public class ReadyForTestingState extends Observable implements IBacklogItemState {
     private IItemComponent item;
 
     public ReadyForTestingState(IItemComponent item) {
@@ -13,11 +15,14 @@ public class ReadyForTestingState implements IBacklogItemState {
     @Override
     public void toDoState() {
         item.setState(new ToDoState(item));
+
+        setChanged();
+        notifyObservers();
     }
 
     @Override
-    public void doingState() {
-        item.setState(new DoingState(item));
+    public void doingState() throws InvalidStateException {
+        throw new InvalidStateException("Cannot transition to 'doing' state!");
     }
 
     @Override
