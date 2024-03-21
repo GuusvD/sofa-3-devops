@@ -6,6 +6,7 @@ import com.avans.sofa3devops.domain.Pipeline;
 import com.avans.sofa3devops.domain.Command;
 import com.avans.sofa3devops.domain.User;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
+import com.avans.sofa3devops.domainServices.pipelineStatePattern.ExecutedState;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.ISprintState;
 import java.util.Date;
 
@@ -27,4 +28,5 @@ public interface ISprint {
     Pipeline getPipeline();
     void addCommandToAction(Command command);
     void removeCommandToAction(Command command);
+   boolean pipelineIsRunning();
 }

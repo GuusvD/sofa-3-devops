@@ -4,6 +4,7 @@ import com.avans.sofa3devops.domain.*;
 
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
 import com.avans.sofa3devops.domainServices.pipelineStatePattern.CancelledState;
+import com.avans.sofa3devops.domainServices.pipelineStatePattern.ExecutedState;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.CreatedState;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.FinishedState;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.ISprintState;
@@ -37,31 +38,25 @@ public class RegularSprint implements ISprint {
 
     // State Methods
     @Override
-    public void setState(ISprintState state) {
-        this.state = state;
-    }
+    public void setState(ISprintState state) {this.state = state;}
 
     @Override
-    public ISprintState getState() {
-        return this.state;
-    }
+    public ISprintState getState() {return this.state;}
 
     @Override
-    public void inProgress() throws InvalidStateException {
-        this.state.inProgressState();
-    }
+    public void inProgress() throws InvalidStateException {this.state.inProgressState();}
 
     @Override
-    public void finished() throws InvalidStateException {
-        this.state.finishedState();
-    }
+    public void finished() throws InvalidStateException {this.state.finishedState();}
 
     @Override
     public void closed() throws InvalidStateException {
-        if (pipeline.getState() instanceof CancelledState || pipeline.getState() instanceof com.avans.sofa3devops.domainServices.pipelineStatePattern.FinishedState) {
-            this.state.closedState();
-        } else {
-            throw new InvalidStateException("Cannot transition to 'closed' state! Pipeline is not cancelled/finished!");
+        if(pipelineIsRunning()) {
+            if (pipeline.getState() instanceof CancelledState || pipeline.getState() instanceof com.avans.sofa3devops.domainServices.pipelineStatePattern.FinishedState) {
+                this.state.closedState();
+            } else {
+                throw new InvalidStateException("Cannot transition to 'closed' state! Pipeline is not cancelled/finished!");
+            }
         }
     }
 
@@ -91,12 +86,16 @@ public class RegularSprint implements ISprint {
 
     @Override
     public void addCommandToAction(Command command) {
-        pipeline.addCommandToAction(command);
+        if(pipelineIsRunning()) {
+            pipeline.addCommandToAction(command);
+        }
     }
 
     @Override
     public void removeCommandToAction(Command command) {
-        pipeline.removeCommandToAction(command);
+        if(pipelineIsRunning()) {
+            pipeline.removeCommandToAction(command);
+        }
     }
 
     // General methods
@@ -170,8 +169,10 @@ public class RegularSprint implements ISprint {
     }
 
     public void setDocument(Document document) {
-        if (state instanceof FinishedState && (pipeline.getState() instanceof CancelledState || pipeline.getState() instanceof com.avans.sofa3devops.domainServices.pipelineStatePattern.FinishedState)) {
-            this.document = document;
+        if(pipelineIsRunning()) {
+            if (state instanceof FinishedState && (pipeline.getState() instanceof CancelledState || pipeline.getState() instanceof com.avans.sofa3devops.domainServices.pipelineStatePattern.FinishedState)) {
+                this.document = document;
+            }
         }
     }
 
@@ -180,8 +181,14 @@ public class RegularSprint implements ISprint {
     }
 
     public void addRelease(Release release) {
-        if (state instanceof FinishedState && pipeline.getState() instanceof com.avans.sofa3devops.domainServices.pipelineStatePattern.FinishedState) {
-            this.releases.add(release);
+        if(pipelineIsRunning()) {
+            if (state instanceof FinishedState && pipeline.getState() instanceof com.avans.sofa3devops.domainServices.pipelineStatePattern.FinishedState) {
+                this.releases.add(release);
+            }
         }
+    }
+
+    public boolean pipelineIsRunning() {
+        return !(this.pipeline.getState() instanceof ExecutedState);
     }
 }
