@@ -237,7 +237,7 @@ public class SprintStateTest {
     void givenRegularSprintWithFinishedStateWhenSwitchingToClosedStateThenSendNotification() throws Exception {
         NotificationService mock = mock(NotificationService.class);
         SprintFactory factory = new SprintFactory();
-        ISprint sprint = factory.createRegularSprint(1, startDate, pastDate, user);
+        ISprint sprint = factory.createRegularSprint(1, startDate, endDate, user);
         Pipeline pipeline = sprint.getPipeline();
         sprint.setState(new CreatedState(sprint, mock));
         sprint.inProgress();
@@ -256,7 +256,7 @@ public class SprintStateTest {
     void givenRegularSprintWithInProgressStateWhenSwitchingToFinishedStateThenSendNotification() throws Exception {
         NotificationService mock = mock(NotificationService.class);
         SprintFactory factory = new SprintFactory();
-        ISprint sprint = factory.createRegularSprint(1, startDate, pastDate, user);
+        ISprint sprint = factory.createRegularSprint(1, startDate, endDate, user);
         sprint.setState(new CreatedState(sprint, mock));
         sprint.inProgress();
 

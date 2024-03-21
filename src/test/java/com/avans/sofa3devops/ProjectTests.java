@@ -262,9 +262,9 @@ public class ProjectTests {
         SprintFactory factory = new SprintFactory();
         ISprint sprintOne = factory.createReviewSprint(1, new Date(), new Date(), createdBy);
 
-        sprintOne.setState(new InProgressState(sprintOne, new NotificationService(new NotificationExecutor())));
-        
         sprintOne.addBacklogItem(itemTwo);
+
+        sprintOne.setState(new InProgressState(sprintOne, new NotificationService(new NotificationExecutor())));
 
         project.addSprint(sprintOne);
 

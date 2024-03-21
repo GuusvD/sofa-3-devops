@@ -34,7 +34,7 @@ public class ThreadTest {
     @Test
     void givenFinishedBacklogItemWithThreadWhenMessageIsAddedThenListEqualsZero() throws InvalidStateException {
         item.addThread(thread);
-        item.setState(new DoneState(item));
+        item.setState(new DoneState());
         item.setFinished();
 
         thread.addMessage(message);
@@ -45,7 +45,7 @@ public class ThreadTest {
     @Test
     void givenUnfinishedBacklogItemWithThreadWhenMessageIsAddedThenListEqualsOne() {
         item.addThread(thread);
-        item.setState(new DoneState(item));
+        item.setState(new DoneState());
 
         thread.addMessage(message);
         thread.removeMessage(message);
@@ -56,7 +56,7 @@ public class ThreadTest {
     @Test
     void givenFinishedBacklogItemWithThreadWhenMessageIsRemovedThenListEqualsOne() {
         item.addThread(thread);
-        item.setState(new DoneState(item));
+        item.setState(new DoneState());
         thread.addMessage(message);
         item.setFinished();
 
@@ -68,14 +68,11 @@ public class ThreadTest {
     @Test
     void givenUnfinishedBacklogItemWithThreadWhenMessageIsRemovedThenListEqualsZero() {
         item.addThread(thread);
-        item.setState(new DoneState(item));
+        item.setState(new DoneState());
         thread.addMessage(message);
 
         thread.removeMessage(message);
 
         assertThat(thread.getMessages()).hasSize(0);
     }
-
-
-
 }

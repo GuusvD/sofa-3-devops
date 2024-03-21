@@ -46,7 +46,7 @@ public class BacklogCompositeTest {
         BacklogItem item = new BacklogItem("BacklogItem", createdByUser);
         Activity activity = new Activity("ActivityItem", createdByUser);
         item.addActivity(activity);
-        activity.setState(new DoneState(activity));
+        activity.setState(new DoneState());
         activity.setFinished();
         item.setState(new DoneState());
 
@@ -74,8 +74,8 @@ public class BacklogCompositeTest {
         Activity activityTwo = new Activity("ActivityItemTwo", createdByUser);
         item.addActivity(activityOne);
         item.addActivity(activityTwo);
-        activityOne.setState(new DoneState(activityOne));
-        activityTwo.setState(new DoneState(activityTwo));
+        activityOne.setState(new DoneState());
+        activityTwo.setState(new DoneState());
         activityOne.setFinished();
         activityTwo.setFinished();
         item.setState(new DoneState());

@@ -507,6 +507,8 @@ public class BacklogItemStateTest {
     void givenBacklogItemWithDoingStateWhenSwitchingToReadyForTestingStateThenSendNotification() throws Exception {
         NotificationService mock = mock(NotificationService.class);
         BacklogItem item = new BacklogItem("Backlog", user);
+        sprint.addBacklogItem(item);
+        sprint.inProgress();
         item.setState(new ToDoState(item, mock));
         item.doingState();
 
@@ -520,6 +522,8 @@ public class BacklogItemStateTest {
     void givenBacklogItemWithReadyForTestingStateWhenSwitchingToToDoStateThenSendNotification() throws Exception {
         NotificationService mock = mock(NotificationService.class);
         BacklogItem item = new BacklogItem("Backlog", user);
+        sprint.addBacklogItem(item);
+        sprint.inProgress();
         item.setState(new ToDoState(item, mock));
         item.doingState();
         item.readyForTestingState();
@@ -534,6 +538,8 @@ public class BacklogItemStateTest {
     void givenBacklogItemWithTestedStateWhenSwitchingToReadyForTestingStateThenSendNotification() throws Exception {
         NotificationService mock = mock(NotificationService.class);
         BacklogItem item = new BacklogItem("Backlog", user);
+        sprint.addBacklogItem(item);
+        sprint.inProgress();
         item.setState(new ToDoState(item, mock));
         item.doingState();
         item.readyForTestingState();

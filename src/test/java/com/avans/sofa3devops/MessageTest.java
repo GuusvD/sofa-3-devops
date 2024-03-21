@@ -37,7 +37,7 @@ public class MessageTest {
     @Test
     void givenFinishedBacklogItemWithThreadWhenResponseMessageIsAddedThenListEqualsZero() throws InvalidStateException {
         item.addThread(thread);
-        item.setState(new DoneState(item));
+        item.setState(new DoneState());
         thread.addMessage(message);
         item.setFinished();
 
@@ -49,7 +49,7 @@ public class MessageTest {
     @Test
     void givenUnfinishedBacklogItemWithThreadWhenResponseMessageIsAddedThenListEqualsOne() {
         item.addThread(thread);
-        item.setState(new DoneState(item));
+        item.setState(new DoneState());
         thread.addMessage(message);
         message.addMessage(response);
 
@@ -59,7 +59,7 @@ public class MessageTest {
     @Test
     void givenFinishedBacklogItemWithThreadWhenResponseMessageIsRemovedThenListEqualsOne() {
         item.addThread(thread);
-        item.setState(new DoneState(item));
+        item.setState(new DoneState());
         thread.addMessage(message);
         message.addMessage(response);
         item.setFinished();
@@ -72,7 +72,7 @@ public class MessageTest {
     @Test
     void givenUnfinishedBacklogItemWithThreadWhenResponseMessageIsRemovedThenListEqualsZero() {
         item.addThread(thread);
-        item.setState(new DoneState(item));
+        item.setState(new DoneState());
         thread.addMessage(message);
 
         message.removeMessage(response);
@@ -83,7 +83,7 @@ public class MessageTest {
     @Test
     void givenFinishedBacklogItemWithThreadWhenSetBodyOnMessageIsCalledThenBodyDoesNotEqualNewBody() {
         item.addThread(thread);
-        item.setState(new DoneState(item));
+        item.setState(new DoneState());
         thread.addMessage(message);
         message.addMessage(response);
         item.setFinished();
@@ -96,12 +96,11 @@ public class MessageTest {
     @Test
     void givenUnfinishedBacklogItemWithThreadWhenSetBodyOnMessageIsCalledThenBodyDoesNotEqualNewBody() {
         item.addThread(thread);
-        item.setState(new DoneState(item));
+        item.setState(new DoneState());
         thread.addMessage(message);
 
         message.setBody("New Body");
 
         assertThat(message.getBody()).isEqualTo("New Body");
     }
-
 }

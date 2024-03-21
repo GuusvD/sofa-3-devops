@@ -59,11 +59,7 @@ public class ReviewSprint implements ISprint {
 
     @Override
     public void finished() throws InvalidStateException {
-        if (reviewed) {
-            this.state.finishedState();
-        } else {
-            logger.info("Sprint isn't reviewed yet! Make sure a document is uploaded and confirmed!");
-        }
+        this.state.finishedState();
     }
 
     @Override

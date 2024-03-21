@@ -93,7 +93,7 @@ public class BacklogItemTest {
     @Test
     void givenFinishedBackLogItemWhenThreadIsAddedThenItemIsNotAdded() {
         BacklogItem item = new BacklogItem("BacklogItem", createdByUser);
-        item.setState(new DoneState(item));
+        item.setState(new DoneState());
         item.setFinished();
         Thread thread = new Thread("Title","Body",createdByUser);
 
@@ -107,7 +107,7 @@ public class BacklogItemTest {
         BacklogItem item = new BacklogItem("BacklogItem", createdByUser);
         Thread thread = new Thread("Title","Body",createdByUser);
         item.addThread(thread);
-        item.setState(new DoneState(item));
+        item.setState(new DoneState());
         item.setFinished();
 
         item.removeThread(thread);
@@ -121,7 +121,7 @@ public class BacklogItemTest {
         BacklogItem item = new BacklogItem("BacklogItem", createdByUser);
         Thread thread = new Thread("Title","Body",createdByUser);
         item.addThread(thread);
-        item.setState(new DoneState(item));
+        item.setState(new DoneState());
 
         item.removeThread(thread);
 
