@@ -93,12 +93,16 @@ public class ReviewSprint implements ISprint {
 
     @Override
     public void addCommandToAction(Command command) {
-        pipeline.addCommandToAction(command);
+        if(!pipelineIsRunning()){
+            pipeline.addCommandToAction(command);
+        }
     }
 
     @Override
     public void removeCommandToAction(Command command) {
-        pipeline.removeCommandToAction(command);
+        if(!pipelineIsRunning()){
+            pipeline.removeCommandToAction(command);
+        }
     }
 
     // General methods
@@ -159,6 +163,10 @@ public class ReviewSprint implements ISprint {
         return pipeline;
     }
 
+    public boolean pipelineIsRunning() {
+        return !(this.pipeline.getState() instanceof ExecutedState);
+    }
+
     public List<BacklogItem> getBacklog() {
         return backlog;
     }
@@ -172,8 +180,10 @@ public class ReviewSprint implements ISprint {
     }
 
     public void setDocument(Document document) {
-        if (state instanceof FinishedState && !(pipeline.getState() instanceof InitialState || pipeline.getState() instanceof ExecutedState)) {
-            this.document = document;
+        if(!pipelineIsRunning()) {
+            if (state instanceof FinishedState && !(pipeline.getState() instanceof InitialState || pipeline.getState() instanceof ExecutedState)) {
+                this.document = document;
+            }
         }
     }
 
@@ -182,14 +192,16 @@ public class ReviewSprint implements ISprint {
     }
 
     public void addRelease(Release release) {
-        if (state instanceof FinishedState && pipeline.getState() instanceof com.avans.sofa3devops.domainServices.pipelineStatePattern.FinishedState) {
-            this.releases.add(release);
+        if(!pipelineIsRunning()) {
+            if (state instanceof FinishedState && pipeline.getState() instanceof com.avans.sofa3devops.domainServices.pipelineStatePattern.FinishedState) {
+                this.releases.add(release);
+            }
         }
     }
 
     public void setReviewed() {
-        if (state instanceof FinishedState && this.document != null && !(pipeline.getState() instanceof InitialState || pipeline.getState() instanceof ExecutedState)) {
-            this.reviewed = true;
-        }
+            if (state instanceof FinishedState && this.document != null && !(pipeline.getState() instanceof InitialState || pipeline.getState() instanceof ExecutedState)) {
+                this.reviewed = true;
+            }
     }
 }
