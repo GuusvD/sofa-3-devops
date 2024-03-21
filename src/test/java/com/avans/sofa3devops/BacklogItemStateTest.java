@@ -11,12 +11,8 @@ import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprint;
 import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprintFactory;
 import com.avans.sofa3devops.domainServices.sprintFactoryPattern.SprintFactory;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -30,13 +26,12 @@ import static org.mockito.Mockito.verify;
 public class BacklogItemStateTest {
     // Correct state switching
     private User user;
-    private ISprintFactory factory;
     private ISprint sprint;
 
     @BeforeEach
     void setUp() throws Exception {
        user =  new User("John Doe", "j.doe@gmail.com", "Password1234");
-       factory = new SprintFactory();
+       ISprintFactory factory = new SprintFactory();
        sprint = factory.createRegularSprint(1,new Date(),new Date(),user);
     }
 

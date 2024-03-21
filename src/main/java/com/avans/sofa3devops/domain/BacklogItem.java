@@ -11,14 +11,12 @@ import com.avans.sofa3devops.domainServices.threadObserverPattern.NotificationSe
 import com.avans.sofa3devops.domainServices.threadVisitorPattern.NotificationExecutor;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.InProgressState;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Logger;
 
 public class BacklogItem implements IItemComponent {
     private final Logger logger = Logger.getLogger(this.getClass().getName());
-    private UUID id;
+    private final UUID id;
     private String name;
     private List<Activity> activities;
     private User createdBy;

@@ -2,9 +2,7 @@ package com.avans.sofa3devops.domainServices.sprintFactoryPattern;
 
 import com.avans.sofa3devops.domain.*;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
-import com.avans.sofa3devops.domainServices.pipelineStatePattern.CancelledState;
 import com.avans.sofa3devops.domainServices.pipelineStatePattern.ExecutedState;
-import com.avans.sofa3devops.domainServices.pipelineStatePattern.FailedState;
 import com.avans.sofa3devops.domainServices.pipelineStatePattern.InitialState;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.CreatedState;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.FinishedState;
@@ -26,8 +24,6 @@ public class ReviewSprint implements ISprint {
     private List<Release> releases;
     private boolean reviewed;
     private Pipeline pipeline;
-
-    private Logger logger = Logger.getLogger(this.getClass().getName());
 
     public ReviewSprint(int number, Date start, Date end, User user) throws Exception {
         this.state = new CreatedState(this, new NotificationService(new NotificationExecutor()));
@@ -189,10 +185,6 @@ public class ReviewSprint implements ISprint {
         if (state instanceof FinishedState && pipeline.getState() instanceof com.avans.sofa3devops.domainServices.pipelineStatePattern.FinishedState) {
             this.releases.add(release);
         }
-    }
-
-    public boolean isReviewed() {
-        return reviewed;
     }
 
     public void setReviewed() {

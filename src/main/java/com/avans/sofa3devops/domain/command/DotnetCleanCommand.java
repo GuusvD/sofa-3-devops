@@ -1,7 +1,6 @@
 package com.avans.sofa3devops.domain.command;
 
 import com.avans.sofa3devops.domain.Command;
-import com.avans.sofa3devops.domain.action.Build;
 import com.avans.sofa3devops.domain.action.Utility;
 
 import java.util.logging.Logger;

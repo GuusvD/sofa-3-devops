@@ -17,9 +17,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 public class Pipeline implements IPipeComponent {
-    private String name;
-    private List<Release> releases;
-    private Release release;
+    private final String name;
     private IPipelineState state;
     private final Logger logger = Logger.getLogger(getClass().getName());
     private List<IPipeComponent> allCommands;
@@ -28,7 +26,6 @@ public class Pipeline implements IPipeComponent {
 
     public Pipeline(String name, ISprint sprint) throws Exception {
         this.name = name;
-        this.releases = new ArrayList<>();
         this.state = new InitialState(this, new NotificationService(new NotificationExecutor()));
         this.allCommands = new ArrayList<>();
         this.selectedCommands = new ArrayList<>();
