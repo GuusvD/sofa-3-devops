@@ -9,6 +9,7 @@ import com.avans.sofa3devops.domainServices.sprintStatePattern.ISprintState;
 
 import java.io.InvalidObjectException;
 import java.util.*;
+import java.util.logging.Logger;
 
 public class ReviewSprint implements ISprint {
     private ISprintState state;
@@ -21,6 +22,8 @@ public class ReviewSprint implements ISprint {
     private List<Release> releases;
     private boolean reviewed;
     private Pipeline pipeline;
+
+    private Logger logger = Logger.getLogger(this.getClass().getName());
 
     public ReviewSprint(int number, Date start, Date end, User user) throws Exception {
         this.state = new CreatedState(this);
@@ -51,8 +54,11 @@ public class ReviewSprint implements ISprint {
 
     @Override
     public void finished() throws InvalidStateException {
-        // if document is uploaded?
-        this.state.finishedState();
+        if(reviewed) {
+            this.state.finishedState();
+        } else {
+            logger.info("Sprint isn't reviewed yet! Make sure a document is uploaded and confirmed!");
+        }
     }
 
     @Override
