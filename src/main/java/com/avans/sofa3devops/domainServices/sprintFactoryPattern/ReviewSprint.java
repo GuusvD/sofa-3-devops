@@ -3,6 +3,7 @@ package com.avans.sofa3devops.domainServices.sprintFactoryPattern;
 import com.avans.sofa3devops.domain.*;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
 import com.avans.sofa3devops.domainServices.pipelineStatePattern.CancelledState;
+import com.avans.sofa3devops.domainServices.pipelineStatePattern.FailedState;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.CreatedState;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.FinishedState;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.ISprintState;
@@ -33,7 +34,7 @@ public class ReviewSprint implements ISprint {
         this.developers = new ArrayList<>();
         this.developers.add(user);
         this.reviewed = false;
-        this.pipeline = new Pipeline("Sprint:" + number);
+        this.pipeline = new Pipeline("Sprint:" + number ,this);
     }
 
     @Override
