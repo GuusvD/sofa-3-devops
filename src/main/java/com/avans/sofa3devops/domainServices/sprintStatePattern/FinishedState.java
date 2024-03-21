@@ -2,12 +2,17 @@ package com.avans.sofa3devops.domainServices.sprintStatePattern;
 
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
 import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprint;
+import com.avans.sofa3devops.domainServices.threadObserverPattern.NotificationService;
 
-public class FinishedState implements ISprintState {
-    private ISprint sprint;
+import java.util.Observable;
 
-    public FinishedState(ISprint sprint) {
+public class FinishedState extends Observable implements ISprintState {
+    private final ISprint sprint;
+
+    public FinishedState(ISprint sprint, NotificationService service) {
         this.sprint = sprint;
+
+        this.addObserver(service);
     }
 
     @Override
@@ -22,6 +27,9 @@ public class FinishedState implements ISprintState {
 
     @Override
     public void closedState() {
-        sprint.setState(new ClosedState(sprint));
+        sprint.setState(new ClosedState());
+
+        setChanged();
+        notifyObservers();
     }
 }

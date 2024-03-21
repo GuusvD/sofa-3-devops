@@ -2,12 +2,20 @@ package com.avans.sofa3devops.domainServices.sprintStatePattern;
 
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
 import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprint;
+import com.avans.sofa3devops.domainServices.threadObserverPattern.NotificationService;
 
-public class InProgressState implements ISprintState {
-    private ISprint sprint;
+import java.util.Date;
+import java.util.Observable;
 
-    public InProgressState(ISprint sprint) {
+public class InProgressState extends Observable implements ISprintState {
+    private final ISprint sprint;
+    private final NotificationService service;
+
+    public InProgressState(ISprint sprint, NotificationService service) {
         this.sprint = sprint;
+        this.service = service;
+
+        this.addObserver(service);
     }
 
     @Override
@@ -16,8 +24,18 @@ public class InProgressState implements ISprintState {
     }
 
     @Override
-    public void finishedState() {
-        sprint.setState(new FinishedState(sprint));
+    public void finishedState() throws InvalidStateException {
+        Date currentDate = new Date();
+        Date sprintEndDate = sprint.getEnd();
+
+        if (currentDate.after(sprintEndDate)) {
+            sprint.setState(new FinishedState(sprint, service));
+
+            setChanged();
+            notifyObservers();
+        } else {
+            throw new InvalidStateException("Cannot transition to 'finished' state! Sprint hasn't reached its end date!");
+        }
     }
 
     @Override

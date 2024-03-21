@@ -9,27 +9,24 @@ import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
-
 @SpringBootTest
 public class FactoryPatternTests {
     @Test
-    void createRegularSprintWithFactory() {
-        // Arrange
+    void givenSprintFactoryWhenCreateRegularSprintIsCalledThenRegularSprintClassIsReturned() throws Exception {
+
         ISprintFactory factory = new SprintFactory();
-        // Act
-        ISprint rSprint = factory.createRegularSprint(1,new Date(), new Date(), new User());
-        // Assert
+
+        ISprint rSprint = factory.createRegularSprint(1, new Date(), new Date(), new User("John Doe", "j.doe@gmail.com", "Password1234"));
+
         assertInstanceOf(RegularSprint.class, rSprint);
     }
 
     @Test
-    void createReviewSprintWithFactory() {
-        // Arrange
+    void givenSprintFactoryWhenCreateReviewSprintIsCalledThenReviewSprintClassIsReturned() throws Exception {
         ISprintFactory factory = new SprintFactory();
-        // Act
-        ISprint rSprint = factory.createReviewSprint(1,new Date(), new Date(), new User());
-        // Assert
+
+        ISprint rSprint = factory.createReviewSprint(1, new Date(), new Date(), new User("John Doe", "j.doe@gmail.com", "Password1234"));
+
         assertInstanceOf(ReviewSprint.class, rSprint);
     }
-
 }

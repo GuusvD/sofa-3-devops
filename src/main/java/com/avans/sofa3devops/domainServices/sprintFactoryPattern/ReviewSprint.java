@@ -2,30 +2,30 @@ package com.avans.sofa3devops.domainServices.sprintFactoryPattern;
 
 import com.avans.sofa3devops.domain.*;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
+import com.avans.sofa3devops.domainServices.pipelineStatePattern.ExecutedState;
+import com.avans.sofa3devops.domainServices.pipelineStatePattern.InitialState;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.CreatedState;
+import com.avans.sofa3devops.domainServices.sprintStatePattern.FinishedState;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.ISprintState;
+import com.avans.sofa3devops.domainServices.threadObserverPattern.NotificationService;
+import com.avans.sofa3devops.domainServices.threadVisitorPattern.NotificationExecutor;
 
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class ReviewSprint implements ISprint {
-
     private ISprintState state;
-
     private int number;
     private Date start;
     private Date end;
     private List<BacklogItem> backlog;
     private List<User> developers;
     private Document document;
-    private Release release;
-    private Pipeline pipeline;
+    private List<Release> releases;
     private boolean reviewed;
+    private Pipeline pipeline;
 
-    public ReviewSprint(int number, Date start, Date end, User user) {
-        this.state = new CreatedState(this);
+    public ReviewSprint(int number, Date start, Date end, User user) throws Exception {
+        this.state = new CreatedState(this, new NotificationService(new NotificationExecutor()));
         this.number = number;
         this.start = start;
         this.end = end;
@@ -33,6 +33,8 @@ public class ReviewSprint implements ISprint {
         this.developers = new ArrayList<>();
         this.developers.add(user);
         this.reviewed = false;
+        this.pipeline = new Pipeline("Sprint: " + number, this);
+        this.releases = new ArrayList<>();
     }
 
     @Override
@@ -59,47 +61,109 @@ public class ReviewSprint implements ISprint {
     public void closed() throws InvalidStateException {
         if (this.reviewed) {
             this.state.closedState();
+        } else {
+            throw new InvalidStateException("Cannot transition to 'closed' state! Sprint is not reviewed or pipeline is not cancelled/finished!");
+        }
+    }
+
+    @Override
+    public boolean containBacklogItem(BacklogItem item) {
+        return this.backlog.contains((item));
+    }
+
+    @Override
+    public boolean backlogContainsActivity(Activity activity) {
+        for (var item : backlog) {
+            if (item.containsActivity(activity)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void sprintEdit(int number, Date start, Date end) {
+        if (this.state instanceof CreatedState) {
+            this.number = number;
+            this.start = start;
+            this.end = end;
+        }
+    }
+
+    @Override
+    public void addCommandToAction(Command command) {
+        if(!pipelineIsRunning()){
+            pipeline.addCommandToAction(command);
+        }
+    }
+
+    @Override
+    public void removeCommandToAction(Command command) {
+        if(!pipelineIsRunning()){
+            pipeline.removeCommandToAction(command);
         }
     }
 
     // General methods
-
     public void addBacklogItem(BacklogItem backlog) {
-        this.backlog.add(backlog);
+        if (state instanceof CreatedState && !this.backlog.contains(backlog)) {
+            this.backlog.add(backlog);
+            backlog.setSprint(this);
+        }
     }
 
     public void removeBacklogItem(BacklogItem backlog) {
-        this.backlog.remove(backlog);
+        if (state instanceof CreatedState) {
+            this.backlog.remove(backlog);
+        }
     }
 
     public void addDeveloper(User user) {
-        this.developers.add(user);
+        if (state instanceof CreatedState && !developers.contains(user)) {
+            this.developers.add(user);
+        }
     }
 
     public void removeDeveloper(User user) {
-        this.developers.remove(user);
+        if (state instanceof CreatedState) {
+            this.developers.remove(user);
+        }
     }
 
     // Getters & Setters
     public int getNumber() {
         return number;
     }
-    public void setNumber(int number) {
-        this.number = number;
-    }
 
     public Date getStart() {
         return start;
-    }
-    public void setStart(Date start) {
-        this.start = start;
     }
 
     public Date getEnd() {
         return end;
     }
-    public void setEnd(Date end) {
-        this.end = end;
+
+    @Override
+    public void executePipeline() throws InvalidStateException {
+        if (state instanceof FinishedState) {
+            boolean successful = pipeline.execute();
+
+            if (!successful) {
+                pipeline.failedState();
+            } else {
+                pipeline.finishedState();
+                addRelease(new Release(this, pipeline));
+            }
+        }
+    }
+
+    @Override
+    public Pipeline getPipeline() {
+        return pipeline;
+    }
+
+    public boolean pipelineIsRunning() {
+        return this.pipeline.getState() instanceof ExecutedState;
     }
 
     public List<BacklogItem> getBacklog() {
@@ -113,31 +177,26 @@ public class ReviewSprint implements ISprint {
     public Document getDocument() {
         return document;
     }
+
     public void setDocument(Document document) {
-        this.document = document;
+            if (state instanceof FinishedState && !(pipeline.getState() instanceof InitialState || pipeline.getState() instanceof ExecutedState)) {
+                this.document = document;
+            }
     }
 
-    public Release getRelease() {
-        return release;
-    }
-    public void setRelease(Release release) {
-        this.release = release;
+    public List<Release> getReleases() {
+        return releases;
     }
 
-    public Pipeline getPipeline() {
-        return pipeline;
-    }
-    public void setPipeline(Pipeline pipeline) {
-        this.pipeline = pipeline;
-    }
-
-    public boolean isReviewed() {
-        return reviewed;
+    public void addRelease(Release release) {
+            if (state instanceof FinishedState && pipeline.getState() instanceof com.avans.sofa3devops.domainServices.pipelineStatePattern.FinishedState) {
+                this.releases.add(release);
+            }
     }
 
     public void setReviewed() {
-        if (this.document != null) {
-            this.reviewed = true;
-        }
+            if (state instanceof FinishedState && this.document != null && !(pipeline.getState() instanceof InitialState || pipeline.getState() instanceof ExecutedState)) {
+                this.reviewed = true;
+            }
     }
 }

@@ -1,5 +1,9 @@
 package com.avans.sofa3devops.domainServices.compositeInterfaces;
 
-public class IPipeComponent {
+import com.avans.sofa3devops.domain.Release;
+import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
 
+public interface IPipeComponent {
+    boolean execute() throws InvalidStateException;
+    void print();
 }
