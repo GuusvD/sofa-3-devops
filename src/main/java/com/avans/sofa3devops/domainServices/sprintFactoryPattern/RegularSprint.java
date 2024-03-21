@@ -29,7 +29,7 @@ public class RegularSprint implements ISprint {
         this.backlog = new ArrayList<>();
         this.developers = new ArrayList<>();
         this.developers.add(user);
-        this.pipeline = new Pipeline("Sprint:" + number);
+        this.pipeline = new Pipeline("Sprint:" + number, this);
     }
 
     // State Methods

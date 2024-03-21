@@ -6,6 +6,7 @@ import com.avans.sofa3devops.domainServices.compositeInterfaces.IPipeComponent;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
 import com.avans.sofa3devops.domainServices.pipelineStatePattern.IPipelineState;
 import com.avans.sofa3devops.domainServices.pipelineStatePattern.InitialState;
+import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprint;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,13 +22,15 @@ public class Pipeline implements IPipeComponent {
     private final Logger logger = Logger.getLogger(getClass().getName());
     private List<IPipeComponent> allCommands;
     private List<IPipeComponent> selectedCommands;
+    private ISprint sprint;
 
-    public Pipeline(String name) throws Exception {
+    public Pipeline(String name, ISprint sprint) throws Exception {
         this.name = name;
         this.releases = new ArrayList<>();
         this.state = new InitialState(this);
         this.allCommands = new ArrayList<>();
         this.selectedCommands = new ArrayList<>();
+        this.sprint = sprint;
 
         initAllCommands();
         initSelectedCommands();
@@ -154,4 +157,6 @@ public class Pipeline implements IPipeComponent {
         }
         return true;
     }
+
+    public ISprint getSprint() { return this.sprint;}
 }

@@ -7,10 +7,14 @@ import com.avans.sofa3devops.domainServices.gitStrategyPattern.IGitCommands;
 import com.avans.sofa3devops.domainServices.reportStrategyPattern.IReport;
 import com.avans.sofa3devops.domainServices.reportStrategyPattern.Pdf;
 import com.avans.sofa3devops.domainServices.reportStrategyPattern.Png;
+import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprint;
+import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprintFactory;
+import com.avans.sofa3devops.domainServices.sprintFactoryPattern.SprintFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -22,9 +26,11 @@ public class Sofa3DevopsApplication {
         List<IReport> reportStrategies = new ArrayList<>();
         reportStrategies.add(new Pdf());
         reportStrategies.add(new Png());
+        User creator = new User("John Doe", "j.doe@gmail.com", "Password1234");
+        ISprintFactory factory = new SprintFactory();
+        ISprint sprint = factory.createRegularSprint(1, new Date(),new Date(),creator);
 
-
-        Pipeline pipeline = new Pipeline("Pipe");
+        Pipeline pipeline = new Pipeline("Pipe",sprint);
 
         IGitCommands gitStrategy = new GitHub(Logger.getLogger(GitHub.class.getName()));
 
@@ -32,7 +38,7 @@ public class Sofa3DevopsApplication {
 
         project.printReports();
 
-        User creator = new User("John Doe", "j.doe@gmail.com", "Password1234");
+
 
         BacklogItem item = new BacklogItem("US-1", creator);
         Activity activityOne = new Activity("AC-1-One", creator);
