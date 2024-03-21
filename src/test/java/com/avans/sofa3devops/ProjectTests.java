@@ -1,12 +1,14 @@
 package com.avans.sofa3devops;
 
 import com.avans.sofa3devops.domain.*;
+import com.avans.sofa3devops.domain.Thread;
 import com.avans.sofa3devops.domainServices.gitStrategyPattern.GitHub;
 import com.avans.sofa3devops.domainServices.gitStrategyPattern.IGitCommands;
 import com.avans.sofa3devops.domainServices.reportStrategyPattern.IReport;
 import com.avans.sofa3devops.domainServices.reportStrategyPattern.Pdf;
 import com.avans.sofa3devops.domainServices.reportStrategyPattern.Png;
 import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprint;
+import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprintFactory;
 import com.avans.sofa3devops.domainServices.sprintFactoryPattern.SprintFactory;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.ClosedState;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.InProgressState;
@@ -18,6 +20,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -41,7 +45,7 @@ public class ProjectTests {
     }
 
     @Test
-    void OneUserIsAddedToProject() {
+    void givenOneProjectWithoutDevelopersWhenOneUserIsAddedToProjectThenParticipantsSizeEqualsOne () {
         User user = new User("John Doe", "j.doe@gmail.com", "Password1234");
 
         project.addParticipant(user);
@@ -50,7 +54,7 @@ public class ProjectTests {
     }
 
     @Test
-    void TwoUsersAreAddedToProject() {
+    void givenOneProjectWithoutDevelopersWhenTwoUserAreAddedToProjectThenParticipantsSizeEqualsTwo() {
         User userOne = new User("John Doe", "j.doe@gmail.com", "Password1234");
         User userTwo = new User("John Doe", "j.doe@gmail.com", "Password1234");
 
@@ -61,7 +65,7 @@ public class ProjectTests {
     }
 
     @Test
-    void OneUserIsAddedWhenTheSamePersonIsAddedAgain() {
+    void givenOneProjectWithoutDevelopersWhenOneUserIsAddedTwiceThenParticipantsSizeEqualsOne() {
         User userOne = new User("John Doe", "j.doe@gmail.com", "Password1234");
 
         project.addParticipant(userOne);
@@ -71,7 +75,7 @@ public class ProjectTests {
     }
 
     @Test
-    void BacklogItemIsRemovedWhenNoSprintArrayIsEmpty() {
+    void givenProjectWithoutSprintsWhenRemoveBacklogItemIsCalledThenProjectBacklogSizeEqualsZero() {
         BacklogItem item = new BacklogItem("Item", createdBy);
         project.addBacklogItem(item);
 
@@ -81,7 +85,7 @@ public class ProjectTests {
     }
 
     @Test
-    void BackLogItemIsRemovedWhenNoSprintContainsTheBackLogItemAndSprintIsInCreatedState() throws Exception {
+    void givenProjectWithOneSprintWithoutBacklogItemsWhenRemoveBacklogItemIsCalledThenProjectBacklogSizeEqualsZero() throws Exception {
         BacklogItem item = new BacklogItem("Item", createdBy);
         project.addBacklogItem(item);
         SprintFactory factory = new SprintFactory();
@@ -95,7 +99,7 @@ public class ProjectTests {
     }
 
     @Test
-    void BackLogItemIsRemovedWhenSprintContainsTheBacklogItemAndSprintIsInCreatedState() throws Exception {
+    void givenProjectWithOneSprintInCreatedStateWithBacklogItemWhenRemoveBacklogItemIsCalledThenProjectBacklogSizeEqualsZero() throws Exception {
         BacklogItem item = new BacklogItem("Item", createdBy);
         project.addBacklogItem(item);
         SprintFactory factory = new SprintFactory();
@@ -109,7 +113,7 @@ public class ProjectTests {
     }
 
     @Test
-    void BackLogItemIsRemovedWhenNoSprintContainsTheBackLogItemAndSprintIsNotInCreatedState() throws Exception {
+    void givenProjectWithOneSprintNotInCreatedStateWithoutBacklogItemsWhenRemoveBacklogItemIsCalledThenProjectBacklogSizeEqualsZero() throws Exception {
         BacklogItem item = new BacklogItem("Item", createdBy);
         project.addBacklogItem(item);
         SprintFactory factory = new SprintFactory();
@@ -123,7 +127,7 @@ public class ProjectTests {
     }
 
     @Test
-    void BackLogItemIsNotRemovedWhenSprintContainsBackLogItemAndIsNotInCreatedState() throws Exception {
+    void givenProjectWithOneSprintNotInCreatedStateWithBacklogItemWhenRemoveBacklogItemIsCalledThenProjectBacklogSizeEqualsOne() throws Exception {
         BacklogItem item = new BacklogItem("Item", createdBy);
         project.addBacklogItem(item);
         SprintFactory factory = new SprintFactory();
@@ -138,7 +142,7 @@ public class ProjectTests {
     }
 
     @Test
-    void ActivityIsRemovedWhenSprintListIsEmpty() {
+    void givenProjectWithoutSprintsAndWithBacklogItemWithActivityWhenRemoveActivityIsCalledThenBacklogItemActivityListEqualsZero() {
         BacklogItem item = new BacklogItem("Item", createdBy);
         Activity activity = new Activity("Activity", createdBy);
         item.addActivity(activity);
@@ -150,7 +154,7 @@ public class ProjectTests {
     }
 
     @Test
-    void ActivityIsRemovedWithOneSprintAndBackLogListIsEmpty() throws Exception {
+    void givenProjectWithOneSprintWithNoBacklogAndOneBacklogItemWithActivityWhenRemoveActivityIsCalledThenBacklogItemActivityListEqualsZero() throws Exception {
         BacklogItem item = new BacklogItem("Item", createdBy);
         Activity activity = new Activity("Activity", createdBy);
         item.addActivity(activity);
@@ -166,7 +170,7 @@ public class ProjectTests {
     }
 
     @Test
-    void ActivityIsRemovedWithTwoSprintsAndBackLogListsAreEmpty() throws Exception {
+    void givenProjectWithTwoEmptySprintsAndBacklogContainsItemWithActivityWhenRemoveActivityIsCalledThenItemActivityListEqualsZero() throws Exception {
         BacklogItem item = new BacklogItem("Item", createdBy);
         Activity activity = new Activity("Activity", createdBy);
         item.addActivity(activity);
@@ -184,7 +188,7 @@ public class ProjectTests {
     }
 
     @Test
-    void ActivityIsRemovedWithOneSprintAndBacklogDoesNotContainActivityAndSprintStateEqualsCreatedState() throws Exception {
+    void givenProjectWithSprintInCreatedStateWhichHasAItemThatDoesNotContainTheActivityWhenRemoveActivityIsCalledThenItemActivityListEqualsZero() throws Exception {
         BacklogItem itemOne = new BacklogItem("ItemOne", createdBy);
         BacklogItem itemTwo = new BacklogItem("ItemTwo", createdBy);
         Activity activityKeep = new Activity("ActivityOne", createdBy);
@@ -205,7 +209,7 @@ public class ProjectTests {
     }
 
     @Test
-    void ActivityIsRemovedWithOneSprintAndBacklogDoesNotContainActivityAndSprintStateNotEqualsCreatedState() throws Exception {
+    void givenProjectWithSprintNotInCreatedStateWhichHasAItemThatDoesNotContainTheActivityWhenRemoveActivityIsCalledThenItemActivityListEqualsZero() throws Exception {
         BacklogItem itemOne = new BacklogItem("ItemOne", createdBy);
         BacklogItem itemTwo = new BacklogItem("ItemTwo", createdBy);
         Activity activityKeep = new Activity("ActivityOne", createdBy);
@@ -226,7 +230,7 @@ public class ProjectTests {
     }
 
     @Test
-    void ActivityIsRemovedWithOneSprintAndBacklogDoesContainActivityAndSprintStateEqualsCreatedState() throws Exception {
+    void givenProjectWithSprintInCreatedStateWhichHasAItemThatDoesContainTheActivityWhenRemoveActivityIsCalledThenItemActivityListEqualsZero() throws Exception {
         BacklogItem itemOne = new BacklogItem("ItemOne", createdBy);
         BacklogItem itemTwo = new BacklogItem("ItemTwo", createdBy);
         Activity activityKeep = new Activity("ActivityOne", createdBy);
@@ -246,23 +250,73 @@ public class ProjectTests {
     }
 
     @Test
-    void ActivityIsNotRemovedWithOneSprintAndBacklogDoesContainActivityAndSprintStateNotEqualsCreatedState() throws Exception {
+    void givenProjectWithSprintNotInCreatedStateWhichHasAItemThatDoesContainTheActivityWhenRemoveActivityIsCalledThenItemActivityListEqualsZero() throws Exception {
         BacklogItem itemOne = new BacklogItem("ItemOne", createdBy);
         BacklogItem itemTwo = new BacklogItem("ItemTwo", createdBy);
-        Activity activityKeep = new Activity("ActivityOne", createdBy);
-        Activity activityRemove = new Activity("ActivityTwo", createdBy);
+        Activity activityKeep = new Activity("ActivityKeep", createdBy);
+        Activity activityRemove = new Activity("ActivityRemove", createdBy);
         project.addBacklogItem(itemOne);
         project.addBacklogItem(itemTwo);
         itemOne.addActivity(activityKeep);
         itemTwo.addActivity(activityRemove);
         SprintFactory factory = new SprintFactory();
         ISprint sprintOne = factory.createReviewSprint(1, new Date(), new Date(), createdBy);
+
         sprintOne.setState(new InProgressState(sprintOne, new NotificationService(new NotificationExecutor())));
-        project.addSprint(sprintOne);
+        
         sprintOne.addBacklogItem(itemTwo);
+
+        project.addSprint(sprintOne);
 
         project.removeActivity(activityRemove);
 
         assertThat(itemTwo.getActivities()).hasSize(1);
+    }
+
+    @Test
+    void givenProjectWithSprintInCreatedStateWhenRemoveSprintIsCalledThenSprintListEqualsZero() throws Exception {
+        ISprintFactory factory = new SprintFactory();
+        ISprint sprint = factory.createReviewSprint(1,new Date(),new Date(),createdBy);
+        project.addSprint(sprint);
+
+        project.removeSprint(sprint);
+
+        assertThat(project.getSprints()).hasSize(0);
+    }
+
+    @Test
+    void givenProjectWithSprintNotInCreatedStateWhenRemoveSprintIsCalledThenSprintListEqualsOne() throws Exception {
+        ISprintFactory factory = new SprintFactory();
+        ISprint sprint = factory.createReviewSprint(1,new Date(),new Date(),createdBy);
+        project.addSprint(sprint);
+        sprint.inProgress();
+
+        project.removeSprint(sprint);
+
+        assertThat(project.getSprints()).hasSize(1);
+    }
+
+    @Test
+    void givenProjectWithTwoBacklogItemsAndBothHaveAThreadWhenGetAllProjectThreadsIsCalledThenAllArePrintedOut() {
+        BacklogItem itemOne = new BacklogItem("ItemOne",createdBy);
+        Thread threadOne = new Thread("ThreadOne","BodyOne",createdBy);
+        itemOne.addThread(threadOne);
+        BacklogItem itemTwo = new BacklogItem("ItemTwo",createdBy);
+        Thread threadTwo = new Thread("ThreadTwo","BodyTwo",createdBy);
+        itemTwo.addThread(threadTwo);
+        project.addBacklogItem(itemOne);
+        project.addBacklogItem(itemTwo);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream captureStream = new PrintStream(outputStream);
+        System.setOut(captureStream);
+
+        project.getAllProjectThreads();
+
+        String capturedLogs = outputStream.toString();
+
+        assertThat(capturedLogs.contains("Title: " + threadOne.getTitle()));
+        assertThat(capturedLogs.contains("Title: " +threadOne.getTitle()));
+        assertThat(capturedLogs.contains("Body: " +threadTwo.getBody()));
+        assertThat(capturedLogs.contains("Body: " +threadTwo.getBody()));
     }
 }

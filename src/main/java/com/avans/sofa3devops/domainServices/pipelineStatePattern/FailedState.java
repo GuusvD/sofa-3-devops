@@ -18,7 +18,7 @@ public class FailedState extends Observable implements IPipelineState {
     }
 
     @Override
-    public void executedState() {
+    public void executedState() throws InvalidStateException {
         pipeline.setState(new ExecutedState(pipeline, service));
     }
 

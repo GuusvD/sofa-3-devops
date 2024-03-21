@@ -7,10 +7,8 @@ import com.avans.sofa3devops.domainServices.backlogStatePattern.DoneState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import com.avans.sofa3devops.domain.Thread;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.assertj.core.api.Assertions.*;
 
 
 @SpringBootTest
@@ -23,7 +21,8 @@ public class BacklogCompositeTest {
     }
 
     @Test
-    void FinishedEqualsFalseWhenWhenNotInDoneState() {
+
+    void givenBacklogItemNotInDoneStateWhenSetFinishedIsCalledThenFinishedEqualsFalse() {
         BacklogItem item = new BacklogItem("BacklogItem", createdByUser);
 
         item.setFinished();
@@ -32,7 +31,8 @@ public class BacklogCompositeTest {
     }
 
     @Test
-    void FinishedEqualsTrueAfterSetFinishedIsCalledWithNoActivities() {
+
+    void givenBacklogItemInDoneStateWhenSetFinishedIsCalledThenFinishedEqualsTrue() {
         BacklogItem item = new BacklogItem("BacklogItem", createdByUser);
         item.setState(new DoneState());
 
@@ -42,10 +42,11 @@ public class BacklogCompositeTest {
     }
 
     @Test
-    void FinishedEqualsTrueWithOneActivityThatIsFinished() {
+    void givenBacklogItemInDoneStateWithOneActivityThatIsFinishedWhenSetFinishedIsCalledThenFinishedEqualsTrue() {
         BacklogItem item = new BacklogItem("BacklogItem", createdByUser);
         Activity activity = new Activity("ActivityItem", createdByUser);
         item.addActivity(activity);
+        activity.setState(new DoneState(activity));
         activity.setFinished();
         item.setState(new DoneState());
 
@@ -55,7 +56,7 @@ public class BacklogCompositeTest {
     }
 
     @Test
-    void FinishedEqualsFalseWithOneActivityThatIsNotFinished() {
+    void givenBacklogItemWithOneActivityThatIsNotFinishedWhenSetFinishedISCalledThenFinishedEqualsFalse() {
         BacklogItem item = new BacklogItem("BacklogItem", createdByUser);
         Activity activity = new Activity("ActivityItem", createdByUser);
         item.addActivity(activity);
@@ -67,12 +68,14 @@ public class BacklogCompositeTest {
     }
 
     @Test
-    void FinishedEqualsTrueWithTwoActivitiesAndBothAreFinished() {
+    void givenBacklogItemWithTwoActivitiesWhichBothAreFinishedWhenSetFinishedIsCalledThenFinishedEqualsTrue() {
         BacklogItem item = new BacklogItem("BacklogItem", createdByUser);
         Activity activityOne = new Activity("ActivityItemOne", createdByUser);
         Activity activityTwo = new Activity("ActivityItemTwo", createdByUser);
         item.addActivity(activityOne);
         item.addActivity(activityTwo);
+        activityOne.setState(new DoneState(activityOne));
+        activityTwo.setState(new DoneState(activityTwo));
         activityOne.setFinished();
         activityTwo.setFinished();
         item.setState(new DoneState());
@@ -83,7 +86,7 @@ public class BacklogCompositeTest {
     }
 
     @Test
-    void FinishedEqualsFalseWithTwoActivitiesAndOnlyFirstIsFinished() {
+    void givenBacklogItemWithTwoActivitiesAndOnlyFirstIsFinishedWhenSetFinishedIsCalledThenFinishedEqualsFalse() {
         BacklogItem item = new BacklogItem("BacklogItem", createdByUser);
         Activity activityOne = new Activity("ActivityItemOne", createdByUser);
         Activity activityTwo = new Activity("ActivityItemTwo", createdByUser);
@@ -98,7 +101,7 @@ public class BacklogCompositeTest {
     }
 
     @Test
-    void FinishedEqualsFalseWithTwoActivitiesAndOnlySecondIsFinished() {
+    void givenBacklogItemWithTwoActivitiesAndOnlySecondIsFinishedWhenSetFinishedIsCalledThenFinishedEqualsFalse() {
         BacklogItem item = new BacklogItem("BacklogItem", createdByUser);
         Activity activityOne = new Activity("ActivityItemOne", createdByUser);
         Activity activityTwo = new Activity("ActivityItemTwo", createdByUser);
@@ -110,40 +113,5 @@ public class BacklogCompositeTest {
         item.setFinished();
 
         assertFalse(item.getFinished());
-    }
-
-    @Test
-    void GivenBacklogItemWhenThreadIsAddedThenListHasValueOne() {
-        BacklogItem item = new BacklogItem("BacklogItem", createdByUser);
-        Thread thread = new Thread("Title", "Body", item, createdByUser);
-
-        item.addThread(thread);
-
-        assertThat(item.getThreads()).hasSize(1);
-        assertThat(thread.getBacklogItem()).isEqualTo(item);
-    }
-
-    @Test
-    void GivenBacklogItemWhenThreadIsAddedTwiceThenListHasValueOne() {
-        BacklogItem item = new BacklogItem("BacklogItem", createdByUser);
-        Thread thread = new Thread("Title", "Body", item, createdByUser);
-
-        item.addThread(thread);
-        item.addThread(thread);
-
-        assertThat(item.getThreads()).hasSize(1);
-        assertThat(thread.getBacklogItem()).isEqualTo(item);
-    }
-
-    @Test
-    void givenFinishedBackLogItemWhenThreadIsAddedThenItemIsNotAdded() {
-        BacklogItem item = new BacklogItem("BacklogItem", createdByUser);
-        item.setState(new DoneState());
-        item.setFinished();
-        Thread thread = new Thread("Title", "Body", item, createdByUser);
-
-        item.addThread(thread);
-
-        assertThat(item.getThreads()).hasSize(0);
     }
 }

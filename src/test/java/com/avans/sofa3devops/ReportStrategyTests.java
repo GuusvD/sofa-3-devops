@@ -13,6 +13,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.File;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -30,20 +34,27 @@ public class ReportStrategyTests {
     void tearDown() {
         // Iterate through each directory and remove files starting with "TestFile_Report"
         for (String directory : Arrays.asList(directoryPath + "/reports/pdf/", directoryPath + "/reports/png/")) {
-            File dir = new File(directory);
-            if (dir.exists()) {
-                File[] files = dir.listFiles((dir1, name) -> name.startsWith(startsWith));
-                if (files != null) {
-                    for (File file : files) {
-                        file.delete();
-                    }
-                }
+            try {
+                Files.walk(Paths.get(directory))
+                        .filter(path -> path.getFileName().toString().startsWith(startsWith))
+                        .forEach(this::deleteFile);
+            } catch (IOException e) {
+                e.printStackTrace(); // Handle or log the exception appropriately
             }
         }
     }
 
+    private void deleteFile(Path path) {
+        try {
+            Files.delete(path);
+        } catch (IOException e) {
+            e.printStackTrace(); // Handle or log the exception appropriately
+        }
+    }
+
     @Test
-    void checkIfReportsAreCreatedFromProjectInPdfAndPng() {
+
+    void givenProjectWithReportStrategiesWhenPrintReportIsCalledThenPngAndPdfReportsAreCreatedInDesignatedFolder() {
         // Arrange
         List<IReport> reportStrategies = Arrays.asList(new Pdf(), new Png());
         IGitCommands gitStrategy = new GitLab(Logger.getLogger(GitLab.class.getName()));

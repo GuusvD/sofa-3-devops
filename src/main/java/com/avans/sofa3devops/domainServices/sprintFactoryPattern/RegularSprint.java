@@ -32,6 +32,7 @@ public class RegularSprint implements ISprint {
         this.developers = new ArrayList<>();
         this.developers.add(user);
         this.pipeline = new Pipeline("Sprint:" + number, this);
+        this.releases = new ArrayList<>();
     }
 
     // State Methods
@@ -88,10 +89,21 @@ public class RegularSprint implements ISprint {
         }
     }
 
+    @Override
+    public void addCommandToAction(Command command) {
+        pipeline.addCommandToAction(command);
+    }
+
+    @Override
+    public void removeCommandToAction(Command command) {
+        pipeline.removeCommandToAction(command);
+    }
+
     // General methods
     public void addBacklogItem(BacklogItem backlog) {
         if (state instanceof CreatedState && !this.backlog.contains(backlog)) {
             this.backlog.add(backlog);
+            backlog.setSprint(this);
         }
     }
 

@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Logger;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -14,6 +15,7 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
 
 public class Pdf implements IReport {
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
     @Override
     public void printReport(Project project) {
         // Path to pdf File
@@ -44,14 +46,14 @@ public class Pdf implements IReport {
             contentStream.close();
 
             document.save(filePath);
-            System.out.println("PDF file saved successfully.");
+            logger.info("PDF file saved successfully.");
         } catch (IOException e) {
-            System.out.println("Error writing PDF file: " + e.getMessage());
+            logger.info("Error writing PDF file: " + e.getMessage());
         } finally {
             try {
                 document.close();
             } catch (IOException e) {
-                System.out.println("Error while closing document: " + e.getMessage());
+                logger.info("Error while closing document: " + e.getMessage());
             }
         }
     }

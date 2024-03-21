@@ -2,11 +2,7 @@ package com.avans.sofa3devops.domain;
 
 import com.avans.sofa3devops.domainServices.threadObserverPattern.NotificationService;
 import com.avans.sofa3devops.domainServices.threadVisitorPattern.NotificationExecutor;
-
-import java.util.Date;
-import java.util.List;
-import java.util.Observable;
-import java.util.UUID;
+import java.util.*;
 
 public class Message extends Observable {
     private UUID id;
@@ -16,14 +12,13 @@ public class Message extends Observable {
     private Thread thread;
     private Date sent;
 
-    public Message(UUID id, String body, User creator, List<Message> responses, Date sent) {
-        this.id = id;
+    public Message(String body, User creator) {
+        this.id = UUID.randomUUID();
         this.body = body;
         this.creator = creator;
-        this.responses = responses;
-        this.sent = sent;
-
         this.addObserver(new NotificationService(new NotificationExecutor()));
+        this.responses = new ArrayList<>();
+        this.sent = new Date();
     }
 
     public List<Message> getResponses() {
@@ -31,7 +26,7 @@ public class Message extends Observable {
     }
 
     public void setThread(Thread thread) {
-        if (this.thread != null) {
+        if (this.thread == null) {
             this.thread=thread;
         }
     }
@@ -39,6 +34,7 @@ public class Message extends Observable {
     public void addMessage(Message newMessage) {
         if(this.thread.canEdit()) {
             responses.add(newMessage);
+            newMessage.setThread(this.thread);
 
             setChanged();
             notifyObservers();
@@ -56,4 +52,5 @@ public class Message extends Observable {
             this.responses.remove(message);
         }
     }
+    public String getBody() {return this.body;}
 }
