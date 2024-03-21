@@ -4,6 +4,7 @@ import com.avans.sofa3devops.domain.*;
 import com.avans.sofa3devops.domainServices.compositeInterfaces.IPipeComponent;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.CreatedState;
+import com.avans.sofa3devops.domainServices.sprintStatePattern.FinishedState;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.ISprintState;
 
 import java.io.InvalidObjectException;
@@ -133,12 +134,15 @@ public class ReviewSprint implements ISprint {
 
     @Override
     public void executePipeline() throws InvalidStateException {
-        boolean successful = pipeline.execute();
+        if (getState().getClass() == FinishedState.class) {
+            boolean successful = pipeline.execute();
 
-        if (!successful) {
-            pipeline.failedState();
-        } else {
-            pipeline.finishedState();
+            if (!successful) {
+                pipeline.failedState();
+            } else {
+                pipeline.finishedState();
+                addRelease(new Release(this, pipeline));
+            }
         }
     }
 
@@ -164,6 +168,10 @@ public class ReviewSprint implements ISprint {
 
     public void setReleases(List<Release> releases) {
         this.releases = releases;
+    }
+
+    public void addRelease(Release release) {
+        this.releases.add(release);
     }
 
     public boolean isReviewed() {
