@@ -1,10 +1,6 @@
 package com.avans.sofa3devops.domainServices.sprintFactoryPattern;
 
-import com.avans.sofa3devops.domain.Activity;
-import com.avans.sofa3devops.domain.BacklogItem;
-import com.avans.sofa3devops.domain.Pipeline;
-import com.avans.sofa3devops.domain.Command;
-import com.avans.sofa3devops.domain.User;
+import com.avans.sofa3devops.domain.*;
 import com.avans.sofa3devops.domainServices.compositeInterfaces.IPipeComponent;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.ISprintState;
@@ -43,6 +39,8 @@ public interface ISprint {
     void executePipeline() throws InvalidStateException;
 
     Pipeline getPipeline();
+
+    List<Release> getReleases();
   
     public void addCommandToAction(Command command);
 
