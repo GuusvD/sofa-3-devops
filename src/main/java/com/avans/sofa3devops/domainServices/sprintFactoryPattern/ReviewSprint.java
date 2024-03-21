@@ -93,6 +93,7 @@ public class ReviewSprint implements ISprint {
     public void addBacklogItem(BacklogItem backlog) {
         if (state instanceof CreatedState && !this.backlog.contains(backlog)) {
             this.backlog.add(backlog);
+            backlog.setSprint(this);
         }
     }
 
