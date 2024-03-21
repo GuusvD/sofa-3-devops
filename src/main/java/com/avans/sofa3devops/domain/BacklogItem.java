@@ -178,7 +178,6 @@ public class BacklogItem implements IItemComponent {
         return createdBy;
     }
 
-    @Override
     public List<Thread> getThreads() {
         return this.threads;
     }

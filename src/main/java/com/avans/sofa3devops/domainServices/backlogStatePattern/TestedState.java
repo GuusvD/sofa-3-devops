@@ -45,10 +45,5 @@ public class TestedState extends Observable implements IBacklogItemState {
     @Override
     public void doneState() {
         item.setState(new DoneState(item));
-
-        List<Thread> threads = item.getThreads();
-        for (Thread thread : threads) {
-            thread.setClosed(true);
-        }
     }
 }

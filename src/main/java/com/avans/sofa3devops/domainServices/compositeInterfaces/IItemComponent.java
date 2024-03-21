@@ -25,5 +25,5 @@ public interface IItemComponent {
 
     void removeFromSprints(List<ISprint> sprints);
 
-    List<Thread> getThreads();
+
 }
