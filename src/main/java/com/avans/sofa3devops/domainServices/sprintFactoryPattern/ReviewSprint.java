@@ -1,13 +1,12 @@
 package com.avans.sofa3devops.domainServices.sprintFactoryPattern;
 
 import com.avans.sofa3devops.domain.*;
-import com.avans.sofa3devops.domainServices.compositeInterfaces.IPipeComponent;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
+import com.avans.sofa3devops.domainServices.pipelineStatePattern.CancelledState;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.CreatedState;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.FinishedState;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.ISprintState;
 
-import java.io.InvalidObjectException;
 import java.util.*;
 
 public class ReviewSprint implements ISprint {
@@ -56,12 +55,11 @@ public class ReviewSprint implements ISprint {
 
     @Override
     public void closed() throws InvalidStateException {
-        if (this.reviewed) {
+        if (this.reviewed && (pipeline.getState() instanceof CancelledState || pipeline.getState() instanceof com.avans.sofa3devops.domainServices.pipelineStatePattern.FinishedState)) {
             this.state.closedState();
         } else {
-            throw new InvalidStateException("Cannot transition to 'closed' state! Sprint is not reviewed!");
+            throw new InvalidStateException("Cannot transition to 'closed' state! Sprint is not reviewed or pipeline is not cancelled/finished!");
         }
-
     }
 
     @Override
@@ -101,11 +99,6 @@ public class ReviewSprint implements ISprint {
         }
     }
 
-    @Override
-    public void addActionsToPipeline(List<IPipeComponent> actions) throws InvalidObjectException {
-
-    }
-
     public void addDeveloper(User user) {
         if (state instanceof CreatedState && !developers.contains(user)) {
             this.developers.add(user);
@@ -133,7 +126,7 @@ public class ReviewSprint implements ISprint {
 
     @Override
     public void executePipeline() throws InvalidStateException {
-        if (getState().getClass() == FinishedState.class) {
+        if (state instanceof FinishedState) {
             boolean successful = pipeline.execute();
 
             if (!successful) {
@@ -158,19 +151,19 @@ public class ReviewSprint implements ISprint {
     }
 
     public void setDocument(Document document) {
-        this.document = document;
+        if (state instanceof FinishedState && (pipeline.getState() instanceof CancelledState || pipeline.getState() instanceof com.avans.sofa3devops.domainServices.pipelineStatePattern.FinishedState)) {
+            this.document = document;
+        }
     }
 
     public List<Release> getReleases() {
         return releases;
     }
 
-    public void setReleases(List<Release> releases) {
-        this.releases = releases;
-    }
-
     public void addRelease(Release release) {
-        this.releases.add(release);
+        if (state instanceof FinishedState && pipeline.getState() instanceof com.avans.sofa3devops.domainServices.pipelineStatePattern.FinishedState) {
+            this.releases.add(release);
+        }
     }
 
     public boolean isReviewed() {
@@ -178,7 +171,7 @@ public class ReviewSprint implements ISprint {
     }
 
     public void setReviewed() {
-        if (this.document != null) {
+        if (state instanceof FinishedState && this.document != null && (pipeline.getState() instanceof CancelledState || pipeline.getState() instanceof com.avans.sofa3devops.domainServices.pipelineStatePattern.FinishedState)) {
             this.reviewed = true;
         }
     }

@@ -2,13 +2,12 @@ package com.avans.sofa3devops.domainServices.sprintFactoryPattern;
 
 import com.avans.sofa3devops.domain.*;
 
-import com.avans.sofa3devops.domainServices.compositeInterfaces.IPipeComponent;
 import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
+import com.avans.sofa3devops.domainServices.pipelineStatePattern.CancelledState;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.CreatedState;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.FinishedState;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.ISprintState;
 
-import java.io.InvalidObjectException;
 import java.util.*;
 
 public class RegularSprint implements ISprint {
@@ -56,7 +55,11 @@ public class RegularSprint implements ISprint {
 
     @Override
     public void closed() throws InvalidStateException {
-        this.state.closedState();
+        if (pipeline.getState() instanceof CancelledState || pipeline.getState() instanceof com.avans.sofa3devops.domainServices.pipelineStatePattern.FinishedState) {
+            this.state.closedState();
+        } else {
+            throw new InvalidStateException("Cannot transition to 'closed' state! Pipeline is not cancelled/finished!");
+        }
     }
 
     @Override
@@ -96,12 +99,6 @@ public class RegularSprint implements ISprint {
         }
     }
 
-    @Override
-    public void addActionsToPipeline(List<IPipeComponent> actions) throws InvalidObjectException {
-        // To-do: Rewrite this method to according to new pipeline composite structure!
-     
-    }
-
     public void addDeveloper(User user) {
         if (state instanceof CreatedState && !developers.contains(user)) {
             this.developers.add(user);
@@ -129,7 +126,7 @@ public class RegularSprint implements ISprint {
 
     @Override
     public void executePipeline() throws InvalidStateException {
-        if (getState().getClass() == FinishedState.class) {
+        if (state instanceof FinishedState) {
             boolean successful = pipeline.execute();
 
             if (!successful) {
@@ -154,18 +151,18 @@ public class RegularSprint implements ISprint {
     }
 
     public void setDocument(Document document) {
-        this.document = document;
+        if (state instanceof FinishedState && (pipeline.getState() instanceof CancelledState || pipeline.getState() instanceof com.avans.sofa3devops.domainServices.pipelineStatePattern.FinishedState)) {
+            this.document = document;
+        }
     }
 
     public List<Release> getReleases() {
         return releases;
     }
 
-    public void setReleases(List<Release> releases) {
-        this.releases = releases;
-    }
-
     public void addRelease(Release release) {
-        this.releases.add(release);
+        if (state instanceof FinishedState && pipeline.getState() instanceof com.avans.sofa3devops.domainServices.pipelineStatePattern.FinishedState) {
+            this.releases.add(release);
+        }
     }
 }
