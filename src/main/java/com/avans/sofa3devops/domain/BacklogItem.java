@@ -11,7 +11,9 @@ import com.avans.sofa3devops.domainservices.sprintstatepattern.InProgressState;
 import com.avans.sofa3devops.domainservices.threadobserverpattern.NotificationService;
 import com.avans.sofa3devops.domainservices.threadvisitorpattern.NotificationExecutor;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 public class BacklogItem implements IItemComponent {
@@ -24,7 +26,7 @@ public class BacklogItem implements IItemComponent {
     private User assignedTo;
     private List<Thread> threads;
     private IBacklogItemState state;
-    private Boolean finished;
+    private boolean finished;
 
     public BacklogItem(String name, User createdBy) {
         this.id = UUID.randomUUID();

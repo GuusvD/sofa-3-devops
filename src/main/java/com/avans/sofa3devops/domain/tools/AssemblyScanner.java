@@ -4,13 +4,13 @@ import com.avans.sofa3devops.domainservices.exceptions.AssemblyException;
 
 import java.io.File;
 import java.util.*;
+import java.util.logging.Logger;
 
 public class AssemblyScanner {
-
     private AssemblyScanner() {
+        Logger logger = Logger.getLogger(this.getClass().getName());
+        logger.info("AssemblyScanner is Constructed!");
     }
-
-    ;
 
     public static List<Class<?>> getAllClasses(String packageName) throws AssemblyException {
         List<Class<?>> classes = new ArrayList<>();
