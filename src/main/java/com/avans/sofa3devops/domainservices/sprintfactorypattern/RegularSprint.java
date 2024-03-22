@@ -148,6 +148,7 @@ public class RegularSprint implements ISprint {
         return end;
     }
 
+
     @Override
     public void executePipeline() throws InvalidStateException {
         if (state instanceof FinishedState) {

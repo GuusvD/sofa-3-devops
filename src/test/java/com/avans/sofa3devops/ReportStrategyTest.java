@@ -37,7 +37,7 @@ public class ReportStrategyTest {
                         .filter(path -> path.getFileName().toString().startsWith(startsWith))
                         .forEach(this::deleteFile);
             } catch (IOException e) {
-                e.printStackTrace(); // Handle or log the exception appropriately
+                e.printStackTrace();
             }
         }
     }
@@ -46,22 +46,18 @@ public class ReportStrategyTest {
         try {
             Files.delete(path);
         } catch (IOException e) {
-            e.printStackTrace(); // Handle or log the exception appropriately
+            e.printStackTrace();
         }
     }
 
     @Test
     void givenProjectWithReportStrategiesWhenPrintReportIsCalledThenPngAndPdfReportsAreCreatedInDesignatedFolder() {
-        // Arrange
         List<IReport> reportStrategies = Arrays.asList(new Pdf(), new Png());
         IGitCommands gitStrategy = new GitLab(Logger.getLogger(GitLab.class.getName()));
         Project project = new Project(name, reportStrategies, gitStrategy);
 
-        // Act
         project.printReports();
 
-        // Assert
-        // Check if any files matching the patterns exist
         assertTrue(Arrays.stream(Objects.requireNonNull(new File(directoryPath + "/reports/pdf/").listFiles()))
                 .anyMatch(file -> file.getName().startsWith(startsWith)));
         assertTrue(Arrays.stream(Objects.requireNonNull(new File(directoryPath + "/reports/png/").listFiles()))

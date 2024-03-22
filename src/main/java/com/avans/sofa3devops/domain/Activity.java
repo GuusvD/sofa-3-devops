@@ -31,43 +31,38 @@ public class Activity implements IItemComponent {
     }
 
     // Composite Methods Start
-    @Override
     public String getStory() {
         return this.getId() + ": " + this.getName();
     }
 
-    @Override
+
     public IBacklogItemState getState() {
         return this.state;
     }
-
-    // State Methods Start
+    
     public void setState(IBacklogItemState state) {
         this.state = state;
     }
 
-    @Override
     public User getAssignedTo() {
         return this.assignedTo;
     }
 
-    @Override
     public void setAssignedTo(User assignedTo) {
         this.assignedTo = assignedTo;
     }
 
-    @Override
     public boolean getFinished() {
         return this.finished;
     }
 
-    @Override
     public void setFinished() {
         if (state instanceof DoneState) {
             this.finished = true;
         }
     }
 
+    // State Methods Start
     public void toDoState() throws InvalidStateException {
         this.state.toDoState();
     }
