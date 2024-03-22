@@ -11,7 +11,6 @@ import com.avans.sofa3devops.domainServices.threadObserverPattern.NotificationSe
 import com.avans.sofa3devops.domainServices.threadVisitorPattern.NotificationExecutor;
 
 import java.util.*;
-import java.util.logging.Logger;
 
 public class ReviewSprint implements ISprint {
     private ISprintState state;

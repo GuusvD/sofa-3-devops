@@ -1,5 +1,7 @@
 package com.avans.sofa3devops.domainServices.sprintFactoryPattern;
 
+import com.avans.sofa3devops.domain.*;
+import com.avans.sofa3devops.domainServices.compositeInterfaces.IPipeComponent;
 import com.avans.sofa3devops.domain.Activity;
 import com.avans.sofa3devops.domain.BacklogItem;
 import com.avans.sofa3devops.domain.Pipeline;
@@ -9,6 +11,7 @@ import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
 import com.avans.sofa3devops.domainServices.pipelineStatePattern.ExecutedState;
 import com.avans.sofa3devops.domainServices.sprintStatePattern.ISprintState;
 import java.util.Date;
+import java.util.List;
 
 public interface ISprint {
     void setState(ISprintState state);
@@ -26,7 +29,10 @@ public interface ISprint {
     Date getEnd();
     void executePipeline() throws InvalidStateException;
     Pipeline getPipeline();
+    List<Release> getReleases();
     void addCommandToAction(Command command);
     void removeCommandToAction(Command command);
-   boolean pipelineIsRunning();
+    boolean pipelineIsRunning();
+    void setDocument(Document document);
+    Document getDocument();
 }
