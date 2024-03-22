@@ -12,7 +12,7 @@
     <artifactId>sofa-3-devops</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>sofa-3-devops</name>
-    <description>SOFA 3 Design Pattern Project</description>
+    <description>SOFA 3 Design Pattern DevOps Project</description>
     <properties>
         <java.version>21</java.version>
         <sonar.coverage.jacoco.xmlReportPaths>
