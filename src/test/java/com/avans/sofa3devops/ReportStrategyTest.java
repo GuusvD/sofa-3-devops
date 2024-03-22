@@ -1,6 +1,5 @@
 package com.avans.sofa3devops;
 
-import com.avans.sofa3devops.domain.Pipeline;
 import com.avans.sofa3devops.domain.Project;
 import com.avans.sofa3devops.domainServices.gitStrategyPattern.GitLab;
 import com.avans.sofa3devops.domainServices.gitStrategyPattern.IGitCommands;
@@ -25,7 +24,7 @@ import java.util.logging.Logger;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
-public class ReportStrategyTests {
+public class ReportStrategyTest {
     private final String directoryPath = "./src/main/java/com/avans/sofa3devops/domainServices/reportStrategyPattern";
     private final String name = "TestFile";
     private final String startsWith = name + "_report";

@@ -18,6 +18,7 @@
         <sonar.coverage.jacoco.xmlReportPaths>
             target/site/jacoco/jacoco.xml
         </sonar.coverage.jacoco.xmlReportPaths>
+        <sonar.exclusions>/test//*.java</sonar.exclusions>
     </properties>
     <dependencies>
         <dependency>
