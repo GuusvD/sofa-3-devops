@@ -1,16 +1,17 @@
 package com.avans.sofa3devops.domain;
 
-import com.avans.sofa3devops.domainServices.threadObserverPattern.NotificationService;
-import com.avans.sofa3devops.domainServices.threadVisitorPattern.NotificationExecutor;
+import com.avans.sofa3devops.domainservices.threadobserverpattern.NotificationService;
+import com.avans.sofa3devops.domainservices.threadvisitorpattern.NotificationExecutor;
+
 import java.util.*;
 
 public class Message extends Observable {
     private final UUID id;
-    private String body;
     private final User creator;
+    private final Date sent;
+    private String body;
     private List<Message> responses;
     private Thread thread;
-    private final Date sent;
 
     public Message(String body, User creator) {
         this.id = UUID.randomUUID();
@@ -27,12 +28,12 @@ public class Message extends Observable {
 
     public void setThread(Thread thread) {
         if (this.thread == null) {
-            this.thread=thread;
+            this.thread = thread;
         }
     }
 
     public void addMessage(Message newMessage) {
-        if(this.thread.canEdit()) {
+        if (this.thread.canEdit()) {
             responses.add(newMessage);
             newMessage.setThread(this.thread);
 
@@ -41,16 +42,31 @@ public class Message extends Observable {
         }
     }
 
-    public void setBody(String body) {
-        if(this.thread.canEdit()) {
-            this.body=body;
-        }
-    }
-
     public void removeMessage(Message message) {
-        if(this.thread.canEdit()) {
+        if (this.thread.canEdit()) {
             this.responses.remove(message);
         }
     }
-    public String getBody() {return this.body;}
+
+    public String getBody() {
+        return this.body;
+    }
+
+    public void setBody(String body) {
+        if (this.thread.canEdit()) {
+            this.body = body;
+        }
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public User getCreator() {
+        return creator;
+    }
+
+    public Date getSent() {
+        return sent;
+    }
 }

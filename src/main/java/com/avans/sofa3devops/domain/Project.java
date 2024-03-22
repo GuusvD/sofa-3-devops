@@ -1,23 +1,22 @@
 package com.avans.sofa3devops.domain;
 
-import com.avans.sofa3devops.domainServices.gitStrategyPattern.IGitCommands;
-import com.avans.sofa3devops.domainServices.reportStrategyPattern.IReport;
-import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprint;
-import com.avans.sofa3devops.domainServices.sprintStatePattern.CreatedState;
+import com.avans.sofa3devops.domainservices.gitstrategypattern.IGitCommands;
+import com.avans.sofa3devops.domainservices.reportstrategypattern.IReport;
+import com.avans.sofa3devops.domainservices.sprintfactorypattern.ISprint;
+import com.avans.sofa3devops.domainservices.sprintstatepattern.CreatedState;
 
 import java.util.*;
 import java.util.logging.Logger;
 
 public class Project {
     private final UUID id;
+    private final List<IReport> reportStrategies;
+    private final IGitCommands gitStrategy;
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
     private String name;
-    private User owner;
     private List<User> participants;
     private List<ISprint> sprints;
     private List<BacklogItem> projectBacklog;
-    private final List<IReport> _reportStrategies;
-    private final IGitCommands _gitStrategy;
-    private final Logger logger = Logger.getLogger(this.getClass().getName());
 
     public Project(String name, List<IReport> reportStrategies, IGitCommands gitStrategy) {
         this.id = UUID.randomUUID();
@@ -25,36 +24,36 @@ public class Project {
         this.participants = new ArrayList<>();
         this.projectBacklog = new ArrayList<>();
         this.sprints = new ArrayList<>();
-        _reportStrategies = reportStrategies;
-        _gitStrategy = gitStrategy;
+        this.reportStrategies = reportStrategies;
+        this.gitStrategy = gitStrategy;
     }
 
     public void pull() {
-        _gitStrategy.pull();
+        gitStrategy.pull();
     }
 
     public void push() {
-        _gitStrategy.push();
+        gitStrategy.push();
     }
 
     public void commit() {
-        _gitStrategy.commit();
+        gitStrategy.commit();
     }
 
     public void status() {
-        _gitStrategy.status();
+        gitStrategy.status();
     }
 
     public void checkout() {
-        _gitStrategy.checkout();
+        gitStrategy.checkout();
     }
 
     public void stash() {
-        _gitStrategy.stash();
+        gitStrategy.stash();
     }
 
     public void printReports() {
-        for (IReport strategy : _reportStrategies) {
+        for (IReport strategy : reportStrategies) {
             strategy.printReport(this);
         }
     }
@@ -76,6 +75,7 @@ public class Project {
     public void addSprint(ISprint sprint) {
         this.sprints.add(sprint);
     }
+
     public void removeSprint(ISprint sprint) {
         if (sprint.getState() instanceof CreatedState) {
             this.sprints.remove(sprint);
@@ -114,9 +114,6 @@ public class Project {
         }
     }
 
-    public void setOwner(User owner) {
-        this.owner = owner;
-    }
     public List<User> getParticipants() {
         return this.participants;
     }
@@ -137,12 +134,17 @@ public class Project {
 
     public void getAllProjectThreads() {
         List<Thread> forum = new ArrayList<>();
-        for(var item: projectBacklog) {
-           forum.addAll(item.getThreads());
+        for (var item : projectBacklog) {
+            forum.addAll(item.getThreads());
         }
 
         for (Thread thread : forum) {
             logger.info("Title: " + thread.getTitle() + "\nBody: " + thread.getBody() + "\n");
         }
     }
+
+    public UUID getId() {
+        return id;
+    }
+
 }

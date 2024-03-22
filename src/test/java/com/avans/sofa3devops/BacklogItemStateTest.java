@@ -2,15 +2,15 @@ package com.avans.sofa3devops;
 
 import com.avans.sofa3devops.domain.BacklogItem;
 import com.avans.sofa3devops.domain.User;
-import com.avans.sofa3devops.domainServices.backlogStatePattern.*;
-import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
-import com.avans.sofa3devops.domainServices.threadObserverPattern.NotificationService;
+import com.avans.sofa3devops.domainservices.backlogstatepattern.*;
+import com.avans.sofa3devops.domainservices.exceptions.InvalidStateException;
+import com.avans.sofa3devops.domainservices.sprintfactorypattern.ISprint;
+import com.avans.sofa3devops.domainservices.sprintfactorypattern.ISprintFactory;
+import com.avans.sofa3devops.domainservices.sprintfactorypattern.SprintFactory;
+import com.avans.sofa3devops.domainservices.threadobserverpattern.NotificationService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprint;
-import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprintFactory;
-import com.avans.sofa3devops.domainServices.sprintFactoryPattern.SprintFactory;
-import org.junit.jupiter.api.BeforeEach;
 
 import java.util.Date;
 
@@ -30,9 +30,9 @@ public class BacklogItemStateTest {
 
     @BeforeEach
     void setUp() throws Exception {
-       user =  new User("John Doe", "j.doe@gmail.com", "Password1234");
-       ISprintFactory factory = new SprintFactory();
-       sprint = factory.createRegularSprint(1,new Date(),new Date(),user);
+        user = new User("John Doe", "j.doe@gmail.com", "Password1234");
+        ISprintFactory factory = new SprintFactory();
+        sprint = factory.createRegularSprint(1, new Date(), new Date(), user);
     }
 
     @Test

@@ -1,14 +1,16 @@
 package com.avans.sofa3devops;
 
-import com.avans.sofa3devops.domain.*;
+import com.avans.sofa3devops.domain.Command;
+import com.avans.sofa3devops.domain.Pipeline;
+import com.avans.sofa3devops.domain.User;
 import com.avans.sofa3devops.domain.command.*;
-import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
-import com.avans.sofa3devops.domainServices.pipelineStatePattern.*;
-import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprint;
-import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprintFactory;
-import com.avans.sofa3devops.domainServices.sprintFactoryPattern.SprintFactory;
-import com.avans.sofa3devops.domainServices.sprintStatePattern.InProgressState;
-import com.avans.sofa3devops.domainServices.threadObserverPattern.NotificationService;
+import com.avans.sofa3devops.domainservices.exceptions.InvalidStateException;
+import com.avans.sofa3devops.domainservices.pipelinestatepattern.*;
+import com.avans.sofa3devops.domainservices.sprintfactorypattern.ISprint;
+import com.avans.sofa3devops.domainservices.sprintfactorypattern.ISprintFactory;
+import com.avans.sofa3devops.domainservices.sprintfactorypattern.SprintFactory;
+import com.avans.sofa3devops.domainservices.sprintstatepattern.InProgressState;
+import com.avans.sofa3devops.domainservices.threadobserverpattern.NotificationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,7 +18,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest

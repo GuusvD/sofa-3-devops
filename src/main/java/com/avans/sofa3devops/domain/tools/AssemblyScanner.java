@@ -1,12 +1,18 @@
 package com.avans.sofa3devops.domain.tools;
 
+import com.avans.sofa3devops.domainservices.exceptions.AssemblyException;
+
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class AssemblyScanner {
 
-    public static List<Class<?>> getAllClasses(String packageName) {
+    private AssemblyScanner() {
+    }
+
+    ;
+
+    public static List<Class<?>> getAllClasses(String packageName) throws AssemblyException {
         List<Class<?>> classes = new ArrayList<>();
         try {
             ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
@@ -27,7 +33,7 @@ public class AssemblyScanner {
                 }
             }
         } catch (Exception e) {
-            throw new RuntimeException("Failed to get all classes", e);
+            throw new AssemblyException("Failed to get all classes", e);
         }
         return classes;
     }

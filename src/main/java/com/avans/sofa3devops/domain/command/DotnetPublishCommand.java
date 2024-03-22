@@ -6,7 +6,7 @@ import com.avans.sofa3devops.domain.action.Deploy;
 import java.util.logging.Logger;
 
 public class DotnetPublishCommand extends Command {
-    private Logger logger = Logger.getLogger(this.getClass().getName());
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
 
     public DotnetPublishCommand() {
         super();
@@ -24,6 +24,7 @@ public class DotnetPublishCommand extends Command {
         logger.info("Successfully executed " + getCommand() + " without any errors!");
         return true;
     }
+
     @Override
     public void print() {
         logger.info(this.getClass().getSimpleName() + " " + getCommand());

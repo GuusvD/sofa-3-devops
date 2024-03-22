@@ -1,25 +1,26 @@
 package com.avans.sofa3devops.domain;
 
-import com.avans.sofa3devops.domainServices.compositeInterfaces.IPipeComponent;
+import com.avans.sofa3devops.domainservices.compositeinterfaces.IPipeComponent;
+
 import java.util.UUID;
 
 public abstract class Command implements IPipeComponent {
 
     private final UUID id;
-    private String command;
+    private String commandCall;
     private Action action;
 
-    public Command() {
+    protected Command() {
         id = UUID.randomUUID();
         connectToAction();
     }
 
     public String getCommand() {
-        return command;
+        return commandCall;
     }
 
     public void setCommand(String command) {
-        this.command = command;
+        this.commandCall = command;
     }
 
     public Action getAction() {
@@ -33,4 +34,8 @@ public abstract class Command implements IPipeComponent {
     public abstract void connectToAction();
 
     public abstract boolean execute();
+
+    public UUID getId() {
+        return id;
+    }
 }

@@ -1,7 +1,7 @@
 package com.avans.sofa3devops;
 
 import com.avans.sofa3devops.domain.User;
-import com.avans.sofa3devops.domainServices.sprintFactoryPattern.*;
+import com.avans.sofa3devops.domainservices.sprintfactorypattern.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 

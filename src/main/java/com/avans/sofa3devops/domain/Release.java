@@ -1,6 +1,6 @@
 package com.avans.sofa3devops.domain;
 
-import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprint;
+import com.avans.sofa3devops.domainservices.sprintfactorypattern.ISprint;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -16,5 +16,21 @@ public class Release {
         this.sprint = sprint;
         this.pipeline = pipeline;
         this.released = LocalDateTime.now();
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public ISprint getSprint() {
+        return sprint;
+    }
+
+    public Pipeline getPipeline() {
+        return pipeline;
+    }
+
+    public LocalDateTime getReleased() {
+        return released;
     }
 }

@@ -1,21 +1,18 @@
 package com.avans.sofa3devops.domain;
 
-import com.avans.sofa3devops.domainServices.compositeInterfaces.IPipeComponent;
-import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
+import com.avans.sofa3devops.domainservices.compositeinterfaces.IPipeComponent;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public abstract class Action implements IPipeComponent {
-    private UUID id;
     private final int sortIndex;
+    private UUID id;
     private List<IPipeComponent> commands;
 
-    public Action(int sortIndex) {
+    protected Action(int sortIndex) {
         this.id = UUID.randomUUID();
         this.sortIndex = sortIndex;
-        this.commands = new ArrayList<IPipeComponent>();
+        this.commands = new ArrayList<>();
     }
 
     public void add(IPipeComponent action) {
@@ -26,7 +23,9 @@ public abstract class Action implements IPipeComponent {
         this.commands.remove(action);
     }
 
-    public abstract boolean execute() throws InvalidStateException;
+    public UUID getId() {
+        return id;
+    }
 
     public int getIndex() {
         return sortIndex;
@@ -35,4 +34,5 @@ public abstract class Action implements IPipeComponent {
     public List<IPipeComponent> getCommands() {
         return commands;
     }
+
 }

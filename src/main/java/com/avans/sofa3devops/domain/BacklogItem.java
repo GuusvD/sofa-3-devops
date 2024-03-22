@@ -1,15 +1,15 @@
 package com.avans.sofa3devops.domain;
 
-import com.avans.sofa3devops.domainServices.backlogStatePattern.DoneState;
-import com.avans.sofa3devops.domainServices.backlogStatePattern.IBacklogItemState;
-import com.avans.sofa3devops.domainServices.backlogStatePattern.ToDoState;
-import com.avans.sofa3devops.domainServices.compositeInterfaces.IItemComponent;
-import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
-import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprint;
-import com.avans.sofa3devops.domainServices.sprintStatePattern.CreatedState;
-import com.avans.sofa3devops.domainServices.threadObserverPattern.NotificationService;
-import com.avans.sofa3devops.domainServices.threadVisitorPattern.NotificationExecutor;
-import com.avans.sofa3devops.domainServices.sprintStatePattern.InProgressState;
+import com.avans.sofa3devops.domainservices.backlogstatepattern.DoneState;
+import com.avans.sofa3devops.domainservices.backlogstatepattern.IBacklogItemState;
+import com.avans.sofa3devops.domainservices.backlogstatepattern.ToDoState;
+import com.avans.sofa3devops.domainservices.compositeinterfaces.IItemComponent;
+import com.avans.sofa3devops.domainservices.exceptions.InvalidStateException;
+import com.avans.sofa3devops.domainservices.sprintfactorypattern.ISprint;
+import com.avans.sofa3devops.domainservices.sprintstatepattern.CreatedState;
+import com.avans.sofa3devops.domainservices.sprintstatepattern.InProgressState;
+import com.avans.sofa3devops.domainservices.threadobserverpattern.NotificationService;
+import com.avans.sofa3devops.domainservices.threadvisitorpattern.NotificationExecutor;
 
 import java.util.*;
 import java.util.logging.Logger;
@@ -44,14 +44,14 @@ public class BacklogItem implements IItemComponent {
         }
     }
 
-    public void setSprint(ISprint sprint){
-        if(canEdit()) {
+    public void setSprint(ISprint sprint) {
+        if (canEdit()) {
             this.sprint = sprint;
         }
     }
 
     public void addActivity(Activity activity) {
-        if(canEdit()) {
+        if (canEdit()) {
             this.activities.add(activity);
             activity.setSprint(this.sprint);
         }
@@ -81,12 +81,19 @@ public class BacklogItem implements IItemComponent {
         return state;
     }
 
+    // State Methods Start
+    public void setState(IBacklogItemState state) {
+        this.state = state;
+    }
+
     @Override
-    public User getAssignedTo() {return assignedTo;}
+    public User getAssignedTo() {
+        return assignedTo;
+    }
 
     @Override
     public void setAssignedTo(User assignedTo) {
-        if(canEdit()) {
+        if (canEdit()) {
             this.assignedTo = assignedTo;
         }
     }
@@ -118,20 +125,14 @@ public class BacklogItem implements IItemComponent {
             }
         }
     }
-
-    @Override
-    public void removeFromSprints(List<ISprint> sprints) {
-        if(canEdit()) {
-            for (var sprint : sprints) {
-                sprint.removeBacklogItem(this);
-            }
-        }
-    }
     // Composite Methods End
 
-    // State Methods Start
-    public void setState(IBacklogItemState state) {
-        this.state = state;
+    public void removeFromSprints(List<ISprint> sprints) {
+        if (canEdit()) {
+            for (var s : sprints) {
+                s.removeBacklogItem(this);
+            }
+        }
     }
 
     public void toDoState() throws InvalidStateException {
@@ -139,31 +140,31 @@ public class BacklogItem implements IItemComponent {
     }
 
     public void doingState() throws InvalidStateException {
-        if(this.sprint.getState() instanceof InProgressState) {
+        if (this.sprint.getState() instanceof InProgressState) {
             this.state.doingState();
         }
     }
 
     public void readyForTestingState() throws InvalidStateException {
-        if(this.sprint.getState() instanceof InProgressState) {
+        if (this.sprint.getState() instanceof InProgressState) {
             this.state.readyForTestingState();
         }
     }
 
     public void testingState() throws InvalidStateException {
-        if(this.sprint.getState() instanceof InProgressState) {
+        if (this.sprint.getState() instanceof InProgressState) {
             this.state.testingState();
         }
     }
 
     public void testedState() throws InvalidStateException {
-        if(this.sprint.getState() instanceof InProgressState) {
+        if (this.sprint.getState() instanceof InProgressState) {
             this.state.testedState();
         }
     }
 
     public void doneState() throws InvalidStateException {
-        if(this.sprint.getState() instanceof InProgressState) {
+        if (this.sprint.getState() instanceof InProgressState) {
             this.state.doneState();
         }
     }
@@ -177,9 +178,9 @@ public class BacklogItem implements IItemComponent {
     public String getName() {
         return name;
     }
-  
+
     public void setName(String name) {
-        if(canEdit()) {
+        if (canEdit()) {
             this.name = name;
         }
     }
@@ -193,14 +194,14 @@ public class BacklogItem implements IItemComponent {
     }
 
     public void addThread(Thread thread) {
-        if (!this.threads.contains(thread) && !finished) {
+        if (!this.threads.contains(thread) && !this.finished) {
             this.threads.add(thread);
             thread.setBacklogItem(this);
         }
     }
 
     public void removeThread(Thread thread) {
-        if (!finished) {
+        if (!this.finished) {
             this.threads.remove(thread);
         }
     }

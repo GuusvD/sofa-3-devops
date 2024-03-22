@@ -3,12 +3,13 @@ package com.avans.sofa3devops;
 import com.avans.sofa3devops.domain.Activity;
 import com.avans.sofa3devops.domain.BacklogItem;
 import com.avans.sofa3devops.domain.User;
-import com.avans.sofa3devops.domainServices.backlogStatePattern.DoneState;
+import com.avans.sofa3devops.domainservices.backlogstatepattern.DoneState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 @SpringBootTest
@@ -21,7 +22,6 @@ public class BacklogCompositeTest {
     }
 
     @Test
-
     void givenBacklogItemNotInDoneStateWhenSetFinishedIsCalledThenFinishedEqualsFalse() {
         BacklogItem item = new BacklogItem("BacklogItem", createdByUser);
 
@@ -31,7 +31,6 @@ public class BacklogCompositeTest {
     }
 
     @Test
-
     void givenBacklogItemInDoneStateWhenSetFinishedIsCalledThenFinishedEqualsTrue() {
         BacklogItem item = new BacklogItem("BacklogItem", createdByUser);
         item.setState(new DoneState());

@@ -2,29 +2,29 @@ package com.avans.sofa3devops.domain;
 
 import com.avans.sofa3devops.domain.action.Deploy;
 import com.avans.sofa3devops.domain.tools.AssemblyScanner;
-import com.avans.sofa3devops.domainServices.compositeInterfaces.IPipeComponent;
-import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
-import com.avans.sofa3devops.domainServices.pipelineStatePattern.IPipelineState;
-import com.avans.sofa3devops.domainServices.pipelineStatePattern.InitialState;
-import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprint;
-import com.avans.sofa3devops.domainServices.threadObserverPattern.NotificationService;
-import com.avans.sofa3devops.domainServices.threadVisitorPattern.NotificationExecutor;
+import com.avans.sofa3devops.domainservices.compositeinterfaces.IPipeComponent;
+import com.avans.sofa3devops.domainservices.exceptions.AssemblyException;
+import com.avans.sofa3devops.domainservices.exceptions.InvalidStateException;
+import com.avans.sofa3devops.domainservices.exceptions.PipelineException;
+import com.avans.sofa3devops.domainservices.exceptions.SprintBuildException;
+import com.avans.sofa3devops.domainservices.pipelinestatepattern.IPipelineState;
+import com.avans.sofa3devops.domainservices.pipelinestatepattern.InitialState;
+import com.avans.sofa3devops.domainservices.sprintfactorypattern.ISprint;
+import com.avans.sofa3devops.domainservices.threadobserverpattern.NotificationService;
+import com.avans.sofa3devops.domainservices.threadvisitorpattern.NotificationExecutor;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
 
 public class Pipeline implements IPipeComponent {
     private final String name;
-    private IPipelineState state;
     private final Logger logger = Logger.getLogger(getClass().getName());
+    private IPipelineState state;
     private List<IPipeComponent> allCommands;
     private List<IPipeComponent> selectedCommands;
     private ISprint sprint;
 
-    public Pipeline(String name, ISprint sprint) throws Exception {
+    public Pipeline(String name, ISprint sprint) throws SprintBuildException, PipelineException, AssemblyException {
         this.name = name;
         this.state = new InitialState(this, new NotificationService(new NotificationExecutor()));
         this.allCommands = new ArrayList<>();
@@ -35,7 +35,7 @@ public class Pipeline implements IPipeComponent {
         initSelectedCommands();
     }
 
-    private void initAllCommands() throws Exception {
+    private void initAllCommands() throws PipelineException, AssemblyException {
         List<Command> commands = new ArrayList<>();
         List<Action> actions = new ArrayList<>();
 
@@ -44,7 +44,7 @@ public class Pipeline implements IPipeComponent {
                 Command command = (Command) commandClass.getDeclaredConstructor().newInstance();
                 commands.add(command);
             } catch (Exception e) {
-                throw new Exception(e.getMessage());
+                throw new PipelineException(e.getMessage());
             }
         }
 
@@ -53,7 +53,7 @@ public class Pipeline implements IPipeComponent {
                 Action action = (Action) actionClass.getDeclaredConstructor().newInstance();
                 actions.add(action);
             } catch (Exception e) {
-                throw new Exception(e.getMessage());
+                throw new PipelineException(e.getMessage());
             }
         }
 
@@ -68,7 +68,7 @@ public class Pipeline implements IPipeComponent {
         }
     }
 
-    private void initSelectedCommands() throws Exception {
+    private void initSelectedCommands() throws PipelineException, AssemblyException {
         List<Action> actions = new ArrayList<>();
 
         for (Class<?> actionClass : AssemblyScanner.getAllClasses("com.avans.sofa3devops.domain.action")) {
@@ -76,7 +76,7 @@ public class Pipeline implements IPipeComponent {
                 Action action = (Action) actionClass.getDeclaredConstructor().newInstance();
                 actions.add(action);
             } catch (Exception e) {
-                throw new Exception(e.getMessage());
+                throw new PipelineException(e.getMessage());
             }
         }
 
@@ -161,5 +161,9 @@ public class Pipeline implements IPipeComponent {
 
     public ISprint getSprint() {
         return this.sprint;
+    }
+
+    public String getName() {
+        return name;
     }
 }
