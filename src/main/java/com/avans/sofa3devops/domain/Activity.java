@@ -1,22 +1,22 @@
 package com.avans.sofa3devops.domain;
 
-import com.avans.sofa3devops.domainServices.backlogStatePattern.DoneState;
-import com.avans.sofa3devops.domainServices.backlogStatePattern.IBacklogItemState;
-import com.avans.sofa3devops.domainServices.backlogStatePattern.ToDoState;
-import com.avans.sofa3devops.domainServices.compositeInterfaces.IItemComponent;
-import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
-import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprint;
-import com.avans.sofa3devops.domainServices.threadObserverPattern.NotificationService;
-import com.avans.sofa3devops.domainServices.threadVisitorPattern.NotificationExecutor;
-import com.avans.sofa3devops.domainServices.sprintStatePattern.InProgressState;
+import com.avans.sofa3devops.domainservices.backlogstatepattern.DoneState;
+import com.avans.sofa3devops.domainservices.backlogstatepattern.IBacklogItemState;
+import com.avans.sofa3devops.domainservices.backlogstatepattern.ToDoState;
+import com.avans.sofa3devops.domainservices.compositeinterfaces.IItemComponent;
+import com.avans.sofa3devops.domainservices.exceptions.InvalidStateException;
+import com.avans.sofa3devops.domainservices.sprintfactorypattern.ISprint;
+import com.avans.sofa3devops.domainservices.sprintstatepattern.InProgressState;
+import com.avans.sofa3devops.domainservices.threadobserverpattern.NotificationService;
+import com.avans.sofa3devops.domainservices.threadvisitorpattern.NotificationExecutor;
 
-import java.util.*;
+import java.util.UUID;
 
 public class Activity implements IItemComponent {
     private final UUID id;
     private final String name;
+    private final User createdBy;
     private Boolean finished;
-    private User createdBy;
     private User assignedTo;
     private ISprint sprint;
 
@@ -35,22 +35,32 @@ public class Activity implements IItemComponent {
     public String getStory() {
         return this.getId() + ": " + this.getName();
     }
+
     @Override
     public IBacklogItemState getState() {
         return this.state;
     }
+
+    // State Methods Start
+    public void setState(IBacklogItemState state) {
+        this.state = state;
+    }
+
     @Override
     public User getAssignedTo() {
         return this.assignedTo;
     }
+
     @Override
     public void setAssignedTo(User assignedTo) {
         this.assignedTo = assignedTo;
     }
+
     @Override
     public boolean getFinished() {
         return this.finished;
     }
+
     @Override
     public void setFinished() {
         if (state instanceof DoneState) {
@@ -58,46 +68,56 @@ public class Activity implements IItemComponent {
         }
     }
 
-    @Override
-    public void removeFromSprints(List<ISprint> sprints) {
-
+    public void toDoState() throws InvalidStateException {
+        this.state.toDoState();
     }
 
-    // State Methods Start
-    public void setState(IBacklogItemState state) {this.state = state;}
-    public void toDoState() throws InvalidStateException {this.state.toDoState();}
     public void doingState() throws InvalidStateException {
-        if(this.sprint.getState() instanceof InProgressState){
+        if (this.sprint.getState() instanceof InProgressState) {
             this.state.doingState();
         }
     }
+
     public void readyForTestingState() throws InvalidStateException {
-        if(this.sprint.getState() instanceof InProgressState){
+        if (this.sprint.getState() instanceof InProgressState) {
             this.state.readyForTestingState();
         }
     }
+
     public void testingState() throws InvalidStateException {
-        if(this.sprint.getState() instanceof InProgressState){
+        if (this.sprint.getState() instanceof InProgressState) {
             this.state.testingState();
         }
     }
+
     public void testedState() throws InvalidStateException {
-        if(this.sprint.getState() instanceof InProgressState){
+        if (this.sprint.getState() instanceof InProgressState) {
             this.state.testedState();
         }
     }
+
     public void doneState() throws InvalidStateException {
-        if(this.sprint.getState() instanceof InProgressState){
+        if (this.sprint.getState() instanceof InProgressState) {
             this.state.doneState();
         }
     }
     // State Methods End
 
     // general methods
-    public UUID getId() {return id;}
-    public String getName() {return name;}
+    public UUID getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public User getCreatedBy() {
+        return createdBy;
+    }
+
     public void setSprint(ISprint sprint) {
-        if(this.sprint == null) {
+        if (this.sprint == null) {
             this.sprint = sprint;
         }
     }

@@ -1,24 +1,22 @@
 package com.avans.sofa3devops;
 
-import com.avans.sofa3devops.domain.*;
 import com.avans.sofa3devops.domain.Thread;
-import com.avans.sofa3devops.domainServices.gitStrategyPattern.GitHub;
-import com.avans.sofa3devops.domainServices.gitStrategyPattern.IGitCommands;
-import com.avans.sofa3devops.domainServices.reportStrategyPattern.IReport;
-import com.avans.sofa3devops.domainServices.reportStrategyPattern.Pdf;
-import com.avans.sofa3devops.domainServices.reportStrategyPattern.Png;
-import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprint;
-import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprintFactory;
-import com.avans.sofa3devops.domainServices.sprintFactoryPattern.SprintFactory;
-import com.avans.sofa3devops.domainServices.sprintStatePattern.ClosedState;
-import com.avans.sofa3devops.domainServices.sprintStatePattern.InProgressState;
-import com.avans.sofa3devops.domainServices.threadObserverPattern.NotificationService;
-import com.avans.sofa3devops.domainServices.threadVisitorPattern.NotificationExecutor;
+import com.avans.sofa3devops.domain.*;
+import com.avans.sofa3devops.domainservices.gitstrategypattern.GitHub;
+import com.avans.sofa3devops.domainservices.gitstrategypattern.IGitCommands;
+import com.avans.sofa3devops.domainservices.reportstrategypattern.IReport;
+import com.avans.sofa3devops.domainservices.reportstrategypattern.Pdf;
+import com.avans.sofa3devops.domainservices.reportstrategypattern.Png;
+import com.avans.sofa3devops.domainservices.sprintfactorypattern.ISprint;
+import com.avans.sofa3devops.domainservices.sprintfactorypattern.ISprintFactory;
+import com.avans.sofa3devops.domainservices.sprintfactorypattern.SprintFactory;
+import com.avans.sofa3devops.domainservices.sprintstatepattern.ClosedState;
+import com.avans.sofa3devops.domainservices.sprintstatepattern.InProgressState;
+import com.avans.sofa3devops.domainservices.threadobserverpattern.NotificationService;
+import com.avans.sofa3devops.domainservices.threadvisitorpattern.NotificationExecutor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -26,6 +24,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 public class ProjectTest {
@@ -43,7 +43,7 @@ public class ProjectTest {
     }
 
     @Test
-    void givenOneProjectWithoutDevelopersWhenOneUserIsAddedToProjectThenParticipantsSizeEqualsOne () {
+    void givenOneProjectWithoutDevelopersWhenOneUserIsAddedToProjectThenParticipantsSizeEqualsOne() {
         User user = new User("John Doe", "j.doe@gmail.com", "Password1234");
 
         project.addParticipant(user);
@@ -274,7 +274,7 @@ public class ProjectTest {
     @Test
     void givenProjectWithSprintInCreatedStateWhenRemoveSprintIsCalledThenSprintListEqualsZero() throws Exception {
         ISprintFactory factory = new SprintFactory();
-        ISprint sprint = factory.createReviewSprint(1,new Date(),new Date(),createdBy);
+        ISprint sprint = factory.createReviewSprint(1, new Date(), new Date(), createdBy);
         project.addSprint(sprint);
 
         project.removeSprint(sprint);
@@ -285,7 +285,7 @@ public class ProjectTest {
     @Test
     void givenProjectWithSprintNotInCreatedStateWhenRemoveSprintIsCalledThenSprintListEqualsOne() throws Exception {
         ISprintFactory factory = new SprintFactory();
-        ISprint sprint = factory.createReviewSprint(1,new Date(),new Date(),createdBy);
+        ISprint sprint = factory.createReviewSprint(1, new Date(), new Date(), createdBy);
         project.addSprint(sprint);
         sprint.inProgress();
 
@@ -296,11 +296,11 @@ public class ProjectTest {
 
     @Test
     void givenProjectWithTwoBacklogItemsAndBothHaveAThreadWhenGetAllProjectThreadsIsCalledThenAllArePrintedOut() {
-        BacklogItem itemOne = new BacklogItem("ItemOne",createdBy);
-        Thread threadOne = new Thread("ThreadOne","BodyOne",createdBy);
+        BacklogItem itemOne = new BacklogItem("ItemOne", createdBy);
+        Thread threadOne = new Thread("ThreadOne", "BodyOne", createdBy);
         itemOne.addThread(threadOne);
-        BacklogItem itemTwo = new BacklogItem("ItemTwo",createdBy);
-        Thread threadTwo = new Thread("ThreadTwo","BodyTwo",createdBy);
+        BacklogItem itemTwo = new BacklogItem("ItemTwo", createdBy);
+        Thread threadTwo = new Thread("ThreadTwo", "BodyTwo", createdBy);
         itemTwo.addThread(threadTwo);
         project.addBacklogItem(itemOne);
         project.addBacklogItem(itemTwo);
@@ -313,8 +313,8 @@ public class ProjectTest {
         String capturedLogs = outputStream.toString();
 
         assertThat(capturedLogs.contains("Title: " + threadOne.getTitle()));
-        assertThat(capturedLogs.contains("Title: " +threadOne.getTitle()));
-        assertThat(capturedLogs.contains("Body: " +threadTwo.getBody()));
-        assertThat(capturedLogs.contains("Body: " +threadTwo.getBody()));
+        assertThat(capturedLogs.contains("Title: " + threadOne.getTitle()));
+        assertThat(capturedLogs.contains("Body: " + threadTwo.getBody()));
+        assertThat(capturedLogs.contains("Body: " + threadTwo.getBody()));
     }
 }

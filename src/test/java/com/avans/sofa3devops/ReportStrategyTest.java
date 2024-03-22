@@ -1,17 +1,16 @@
 package com.avans.sofa3devops;
 
 import com.avans.sofa3devops.domain.Project;
-import com.avans.sofa3devops.domainServices.gitStrategyPattern.GitLab;
-import com.avans.sofa3devops.domainServices.gitStrategyPattern.IGitCommands;
-import com.avans.sofa3devops.domainServices.reportStrategyPattern.IReport;
-import com.avans.sofa3devops.domainServices.reportStrategyPattern.Pdf;
-import com.avans.sofa3devops.domainServices.reportStrategyPattern.Png;
+import com.avans.sofa3devops.domainservices.gitstrategypattern.GitLab;
+import com.avans.sofa3devops.domainservices.gitstrategypattern.IGitCommands;
+import com.avans.sofa3devops.domainservices.reportstrategypattern.IReport;
+import com.avans.sofa3devops.domainservices.reportstrategypattern.Pdf;
+import com.avans.sofa3devops.domainservices.reportstrategypattern.Png;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.File;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -52,7 +51,6 @@ public class ReportStrategyTest {
     }
 
     @Test
-
     void givenProjectWithReportStrategiesWhenPrintReportIsCalledThenPngAndPdfReportsAreCreatedInDesignatedFolder() {
         // Arrange
         List<IReport> reportStrategies = Arrays.asList(new Pdf(), new Png());

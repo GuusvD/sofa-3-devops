@@ -6,7 +6,7 @@ import com.avans.sofa3devops.domain.action.Utility;
 import java.util.logging.Logger;
 
 public class DotnetCleanCommand extends Command {
-    private Logger logger = Logger.getLogger(this.getClass().getName());
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
 
     public DotnetCleanCommand() {
         super();

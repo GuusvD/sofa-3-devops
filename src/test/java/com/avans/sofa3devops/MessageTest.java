@@ -4,11 +4,11 @@ import com.avans.sofa3devops.domain.BacklogItem;
 import com.avans.sofa3devops.domain.Message;
 import com.avans.sofa3devops.domain.Thread;
 import com.avans.sofa3devops.domain.User;
-import com.avans.sofa3devops.domainServices.backlogStatePattern.DoneState;
-import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
-import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprint;
-import com.avans.sofa3devops.domainServices.sprintFactoryPattern.ISprintFactory;
-import com.avans.sofa3devops.domainServices.sprintFactoryPattern.SprintFactory;
+import com.avans.sofa3devops.domainservices.backlogstatepattern.DoneState;
+import com.avans.sofa3devops.domainservices.exceptions.InvalidStateException;
+import com.avans.sofa3devops.domainservices.sprintfactorypattern.ISprint;
+import com.avans.sofa3devops.domainservices.sprintfactorypattern.ISprintFactory;
+import com.avans.sofa3devops.domainservices.sprintfactorypattern.SprintFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -21,16 +21,18 @@ public class MessageTest {
     private Thread thread;
     private Message message;
     private Message response;
+
     @BeforeEach
     void setup() throws Exception {
         User createdByUser = new User("John Doe", "j.doe@gmail.com", "Password1234");
         ISprintFactory factory = new SprintFactory();
         ISprint sprint = factory.createRegularSprint(1, new Date(), new Date(), createdByUser);
         item = new BacklogItem("Item", createdByUser);
-        thread = new Thread("Title","Body", createdByUser);
+        thread = new Thread("Title", "Body", createdByUser);
         message = new Message("Body", createdByUser);
         response = new Message("Response", createdByUser);
     }
+
     @Test
     void givenFinishedBacklogItemWithThreadWhenResponseMessageIsAddedThenListEqualsZero() throws InvalidStateException {
         item.addThread(thread);

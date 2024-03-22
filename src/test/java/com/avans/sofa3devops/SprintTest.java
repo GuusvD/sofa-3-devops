@@ -3,18 +3,19 @@ package com.avans.sofa3devops;
 import com.avans.sofa3devops.domain.BacklogItem;
 import com.avans.sofa3devops.domain.Release;
 import com.avans.sofa3devops.domain.User;
-import com.avans.sofa3devops.domainServices.sprintFactoryPattern.*;
-import com.avans.sofa3devops.domainServices.sprintStatePattern.FinishedState;
-import com.avans.sofa3devops.domainServices.sprintStatePattern.InProgressState;
-import com.avans.sofa3devops.domainServices.threadObserverPattern.NotificationService;
-import com.avans.sofa3devops.domainServices.threadVisitorPattern.NotificationExecutor;
+import com.avans.sofa3devops.domainservices.sprintfactorypattern.RegularSprint;
+import com.avans.sofa3devops.domainservices.sprintfactorypattern.ReviewSprint;
+import com.avans.sofa3devops.domainservices.sprintstatepattern.FinishedState;
+import com.avans.sofa3devops.domainservices.sprintstatepattern.InProgressState;
+import com.avans.sofa3devops.domainservices.threadobserverpattern.NotificationService;
+import com.avans.sofa3devops.domainservices.threadvisitorpattern.NotificationExecutor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.assertj.core.api.Assertions.*;
-
 import java.util.Date;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 public class SprintTest {
@@ -203,12 +204,12 @@ public class SprintTest {
     @Test
     void givenSprintInFinishedStateWithPipelineInFinishedStateWhenAddReleaseIsCalledThenReleaseIsSet() {
         regularSprint.setState(new FinishedState(regularSprint, new NotificationService(new NotificationExecutor())));
-        regularSprint.getPipeline().setState(new com.avans.sofa3devops.domainServices.pipelineStatePattern.FinishedState());
+        regularSprint.getPipeline().setState(new com.avans.sofa3devops.domainservices.pipelinestatepattern.FinishedState());
         reviewSprint.setState(new FinishedState(reviewSprint, new NotificationService(new NotificationExecutor())));
-        reviewSprint.getPipeline().setState(new com.avans.sofa3devops.domainServices.pipelineStatePattern.FinishedState());
+        reviewSprint.getPipeline().setState(new com.avans.sofa3devops.domainservices.pipelinestatepattern.FinishedState());
 
-        regularSprint.addRelease(new Release(regularSprint,regularSprint.getPipeline()));
-        reviewSprint.addRelease(new Release(reviewSprint,reviewSprint.getPipeline()));
+        regularSprint.addRelease(new Release(regularSprint, regularSprint.getPipeline()));
+        reviewSprint.addRelease(new Release(reviewSprint, reviewSprint.getPipeline()));
 
         assertThat(regularSprint.getReleases()).hasSize(1);
         assertThat(reviewSprint.getReleases()).hasSize(1);
@@ -216,11 +217,11 @@ public class SprintTest {
 
     @Test
     void givenSprintNotInFinishedStateWithPipelineInFinishedStateWhenAddReleaseIsCalledThenReleaseIsSet() {
-        regularSprint.getPipeline().setState(new com.avans.sofa3devops.domainServices.pipelineStatePattern.FinishedState());
-        reviewSprint.getPipeline().setState(new com.avans.sofa3devops.domainServices.pipelineStatePattern.FinishedState());
+        regularSprint.getPipeline().setState(new com.avans.sofa3devops.domainservices.pipelinestatepattern.FinishedState());
+        reviewSprint.getPipeline().setState(new com.avans.sofa3devops.domainservices.pipelinestatepattern.FinishedState());
 
-        regularSprint.addRelease(new Release(regularSprint,regularSprint.getPipeline()));
-        reviewSprint.addRelease(new Release(reviewSprint,reviewSprint.getPipeline()));
+        regularSprint.addRelease(new Release(regularSprint, regularSprint.getPipeline()));
+        reviewSprint.addRelease(new Release(reviewSprint, reviewSprint.getPipeline()));
 
         assertThat(regularSprint.getReleases()).hasSize(0);
         assertThat(reviewSprint.getReleases()).hasSize(0);
@@ -231,8 +232,8 @@ public class SprintTest {
         regularSprint.setState(new FinishedState(regularSprint, new NotificationService(new NotificationExecutor())));
         reviewSprint.setState(new FinishedState(reviewSprint, new NotificationService(new NotificationExecutor())));
 
-        regularSprint.addRelease(new Release(regularSprint,regularSprint.getPipeline()));
-        reviewSprint.addRelease(new Release(reviewSprint,reviewSprint.getPipeline()));
+        regularSprint.addRelease(new Release(regularSprint, regularSprint.getPipeline()));
+        reviewSprint.addRelease(new Release(reviewSprint, reviewSprint.getPipeline()));
 
         assertThat(regularSprint.getReleases()).hasSize(0);
         assertThat(reviewSprint.getReleases()).hasSize(0);

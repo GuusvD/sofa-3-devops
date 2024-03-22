@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 
 public class DotnetRestoreCommand extends Command {
 
-    private Logger logger = Logger.getLogger(this.getClass().getName());
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
 
     public DotnetRestoreCommand() {
         super();

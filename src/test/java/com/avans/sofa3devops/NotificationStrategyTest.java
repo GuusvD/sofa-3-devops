@@ -1,16 +1,17 @@
 package com.avans.sofa3devops;
 
 import com.avans.sofa3devops.domain.INotificationVisitor;
-import com.avans.sofa3devops.domainServices.notificationStrategyPattern.Email;
-import com.avans.sofa3devops.domainServices.notificationStrategyPattern.Slack;
-import com.avans.sofa3devops.domainServices.notificationStrategyPattern.Sms;
-import com.avans.sofa3devops.domainServices.threadVisitorPattern.NotificationExecutor;
+import com.avans.sofa3devops.domainservices.notificationstrategypattern.Email;
+import com.avans.sofa3devops.domainservices.notificationstrategypattern.Slack;
+import com.avans.sofa3devops.domainservices.notificationstrategypattern.Sms;
+import com.avans.sofa3devops.domainservices.threadvisitorpattern.NotificationExecutor;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.logging.Logger;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 @SpringBootTest
 public class NotificationStrategyTest {
