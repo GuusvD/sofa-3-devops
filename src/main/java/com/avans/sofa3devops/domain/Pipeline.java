@@ -6,7 +6,6 @@ import com.avans.sofa3devops.domainservices.compositeinterfaces.IPipeComponent;
 import com.avans.sofa3devops.domainservices.exceptions.AssemblyException;
 import com.avans.sofa3devops.domainservices.exceptions.InvalidStateException;
 import com.avans.sofa3devops.domainservices.exceptions.PipelineException;
-import com.avans.sofa3devops.domainservices.exceptions.SprintBuildException;
 import com.avans.sofa3devops.domainservices.pipelinestatepattern.IPipelineState;
 import com.avans.sofa3devops.domainservices.pipelinestatepattern.InitialState;
 import com.avans.sofa3devops.domainservices.sprintfactorypattern.ISprint;
