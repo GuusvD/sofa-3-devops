@@ -24,7 +24,7 @@ public class Pipeline implements IPipeComponent {
     private List<IPipeComponent> selectedCommands;
     private ISprint sprint;
 
-    public Pipeline(String name, ISprint sprint) throws SprintBuildException, PipelineException, AssemblyException {
+    public Pipeline(String name, ISprint sprint) throws PipelineException, AssemblyException {
         this.name = name;
         this.state = new InitialState(this, new NotificationService(new NotificationExecutor()));
         this.allCommands = new ArrayList<>();
