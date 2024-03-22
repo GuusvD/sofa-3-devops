@@ -10,7 +10,7 @@ import java.util.Date;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 @SpringBootTest
-public class FactoryPatternTests {
+public class FactoryPatternTest {
     @Test
     void givenSprintFactoryWhenCreateRegularSprintIsCalledThenRegularSprintClassIsReturned() throws Exception {
 
