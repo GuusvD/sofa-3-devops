@@ -1,9 +1,9 @@
 package com.avans.sofa3devops;
 
 import com.avans.sofa3devops.domain.Project;
-import com.avans.sofa3devops.domainServices.gitStrategyPattern.GitHub;
-import com.avans.sofa3devops.domainServices.gitStrategyPattern.GitLab;
-import com.avans.sofa3devops.domainServices.reportStrategyPattern.Pdf;
+import com.avans.sofa3devops.domainservices.gitstrategypattern.GitHub;
+import com.avans.sofa3devops.domainservices.gitstrategypattern.GitLab;
+import com.avans.sofa3devops.domainservices.reportstrategypattern.Pdf;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 

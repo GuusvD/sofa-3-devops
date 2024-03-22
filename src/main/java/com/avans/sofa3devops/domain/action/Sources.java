@@ -1,18 +1,19 @@
 package com.avans.sofa3devops.domain.action;
 
 import com.avans.sofa3devops.domain.Action;
-import com.avans.sofa3devops.domainServices.compositeInterfaces.IPipeComponent;
-import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
+import com.avans.sofa3devops.domainservices.compositeinterfaces.IPipeComponent;
+import com.avans.sofa3devops.domainservices.exceptions.InvalidStateException;
 
 import java.util.logging.Logger;
 
 public class Sources extends Action {
     private final String name = getClass().getSimpleName();
     private final Logger logger = Logger.getLogger(getClass().getName());
-   
+
     public Sources() {
         super(1);
     }
+
     public String getName() {
         return name;
     }
@@ -21,14 +22,14 @@ public class Sources extends Action {
     public boolean execute() throws InvalidStateException {
         logger.info("Starting source action: " + getName());
 
-            for (IPipeComponent command : getCommands()) {
-                boolean successful = command.execute();
+        for (IPipeComponent command : getCommands()) {
+            boolean successful = command.execute();
 
-                if (!successful) {
-                    return false;
-                }
+            if (!successful) {
+                return false;
             }
-            return true;
+        }
+        return true;
     }
 
     @Override

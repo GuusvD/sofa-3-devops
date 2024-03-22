@@ -1,16 +1,19 @@
 package com.avans.sofa3devops;
 
-import com.avans.sofa3devops.domain.*;
+import com.avans.sofa3devops.domain.BacklogItem;
+import com.avans.sofa3devops.domain.Message;
 import com.avans.sofa3devops.domain.Thread;
-import com.avans.sofa3devops.domainServices.notificationStrategyPattern.Email;
-import com.avans.sofa3devops.domainServices.notificationStrategyPattern.Slack;
-import com.avans.sofa3devops.domainServices.notificationStrategyPattern.Sms;
-import com.avans.sofa3devops.domainServices.threadObserverPattern.NotificationService;
-import com.avans.sofa3devops.domainServices.threadVisitorPattern.NotificationExecutor;
+import com.avans.sofa3devops.domain.User;
+import com.avans.sofa3devops.domainservices.notificationstrategypattern.Email;
+import com.avans.sofa3devops.domainservices.notificationstrategypattern.Slack;
+import com.avans.sofa3devops.domainservices.notificationstrategypattern.Sms;
+import com.avans.sofa3devops.domainservices.threadobserverpattern.NotificationService;
+import com.avans.sofa3devops.domainservices.threadvisitorpattern.NotificationExecutor;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.*;
+import java.util.Observable;
+import java.util.Observer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -27,7 +30,7 @@ public class ThreadObserverTest {
         BacklogItem item = new BacklogItem("BacklogItem", user);
         Thread thread = new Thread("A question?", "Please help me!!", user);
         item.addThread(thread);
-        Message newMessage = new Message( "Your answer!", user);
+        Message newMessage = new Message("Your answer!", user);
         Observer mock = mock(Observer.class);
         thread.addObserver(mock);
 

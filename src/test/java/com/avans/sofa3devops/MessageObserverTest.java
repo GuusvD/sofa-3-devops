@@ -1,7 +1,9 @@
 package com.avans.sofa3devops;
 
-import com.avans.sofa3devops.domain.*;
+import com.avans.sofa3devops.domain.BacklogItem;
+import com.avans.sofa3devops.domain.Message;
 import com.avans.sofa3devops.domain.Thread;
+import com.avans.sofa3devops.domain.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -22,7 +24,7 @@ public class MessageObserverTest {
         BacklogItem item = new BacklogItem("BacklogItem", user);
         Thread thread = new Thread("A question?", "Please help me!!", user);
         item.addThread(thread);
-        Message oldMessage = new Message( "Old message", user);
+        Message oldMessage = new Message("Old message", user);
         Message response = new Message("New message", user);
         Observer mock = mock(Observer.class);
         oldMessage.addObserver(mock);

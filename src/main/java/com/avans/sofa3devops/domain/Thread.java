@@ -1,18 +1,18 @@
 package com.avans.sofa3devops.domain;
 
-import com.avans.sofa3devops.domainServices.threadObserverPattern.NotificationService;
-import com.avans.sofa3devops.domainServices.threadVisitorPattern.NotificationExecutor;
+import com.avans.sofa3devops.domainservices.threadobserverpattern.NotificationService;
+import com.avans.sofa3devops.domainservices.threadvisitorpattern.NotificationExecutor;
 
 import java.util.*;
 
 public class Thread extends Observable {
     private final UUID id;
-    private String title;
-    private String body;
-    private List<Message> messages;
-    private BacklogItem backlogItem;
+    private final String title;
+    private final String body;
     private final User createdBy;
     private final Date created;
+    private List<Message> messages;
+    private BacklogItem backlogItem;
 
     public Thread(String title, String body, User createdBy) {
         this.id = UUID.randomUUID();
@@ -29,10 +29,8 @@ public class Thread extends Observable {
         return messages;
     }
 
-    public void setBacklogItem(BacklogItem item) {this.backlogItem = item;}
-
     public void addMessage(Message newMessage) {
-        if(canEdit()) {
+        if (canEdit()) {
             newMessage.setThread(this);
             messages.add(newMessage);
 
@@ -40,14 +38,14 @@ public class Thread extends Observable {
             notifyObservers();
         }
     }
-  
+
     public void removeMessage(Message message) {
-        if(canEdit()) {
+        if (canEdit()) {
             this.messages.remove(message);
         }
     }
 
-   public String getTitle() {
+    public String getTitle() {
         return title;
     }
 
@@ -59,8 +57,23 @@ public class Thread extends Observable {
         return backlogItem;
     }
 
+    public void setBacklogItem(BacklogItem item) {
+        this.backlogItem = item;
+    }
+
     public boolean canEdit() {
         return !this.backlogItem.getFinished();
     }
 
+    public UUID getId() {
+        return id;
+    }
+
+    public User getCreatedBy() {
+        return createdBy;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
 }

@@ -5,13 +5,16 @@ import com.avans.sofa3devops.domain.Document;
 import com.avans.sofa3devops.domain.Pipeline;
 import com.avans.sofa3devops.domain.User;
 import com.avans.sofa3devops.domain.command.*;
-import com.avans.sofa3devops.domainServices.exceptions.InvalidStateException;
-import com.avans.sofa3devops.domainServices.sprintFactoryPattern.*;
-import com.avans.sofa3devops.domainServices.sprintStatePattern.ClosedState;
-import com.avans.sofa3devops.domainServices.sprintStatePattern.CreatedState;
-import com.avans.sofa3devops.domainServices.sprintStatePattern.FinishedState;
-import com.avans.sofa3devops.domainServices.sprintStatePattern.InProgressState;
-import com.avans.sofa3devops.domainServices.threadObserverPattern.NotificationService;
+import com.avans.sofa3devops.domainservices.exceptions.InvalidStateException;
+import com.avans.sofa3devops.domainservices.sprintfactorypattern.ISprint;
+import com.avans.sofa3devops.domainservices.sprintfactorypattern.ISprintFactory;
+import com.avans.sofa3devops.domainservices.sprintfactorypattern.ReviewSprint;
+import com.avans.sofa3devops.domainservices.sprintfactorypattern.SprintFactory;
+import com.avans.sofa3devops.domainservices.sprintstatepattern.ClosedState;
+import com.avans.sofa3devops.domainservices.sprintstatepattern.CreatedState;
+import com.avans.sofa3devops.domainservices.sprintstatepattern.FinishedState;
+import com.avans.sofa3devops.domainservices.sprintstatepattern.InProgressState;
+import com.avans.sofa3devops.domainservices.threadobserverpattern.NotificationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -36,6 +39,7 @@ public class SprintStateTest {
     private ISprintFactory factory;
     private ISprint regularSprint;
     private ISprint reviewSprint;
+
     @BeforeEach
     void setup() throws Exception {
         endDate = new Date(System.currentTimeMillis() - 86400000);
@@ -100,7 +104,7 @@ public class SprintStateTest {
 
     @Test
     void givenReviewSprintWithFinishedStateAndWithDocumentAndWithReviewWhenSwitchingStateToClosedThenSwitchToClosedState() throws Exception {
-        ReviewSprint reviewSprint = (ReviewSprint) factory.createReviewSprint(1,startDate,endDate,user);
+        ReviewSprint reviewSprint = (ReviewSprint) factory.createReviewSprint(1, startDate, endDate, user);
         reviewSprint.inProgress();
         reviewSprint.finished();
         reviewSprint.executePipeline();
@@ -143,7 +147,7 @@ public class SprintStateTest {
 
         regularSprint.closed();
 
-        InvalidStateException exception = assertThrows(InvalidStateException.class,regularSprint::inProgress);
+        InvalidStateException exception = assertThrows(InvalidStateException.class, regularSprint::inProgress);
         assertEquals("Cannot transition to 'in progress' state!", exception.getMessage());
     }
 
@@ -184,7 +188,7 @@ public class SprintStateTest {
         Date currentDate = new Date();
         long millisecondsToAdd = 7 * 24 * 60 * 60 * 1000; // Adding 7 days
         Date futureDate = new Date(currentDate.getTime() + millisecondsToAdd);
-        ISprint sprint = factory.createRegularSprint(1,startDate,futureDate,user);
+        ISprint sprint = factory.createRegularSprint(1, startDate, futureDate, user);
         sprint.inProgress();
         sprint.executePipeline();
 
