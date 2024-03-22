@@ -1,7 +1,6 @@
 package com.avans.sofa3devops;
 
 import com.avans.sofa3devops.domain.BacklogItem;
-import com.avans.sofa3devops.domain.Pipeline;
 import com.avans.sofa3devops.domain.Release;
 import com.avans.sofa3devops.domain.User;
 import com.avans.sofa3devops.domainServices.sprintFactoryPattern.*;
@@ -18,7 +17,7 @@ import static org.assertj.core.api.Assertions.*;
 import java.util.Date;
 
 @SpringBootTest
-public class SprintTests {
+public class SprintTest {
     private ReviewSprint reviewSprint;
     private RegularSprint regularSprint;
     private Date start;

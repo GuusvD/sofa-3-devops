@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 @SpringBootTest
-public class ProjectTests {
+public class ProjectTest {
     private Project project;
     private User createdBy;
 
