@@ -185,6 +185,6 @@ public class RegularSprint implements ISprint {
     }
 
     public boolean pipelineIsRunning() {
-        return !(this.pipeline.getState() instanceof ExecutedState);
+        return this.pipeline.getState() instanceof ExecutedState;
     }
 }

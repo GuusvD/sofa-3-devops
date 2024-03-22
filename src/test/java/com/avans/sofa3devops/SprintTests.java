@@ -207,7 +207,7 @@ public class SprintTests {
         regularSprint.getPipeline().setState(new com.avans.sofa3devops.domainServices.pipelineStatePattern.FinishedState());
         reviewSprint.setState(new FinishedState(reviewSprint, new NotificationService(new NotificationExecutor())));
         reviewSprint.getPipeline().setState(new com.avans.sofa3devops.domainServices.pipelineStatePattern.FinishedState());
-        
+
         regularSprint.addRelease(new Release(regularSprint,regularSprint.getPipeline()));
         reviewSprint.addRelease(new Release(reviewSprint,reviewSprint.getPipeline()));
 

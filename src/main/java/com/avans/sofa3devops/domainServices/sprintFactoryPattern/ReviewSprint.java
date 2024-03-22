@@ -164,7 +164,7 @@ public class ReviewSprint implements ISprint {
     }
 
     public boolean pipelineIsRunning() {
-        return !(this.pipeline.getState() instanceof ExecutedState);
+        return this.pipeline.getState() instanceof ExecutedState;
     }
 
     public List<BacklogItem> getBacklog() {
