@@ -4,7 +4,6 @@ import com.avans.sofa3devops.domain.*;
 import com.avans.sofa3devops.domainservices.exceptions.AssemblyException;
 import com.avans.sofa3devops.domainservices.exceptions.InvalidStateException;
 import com.avans.sofa3devops.domainservices.exceptions.PipelineException;
-import com.avans.sofa3devops.domainservices.exceptions.SprintBuildException;
 import com.avans.sofa3devops.domainservices.pipelinestatepattern.ExecutedState;
 import com.avans.sofa3devops.domainservices.pipelinestatepattern.InitialState;
 import com.avans.sofa3devops.domainservices.sprintstatepattern.CreatedState;
@@ -29,7 +28,7 @@ public class ReviewSprint implements ISprint {
     private boolean reviewed;
     private Pipeline pipeline;
 
-    public ReviewSprint(int number, Date start, Date end, User user) throws SprintBuildException, PipelineException, AssemblyException {
+    public ReviewSprint(int number, Date start, Date end, User user) throws PipelineException, AssemblyException {
         this.state = new CreatedState(this, new NotificationService(new NotificationExecutor()));
         this.number = number;
         this.start = start;
