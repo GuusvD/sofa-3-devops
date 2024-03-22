@@ -104,7 +104,7 @@ public class BacklogItemTest {
     }
 
     @Test
-    void givenFinishedBacklogItemWithThreadWhenRemoveThreadIsCalledThenThreadListEqualsZero() {
+    void givenFinishedBacklogItemWithThreadWhenRemoveThreadIsCalledThenThreadListEqualsOne() {
         BacklogItem item = new BacklogItem("BacklogItem", createdByUser);
         Thread thread = new Thread("Title", "Body", createdByUser);
         item.addThread(thread);
@@ -114,11 +114,10 @@ public class BacklogItemTest {
         item.removeThread(thread);
 
         assertThat(item.getThreads()).hasSize(1);
-
     }
 
     @Test
-    void givenUnfinishedBacklogItemWithThreadWhenRemoveThreadIsCalledThenThreadListEqualsOne() {
+    void givenUnfinishedBacklogItemWithThreadWhenRemoveThreadIsCalledThenThreadListEqualsZero() {
         BacklogItem item = new BacklogItem("BacklogItem", createdByUser);
         Thread thread = new Thread("Title", "Body", createdByUser);
         item.addThread(thread);
@@ -128,5 +127,4 @@ public class BacklogItemTest {
 
         assertThat(item.getThreads()).hasSize(0);
     }
-
 }
