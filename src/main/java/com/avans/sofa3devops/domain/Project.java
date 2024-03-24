@@ -108,6 +108,7 @@ public class Project {
             for (var item : projectBacklog) {
                 if (item.containsActivity(activity)) {
                     item.removeActivity(activity);
+                    break;
                 }
             }
 
