@@ -6,6 +6,7 @@ import com.avans.sofa3devops.domain.BacklogItem;
 import com.avans.sofa3devops.domain.Pipeline;
 import com.avans.sofa3devops.domain.Command;
 import com.avans.sofa3devops.domain.User;
+import com.avans.sofa3devops.domainservices.compositeinterfaces.IItemComponent;
 import com.avans.sofa3devops.domainservices.exceptions.InvalidStateException;
 import com.avans.sofa3devops.domainservices.sprintstatepattern.ISprintState;
 import java.util.Date;
@@ -33,4 +34,5 @@ public interface ISprint {
     boolean pipelineIsRunning();
     void setDocument(Document document);
     Document getDocument();
+    List<BacklogItem> getBacklog();
 }
