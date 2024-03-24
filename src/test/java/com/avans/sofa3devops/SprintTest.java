@@ -216,7 +216,7 @@ public class SprintTest {
     }
 
     @Test
-    void givenSprintNotInFinishedStateWithPipelineInFinishedStateWhenAddReleaseIsCalledThenReleaseIsSet() {
+    void givenSprintNotInFinishedStateWithPipelineInFinishedStateWhenAddReleaseIsCalledThenReleaseIsNotSet() {
         regularSprint.getPipeline().setState(new com.avans.sofa3devops.domainservices.pipelinestatepattern.FinishedState());
         reviewSprint.getPipeline().setState(new com.avans.sofa3devops.domainservices.pipelinestatepattern.FinishedState());
 
@@ -228,7 +228,7 @@ public class SprintTest {
     }
 
     @Test
-    void givenSprintInFinishedStateWithPipelineNotInFinishedStateWhenAddReleaseIsCalledThenReleaseIsSet() {
+    void givenSprintInFinishedStateWithPipelineNotInFinishedStateWhenAddReleaseIsCalledThenReleaseIsNotSet() {
         regularSprint.setState(new FinishedState(regularSprint, new NotificationService(new NotificationExecutor())));
         reviewSprint.setState(new FinishedState(reviewSprint, new NotificationService(new NotificationExecutor())));
 

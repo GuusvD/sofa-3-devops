@@ -108,6 +108,7 @@ public class Project {
             for (var item : projectBacklog) {
                 if (item.containsActivity(activity)) {
                     item.removeActivity(activity);
+                    break;
                 }
             }
 
@@ -126,7 +127,7 @@ public class Project {
         return this.sprints;
     }
 
-    void getBacklog() {
+    public void getBacklog() {
         for (var backlog : projectBacklog) {
             backlog.getAllStories();
         }

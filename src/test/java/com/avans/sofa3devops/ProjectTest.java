@@ -9,6 +9,7 @@ import com.avans.sofa3devops.domainservices.reportstrategypattern.Pdf;
 import com.avans.sofa3devops.domainservices.reportstrategypattern.Png;
 import com.avans.sofa3devops.domainservices.sprintfactorypattern.ISprint;
 import com.avans.sofa3devops.domainservices.sprintfactorypattern.ISprintFactory;
+import com.avans.sofa3devops.domainservices.sprintfactorypattern.ReviewSprint;
 import com.avans.sofa3devops.domainservices.sprintfactorypattern.SprintFactory;
 import com.avans.sofa3devops.domainservices.sprintstatepattern.ClosedState;
 import com.avans.sofa3devops.domainservices.sprintstatepattern.InProgressState;
@@ -100,14 +101,14 @@ public class ProjectTest {
     void givenProjectWithOneSprintInCreatedStateWithBacklogItemWhenRemoveBacklogItemIsCalledThenProjectBacklogSizeEqualsZero() throws Exception {
         BacklogItem item = new BacklogItem("Item", createdBy);
         project.addBacklogItem(item);
-        SprintFactory factory = new SprintFactory();
-        ISprint sprint = factory.createReviewSprint(0, new Date(), new Date(), createdBy);
+        ReviewSprint sprint = new ReviewSprint(0, new Date(), new Date(), createdBy);
         project.addSprint(sprint);
         sprint.addBacklogItem(item);
 
         project.removeBacklogItem(item);
 
         assertThat(project.getProjectBacklog()).hasSize(0);
+        assertThat(sprint.getBacklog()).hasSize(0);
     }
 
     @Test
@@ -128,8 +129,7 @@ public class ProjectTest {
     void givenProjectWithOneSprintNotInCreatedStateWithBacklogItemWhenRemoveBacklogItemIsCalledThenProjectBacklogSizeEqualsOne() throws Exception {
         BacklogItem item = new BacklogItem("Item", createdBy);
         project.addBacklogItem(item);
-        SprintFactory factory = new SprintFactory();
-        ISprint sprint = factory.createReviewSprint(0, new Date(), new Date(), createdBy);
+        ReviewSprint sprint = new ReviewSprint(0, new Date(), new Date(), createdBy);
         project.addSprint(sprint);
         sprint.addBacklogItem(item);
         sprint.setState(new ClosedState());
@@ -137,6 +137,7 @@ public class ProjectTest {
         project.removeBacklogItem(item);
 
         assertThat(project.getProjectBacklog()).hasSize(1);
+        assertThat(sprint.getBacklog()).hasSize(1);
     }
 
     @Test
@@ -259,11 +260,8 @@ public class ProjectTest {
         itemTwo.addActivity(activityRemove);
         SprintFactory factory = new SprintFactory();
         ISprint sprintOne = factory.createReviewSprint(1, new Date(), new Date(), createdBy);
-
         sprintOne.addBacklogItem(itemTwo);
-
         sprintOne.setState(new InProgressState(sprintOne, new NotificationService(new NotificationExecutor())));
-
         project.addSprint(sprintOne);
 
         project.removeActivity(activityRemove);
